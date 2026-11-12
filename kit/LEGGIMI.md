@@ -36,6 +36,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 - **Prodotto:** nomina solo le funzioni dell'elenco «Esistono». Mai una funzione «In arrivo» come se ci fosse già.
 - **Prezzi e offerte:** non nominarli, salvo che il tema lo richieda e Emanuele l'abbia chiesto. Mai «gratis» se qualcosa si paga, mai urgenza finta («ultimi posti», conti alla rovescia), mai «solo per chi commenta».
 - **Dati:** solo dati demo: Luca (−80 kg, massimali muscle-up +20, trazione +65, dip +90, squat 170, totale 345 kg); Marco R, Anna, Teo; palestre inventate «Ferro Street» (nero e giallo) e «Barra Alta» (chiaro e blu). Mai dati veri di atleti o palestre, mai Oplitia.
+- **Sempre in positivo:** racconta cosa fa Talyon, mai cosa non fa. Niente frasi che suonano come una giustificazione o un confronto implicito con un concorrente (es. «non pubblichiamo un'app diversa per ogni coach»). Indicazione di Emanuele sul C05.
 - **Concorrenti:** mai nominarli né denigrarli. Il confronto con i fogli resta sui fatti («importa il tuo foglio» sì, «i fogli sono un disastro» no).
 - **Regole di gara, formule, numeri, date:** solo se verificati su fonte ufficiale (es. regolamento FinalRep, final-rep.com). Se non sei sicuro, scrivi in modo generale o passa al tema dopo e dillo a Emanuele.
 - **Immagini:** niente persone, voci o volti generati con l'IA; niente prima e dopo del corpo; niente fisici in primo piano. Si mostrano schede, carichi, schermate stilizzate.
