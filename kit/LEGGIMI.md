@@ -1,6 +1,6 @@
 # Caroselli Talyon: istruzioni per l'attività settimanale
 
-Questo file è per Claude. Ogni settimana un'attività programmata prepara un carosello Instagram per @talyon.app, lo mette in **bozza** su Metricool e chiede l'ok a Emanuele. **Non si pubblica mai niente senza il suo ok.**
+Questo file è per Claude. Ogni sabato un'attività programmata prepara **due caroselli** Instagram per @talyon.app (uno per il martedì alle 18:30 e uno per il giovedì alle 9:00), li mette in **bozza** su Metricool e chiede l'ok a Emanuele. **Non si pubblica mai niente senza il suo ok.**
 
 Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codice. Ai messaggi per lui niente gergo tecnico (niente «repo», «commit», «SHA», «API»).
 
@@ -8,8 +8,9 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 
 1. **Ambiente.** Il repository `nardy18/talyon-social` deve essere nella sessione con permesso di scrittura (strumento `add_repo`, access `push`) e clonato. Lavora dentro la sua cartella.
 2. **Bozze in sospeso.** Leggi `kit/temi.md`. Se un carosello è ancora `in bozza` e la sua data è passata o manca meno di 2 giorni, ricordalo a Emanuele nel messaggio finale (non ripubblicarlo, non cancellarlo).
-3. **Tema.** Prendi il primo tema `da fare` in `kit/temi.md`. Se non ce ne sono più, non creare nulla: scrivi a Emanuele proponendo 6 temi nuovi (stesso stile della tabella) e fermati.
-4. **Data.** Il primo martedì alle 18:30 (Europe/Rome) che cade almeno 3 giorni dopo oggi e non ha già un carosello, né in `kit/temi.md` né in Metricool (`getScheduledPosts`, brand `8059629`, fuso `Europe/Rome`, comprese le bozze).
+3. **Temi.** Prendi i primi due temi `da fare` in `kit/temi.md`. Se ne resta uno solo, fai quello; se non ce ne sono più, non creare nulla. Quando ne restano meno di 4, proponi a Emanuele 6 temi nuovi nel messaggio finale (stesso stile della tabella).
+4. **Date.** I primi due spazi liberi tra **martedì alle 18:30** e **giovedì alle 9:00** (Europe/Rome) che cadono almeno 3 giorni dopo oggi e non hanno già un carosello, né in `kit/temi.md` né in Metricool (`getScheduledPosts`, brand `8059629`, fuso `Europe/Rome`, comprese le bozze). Il primo tema va nella data più vicina.
+   I passi da 5 a 10 si fanno per ogni carosello, uno dopo l'altro.
 5. **Scrivi il carosello** in `caroselli/CNN-slug/carosello.html` (NN a due cifre, slug corto in minuscolo con trattini, es. `C06-opener`). Parti da una copia di `caroselli/C05-la-tua-palestra/carosello.html` e rispetta le regole qui sotto. 8 slide: copertina, 6 slide di contenuto o di solo testo, chiusura.
 6. **Genera:** `python3 kit/genera.py caroselli/CNN-slug/carosello.html`.
    - Se stampa elementi fuori dall'area, correggi e rigenera finché esce pulito.
@@ -20,9 +21,9 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
    `https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/caroselli/CNN-slug/slide-01.jpg` … `slide-08.jpg`.
 10. **Aggiorna `kit/temi.md`:** stato `in bozza`, data. Commit e push.
 11. **Se hai lo strumento Projects (progetto Talyon):** aggiungi il carosello in fondo a `claude/caroselli-instagram.md` (titolo, sfondo, una riga per slide), leggendo prima il documento e riscrivendolo intero.
-12. **Avvisa Emanuele** (modello sotto): invia `anteprima.jpg` e le 8 slide con `SendUserFile` (status `proactive`), poi il messaggio con `SendUserMessage`.
+12. **Avvisa Emanuele una volta sola per tutti e due** (modello sotto): per ogni carosello invia `anteprima.jpg` e le 8 slide con `SendUserFile` (status `proactive`), poi un solo messaggio con `SendUserMessage`.
 13. **Se Emanuele risponde in questa chat:**
-    - «ok» (o simile): `getScheduledPosts` per trovare `id` e `uuid` della bozza, poi `updateScheduledPost` con lo stesso contenuto e `draft: false`. Stato `programmato` in `kit/temi.md`, commit e push. Conferma con una frase.
+    - «ok» (o simile) vale per tutti e due; «ok al primo» o «ok al secondo» solo per quello. Per ogni carosello approvato: `getScheduledPosts` per trovare `id` e `uuid` della bozza, poi `updateScheduledPost` con lo stesso contenuto (gli URL delle immagini come li restituisce `getScheduledPosts`) e `draft: false`. Stato `programmato` in `kit/temi.md`, commit e push. Conferma con una frase.
     - correzioni: modifica, rigenera, controlla le slide, commit e push, poi `updateScheduledPost` con i nuovi URL (nuovo SHA) e il resto invariato. Rimanda l'anteprima.
     - «no» o «salta»: lascia la bozza così, segna `saltato` in `kit/temi.md` e chiedi se cancellarla da Metricool (cancella solo se lo dice lui).
 
@@ -83,7 +84,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 
 - Brand `talyon.app`: `blogId` **8059629**, fuso `Europe/Rome`. Pubblica solo su `instagram` (la Pagina Facebook collegata non si usa).
 - Piano gratuito: al massimo 20 post programmati al mese.
-- Bozza con `createScheduledPost`: `blogId: "8059629"`, `date: "AAAA-MM-GGT18:30:00+01:00"` (+02:00 con l'ora legale), e `info` come stringa JSON:
+- Bozza con `createScheduledPost`: `blogId: "8059629"`, `date` con l'ora dello spazio (18:30 il martedì, 09:00 il giovedì), es. `"AAAA-MM-GGT18:30:00+01:00"` (+02:00 con l'ora legale), e `info` come stringa JSON (in `publicationDate` la stessa ora):
 
 ```json
 {
@@ -108,12 +109,15 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 
 ## Messaggio per Emanuele (modello)
 
-> Ciao Emanuele! È pronto il carosello di questa settimana: **«Titolo»** (n. N, sfondo verde/grafite).
-> Esce martedì GG mese alle 18:30, ma solo dopo il tuo ok.
-> - Ti va bene? Rispondimi «ok» qui, oppure apri Metricool: trovi la bozza nel calendario, premi Programma.
+> Ciao Emanuele! Sono pronti i due caroselli della settimana:
+> 1. **«Titolo»** (n. N, sfondo verde/grafite): esce martedì GG mese alle 18:30.
+> 2. **«Titolo»** (n. N, sfondo verde/grafite): esce giovedì GG mese alle 9:00.
+>
+> Escono solo dopo il tuo ok.
+> - Ti vanno bene? Rispondimi «ok» qui (oppure «ok al primo» / «ok al secondo»), o apri Metricool: trovi le bozze nel calendario, premi Programma.
 > - Vuoi cambiare qualcosa? Scrivimi cosa e lo sistemo.
 >
-> Didascalia: (testo)
+> Didascalie: (testo del primo) · (testo del secondo)
 
 Aggiungi una riga se ci sono bozze vecchie ancora da approvare, o se hai cambiato o saltato un tema e perché.
 

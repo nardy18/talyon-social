@@ -1,9 +1,9 @@
 # Temi dei caroselli
 
-Un carosello a settimana, il **martedì alle 18:30** (ora italiana). Numero dispari = sfondo **verde**, numero pari = **grafite**.
+Due caroselli a settimana: **martedì alle 18:30** e **giovedì alle 9:00** (ora italiana). Numero dispari = sfondo **verde**, numero pari = **grafite**.
 
 Stati: `da fare` → `in bozza` (in Metricool, aspetta l'ok di Emanuele) → `programmato` (ok ricevuto) → `pubblicato`.
-L'attività settimanale prende sempre il **primo tema «da fare»** dall'alto. Emanuele può cambiare l'ordine, aggiungere o togliere righe quando vuole (anche chiedendolo a Claude).
+L'attività del sabato prende sempre i **primi due temi «da fare»** dall'alto. Emanuele può cambiare l'ordine, aggiungere o togliere righe quando vuole (anche chiedendolo a Claude).
 
 | N | Sfondo | Tema | Di cosa parla | Stato | Data | Note |
 |---|---|---|---|---|---|---|
