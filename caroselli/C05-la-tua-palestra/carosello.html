@@ -1,0 +1,208 @@
+<carosello sfondo="verde" serie="La tua palestra">
+<style>
+  /* Stili solo per questo carosello */
+  .ventaglio { position: relative; width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; }
+  .ventaglio .telefono { --t-larghezza: 226px; }
+  .ventaglio .sx { transform: rotate(-7deg) translate(0, 30px) scale(0.93); margin-right: -14px; z-index: 1; }
+  .ventaglio .cx { z-index: 2; }
+  .ventaglio .dx { transform: rotate(7deg) translate(0, 30px) scale(0.93); margin-left: -14px; z-index: 1; }
+
+  .ancora { position: relative; }
+  .ancora .telefono { --t-larghezza: 250px; }
+  .annotazione { position: absolute; width: 300px; transform: translateY(-50%); display: flex; align-items: center; font-size: 26px; font-weight: 600; line-height: 1.25; color: rgba(255,255,255,.86); }
+  .annotazione .filo { width: 40px; height: 1.5px; background: var(--rame); flex-shrink: 0; }
+  .annotazione .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--rame); flex-shrink: 0; }
+  .annotazione.sinistra { right: calc(100% - 4px); justify-content: flex-end; text-align: right; }
+  .annotazione.sinistra .filo { margin-left: 18px; }
+  .annotazione.destra { left: calc(100% - 4px); justify-content: flex-start; }
+  .annotazione.destra .filo { margin-right: 18px; }
+
+  .colori .riga { font-size: 32px; }
+  .campione { width: 64px; height: 64px; border-radius: 16px; border: 1.5px solid rgba(255,255,255,.28); flex-shrink: 0; }
+  .segmentato { display: inline-flex; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.16); }
+  .segmentato span { padding: 8px 26px; border-radius: 999px; font-size: 26px; font-weight: 600; color: rgba(255,255,255,.7); }
+  .segmentato span.on { background: #F4F4EF; color: #1E2022; }
+  .pallini { display: flex; gap: 14px; }
+  .pallini i { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.3); display: block; }
+
+  .tre .telefono { --t-larghezza: 244px; }
+  .tre .colonna { align-items: center; gap: 0; }
+
+  .invito-pannello { display: flex; gap: 40px; align-items: center; }
+  .invito-pannello .colonna { flex: 1; gap: 18px; }
+  .bottone-finto { display: inline-flex; align-items: center; gap: 14px; padding: 16px 26px; border-radius: 14px; background: #F4F4EF; color: #1E2022; font-size: 28px; font-weight: 700; }
+  .bottone-finto.vuoto { background: transparent; color: #FFFFFF; border: 1.5px solid rgba(255,255,255,.3); }
+</style>
+
+<!-- 01 · Copertina -->
+<section class="slide" data-tipo="copertina">
+  <div class="ventaglio" data-libero>
+    <div class="telefono sx" data-tema="nero-giallo">
+      <div class="schermo">
+        <div class="app-barra"><span class="app-logo">FS</span>Ferro Street</div>
+        <div><div class="app-sotto">Giovedì</div><div class="app-saluto">Ciao Luca</div></div>
+        <div class="app-card"><div class="titolo">Dip con fermo</div><div class="dettaglio">4 × 3 @7 · +30 kg</div></div>
+        <div class="app-card"><div class="titolo">Muscle-up</div><div class="dettaglio">4 × 2 @6 · +5 kg</div></div>
+        <div class="app-bottone">Apri la scheda</div>
+      </div>
+    </div>
+    <div class="telefono cx" data-tema="talyon">
+      <div class="schermo">
+        <div class="app-barra"><span class="app-logo"><svg viewBox="0 0 120 120"><use href="#mark"></use></svg></span>Talyon</div>
+        <div><div class="app-sotto">Giovedì</div><div class="app-saluto">Ciao Luca</div></div>
+        <div class="app-card"><div class="titolo">Dip con fermo</div><div class="dettaglio">4 × 3 @7 · +30 kg</div></div>
+        <div class="app-card"><div class="titolo">Muscle-up</div><div class="dettaglio">4 × 2 @6 · +5 kg</div></div>
+        <div class="app-bottone">Apri la scheda</div>
+      </div>
+    </div>
+    <div class="telefono dx" data-tema="chiaro-blu">
+      <div class="schermo">
+        <div class="app-barra"><span class="app-logo">BA</span>Barra Alta</div>
+        <div><div class="app-sotto">Giovedì</div><div class="app-saluto">Ciao Luca</div></div>
+        <div class="app-card"><div class="titolo">Dip con fermo</div><div class="dettaglio">4 × 3 @7 · +30 kg</div></div>
+        <div class="app-card"><div class="titolo">Muscle-up</div><div class="dettaglio">4 × 2 @6 · +5 kg</div></div>
+        <div class="app-bottone">Apri la scheda</div>
+      </div>
+    </div>
+  </div>
+  <p class="etichetta">I tuoi colori</p>
+  <h1>La tua palestra, non la nostra.</h1>
+  <p class="sottotitolo">Talyon si veste con il logo e i colori della tua palestra.</p>
+</section>
+
+<!-- 02 · Il punto di partenza -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Il punto di partenza</p>
+  <h1>Gli atleti non si allenano in un’app. Si allenano da te.</h1>
+  <div class="linea"></div>
+  <p class="testo">Hanno scelto la tua palestra, il tuo metodo, la tua voce. <b>L’app che aprono ogni giorno dovrebbe ricordarglielo.</b></p>
+</section>
+
+<!-- 03 · Il logo -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Il logo</p>
+  <h1>Appena apre l’app, vede la sua palestra.</h1>
+  <div class="visual">
+    <div class="ancora">
+      <div class="telefono" data-tema="nero-giallo">
+        <div class="schermo">
+          <div class="app-barra" id="c5-barra"><span class="app-logo">FS</span>Ferro Street</div>
+          <div><div class="app-sotto">Giovedì</div><div class="app-saluto">Ciao Luca</div></div>
+          <div class="app-card" id="c5-scheda"><div class="app-sotto">Oggi</div><div class="titolo">Settimana 3</div><div class="dettaglio">Muscle-up · Dip · Squat</div></div>
+          <div class="app-card"><div class="titolo">Record</div><div class="dettaglio">Dip +90 kg · nuovo</div></div>
+          <div class="app-bottone" id="c5-bottone">Apri la scheda</div>
+        </div>
+      </div>
+      <div class="annotazione sinistra" data-mira="c5-barra">Logo e nome<br>della palestra<span class="filo"></span><span class="punto"></span></div>
+      <div class="annotazione destra" data-mira="c5-scheda"><span class="punto"></span><span class="filo"></span>Le schede<br>che scrivi tu</div>
+      <div class="annotazione destra" data-mira="c5-bottone"><span class="punto"></span><span class="filo"></span>I colori<br>della palestra</div>
+    </div>
+  </div>
+  <p class="testo">Logo e colori sono quelli della tua palestra, dal primo accesso. <b>L’atleta riconosce subito dove si allena.</b></p>
+</section>
+
+<!-- 04 · I colori -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">I colori</p>
+  <h1>Non solo i pulsanti. Tutto.</h1>
+  <div class="visual">
+    <div class="pannello colori">
+      <div class="intestazione"><span>Colori della palestra</span><span class="pallini"><i style="background:#FFD21F"></i><i style="background:#2563EB"></i><i style="background:#E0564A"></i><i style="background:#41502F"></i><i style="background:#F4F4EF"></i><i style="background:#0E0E0E"></i></span></div>
+      <div class="riga"><div class="sx"><span class="campione" style="background:#0E0E0E"></span>Sfondo</div><span class="valore">Nero</span></div>
+      <div class="riga"><div class="sx"><span class="campione" style="background:#1B1B1B"></span>Superfici</div><span class="valore">Antracite</span></div>
+      <div class="riga"><div class="sx"><span class="campione" style="background:#FFD21F"></span>Pulsanti</div><span class="valore">Giallo</span></div>
+      <div class="riga"><div class="sx"><span class="campione" style="background:#F4F4EF"></span>Dettagli</div><span class="valore">Bianco</span></div>
+      <div class="riga"><div class="sx">Tema</div><span class="segmentato"><span class="on">Scuro</span><span>Chiaro</span></span></div>
+    </div>
+  </div>
+  <p class="testo">Sfondi, superfici, pulsanti e dettagli, con il tema scuro o chiaro. <b>I colori sono personalizzabili al 100%.</b></p>
+</section>
+
+<!-- 05 · Tre palestre -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Tre esempi</p>
+  <h1>Stessa scheda, tre palestre.</h1>
+  <div class="visual">
+    <div class="fila tre">
+      <div class="colonna">
+        <div class="telefono" data-tema="talyon">
+          <div class="schermo">
+            <div class="app-barra"><span class="app-logo"><svg viewBox="0 0 120 120"><use href="#mark"></use></svg></span>Talyon</div>
+            <div class="app-card"><div class="titolo">Dip con fermo</div><div class="dettaglio">4 × 3 @7 · +30 kg</div></div>
+            <div class="app-riga"><span>Serie 1 · 3 · +30 kg</span><span class="app-spunta fatta"></span></div>
+            <div class="app-riga"><span>Serie 2 · 3 · +30 kg</span><span class="app-spunta fatta"></span></div>
+            <div class="app-riga"><span>Serie 3 · 3 · +30 kg</span><span class="app-spunta"></span></div>
+            <div class="app-riga"><span>Serie 4 · 3 · +30 kg</span><span class="app-spunta"></span></div>
+            <div class="app-bottone">Conferma serie</div>
+          </div>
+        </div>
+        <div class="nome-tema">Talyon</div>
+      </div>
+      <div class="colonna">
+        <div class="telefono" data-tema="nero-giallo">
+          <div class="schermo">
+            <div class="app-barra"><span class="app-logo">FS</span>Ferro Street</div>
+            <div class="app-card"><div class="titolo">Dip con fermo</div><div class="dettaglio">4 × 3 @7 · +30 kg</div></div>
+            <div class="app-riga"><span>Serie 1 · 3 · +30 kg</span><span class="app-spunta fatta"></span></div>
+            <div class="app-riga"><span>Serie 2 · 3 · +30 kg</span><span class="app-spunta fatta"></span></div>
+            <div class="app-riga"><span>Serie 3 · 3 · +30 kg</span><span class="app-spunta"></span></div>
+            <div class="app-riga"><span>Serie 4 · 3 · +30 kg</span><span class="app-spunta"></span></div>
+            <div class="app-bottone">Conferma serie</div>
+          </div>
+        </div>
+        <div class="nome-tema">Ferro Street</div>
+      </div>
+      <div class="colonna">
+        <div class="telefono" data-tema="chiaro-blu">
+          <div class="schermo">
+            <div class="app-barra"><span class="app-logo">BA</span>Barra Alta</div>
+            <div class="app-card"><div class="titolo">Dip con fermo</div><div class="dettaglio">4 × 3 @7 · +30 kg</div></div>
+            <div class="app-riga"><span>Serie 1 · 3 · +30 kg</span><span class="app-spunta fatta"></span></div>
+            <div class="app-riga"><span>Serie 2 · 3 · +30 kg</span><span class="app-spunta fatta"></span></div>
+            <div class="app-riga"><span>Serie 3 · 3 · +30 kg</span><span class="app-spunta"></span></div>
+            <div class="app-riga"><span>Serie 4 · 3 · +30 kg</span><span class="app-spunta"></span></div>
+            <div class="app-bottone">Conferma serie</div>
+          </div>
+        </div>
+        <div class="nome-tema">Barra Alta</div>
+      </div>
+    </div>
+  </div>
+  <p class="testo">Questi sono solo tre esempi. <b>I colori li scegli tu.</b></p>
+</section>
+
+<!-- 06 · Gli inviti -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Gli inviti</p>
+  <h1>Gli atleti entrano già nei tuoi colori.</h1>
+  <div class="visual">
+    <div class="pannello">
+      <div class="intestazione"><span>Invita i tuoi atleti</span><small>Barra Alta</small></div>
+      <div class="invito-pannello" style="border-top: 1px solid rgba(255,255,255,.1); padding-top: 26px">
+        <div class="colonna">
+          <div style="font-size: 30px; font-weight: 600">Link della palestra</div>
+          <div style="font-size: 26px; font-weight: 400; color: rgba(255,255,255,.7); line-height: 1.35">Lo mandi in chat: chi lo apre chiede di entrare e tu lo accetti.</div>
+          <div style="display: flex; gap: 14px; margin-top: 8px"><span class="bottone-finto">Copia il link</span><span class="bottone-finto vuoto">Mostra il QR</span></div>
+        </div>
+        <svg viewBox="-2 -2 25 25" width="250" height="250" aria-hidden="true" style="background:#F4F4EF;border-radius:14px"><path d="M0 0h1v1h-1z M1 0h1v1h-1z M2 0h1v1h-1z M3 0h1v1h-1z M4 0h1v1h-1z M5 0h1v1h-1z M6 0h1v1h-1z M11 0h1v1h-1z M14 0h1v1h-1z M15 0h1v1h-1z M16 0h1v1h-1z M17 0h1v1h-1z M18 0h1v1h-1z M19 0h1v1h-1z M20 0h1v1h-1z M0 1h1v1h-1z M6 1h1v1h-1z M10 1h1v1h-1z M11 1h1v1h-1z M12 1h1v1h-1z M14 1h1v1h-1z M20 1h1v1h-1z M0 2h1v1h-1z M2 2h1v1h-1z M3 2h1v1h-1z M4 2h1v1h-1z M6 2h1v1h-1z M9 2h1v1h-1z M11 2h1v1h-1z M14 2h1v1h-1z M16 2h1v1h-1z M17 2h1v1h-1z M18 2h1v1h-1z M20 2h1v1h-1z M0 3h1v1h-1z M2 3h1v1h-1z M3 3h1v1h-1z M4 3h1v1h-1z M6 3h1v1h-1z M9 3h1v1h-1z M11 3h1v1h-1z M14 3h1v1h-1z M16 3h1v1h-1z M17 3h1v1h-1z M18 3h1v1h-1z M20 3h1v1h-1z M0 4h1v1h-1z M2 4h1v1h-1z M3 4h1v1h-1z M4 4h1v1h-1z M6 4h1v1h-1z M9 4h1v1h-1z M14 4h1v1h-1z M16 4h1v1h-1z M17 4h1v1h-1z M18 4h1v1h-1z M20 4h1v1h-1z M0 5h1v1h-1z M6 5h1v1h-1z M8 5h1v1h-1z M12 5h1v1h-1z M14 5h1v1h-1z M20 5h1v1h-1z M0 6h1v1h-1z M1 6h1v1h-1z M2 6h1v1h-1z M3 6h1v1h-1z M4 6h1v1h-1z M5 6h1v1h-1z M6 6h1v1h-1z M8 6h1v1h-1z M12 6h1v1h-1z M14 6h1v1h-1z M15 6h1v1h-1z M16 6h1v1h-1z M17 6h1v1h-1z M18 6h1v1h-1z M19 6h1v1h-1z M20 6h1v1h-1z M11 7h1v1h-1z M12 7h1v1h-1z M0 8h1v1h-1z M2 8h1v1h-1z M4 8h1v1h-1z M7 8h1v1h-1z M11 8h1v1h-1z M12 8h1v1h-1z M14 8h1v1h-1z M18 8h1v1h-1z M0 9h1v1h-1z M1 9h1v1h-1z M4 9h1v1h-1z M5 9h1v1h-1z M7 9h1v1h-1z M8 9h1v1h-1z M9 9h1v1h-1z M12 9h1v1h-1z M13 9h1v1h-1z M16 9h1v1h-1z M19 9h1v1h-1z M2 10h1v1h-1z M3 10h1v1h-1z M4 10h1v1h-1z M5 10h1v1h-1z M6 10h1v1h-1z M7 10h1v1h-1z M13 10h1v1h-1z M15 10h1v1h-1z M19 10h1v1h-1z M20 10h1v1h-1z M0 11h1v1h-1z M2 11h1v1h-1z M4 11h1v1h-1z M5 11h1v1h-1z M6 11h1v1h-1z M9 11h1v1h-1z M13 11h1v1h-1z M16 11h1v1h-1z M17 11h1v1h-1z M18 11h1v1h-1z M19 11h1v1h-1z M20 11h1v1h-1z M2 12h1v1h-1z M4 12h1v1h-1z M9 12h1v1h-1z M12 12h1v1h-1z M13 12h1v1h-1z M17 12h1v1h-1z M8 13h1v1h-1z M9 13h1v1h-1z M13 13h1v1h-1z M14 13h1v1h-1z M17 13h1v1h-1z M19 13h1v1h-1z M20 13h1v1h-1z M0 14h1v1h-1z M1 14h1v1h-1z M2 14h1v1h-1z M3 14h1v1h-1z M4 14h1v1h-1z M5 14h1v1h-1z M6 14h1v1h-1z M10 14h1v1h-1z M15 14h1v1h-1z M18 14h1v1h-1z M0 15h1v1h-1z M6 15h1v1h-1z M8 15h1v1h-1z M12 15h1v1h-1z M13 15h1v1h-1z M15 15h1v1h-1z M17 15h1v1h-1z M18 15h1v1h-1z M0 16h1v1h-1z M2 16h1v1h-1z M3 16h1v1h-1z M4 16h1v1h-1z M6 16h1v1h-1z M9 16h1v1h-1z M10 16h1v1h-1z M12 16h1v1h-1z M15 16h1v1h-1z M17 16h1v1h-1z M18 16h1v1h-1z M19 16h1v1h-1z M0 17h1v1h-1z M2 17h1v1h-1z M3 17h1v1h-1z M4 17h1v1h-1z M6 17h1v1h-1z M8 17h1v1h-1z M10 17h1v1h-1z M11 17h1v1h-1z M12 17h1v1h-1z M14 17h1v1h-1z M15 17h1v1h-1z M16 17h1v1h-1z M17 17h1v1h-1z M20 17h1v1h-1z M0 18h1v1h-1z M2 18h1v1h-1z M3 18h1v1h-1z M4 18h1v1h-1z M6 18h1v1h-1z M8 18h1v1h-1z M9 18h1v1h-1z M11 18h1v1h-1z M14 18h1v1h-1z M16 18h1v1h-1z M18 18h1v1h-1z M0 19h1v1h-1z M6 19h1v1h-1z M9 19h1v1h-1z M11 19h1v1h-1z M14 19h1v1h-1z M15 19h1v1h-1z M19 19h1v1h-1z M20 19h1v1h-1z M0 20h1v1h-1z M1 20h1v1h-1z M2 20h1v1h-1z M3 20h1v1h-1z M4 20h1v1h-1z M5 20h1v1h-1z M6 20h1v1h-1z M8 20h1v1h-1z M9 20h1v1h-1z M10 20h1v1h-1z M11 20h1v1h-1z M13 20h1v1h-1z M15 20h1v1h-1z M16 20h1v1h-1z M18 20h1v1h-1z M19 20h1v1h-1z" fill="#1E2022"/></svg>
+      </div>
+    </div>
+  </div>
+  <p class="testo">Mandi il link o fai inquadrare il QR della palestra. <b>Appena entrano, trovano il tuo logo e i tuoi colori.</b></p>
+</section>
+
+<!-- 07 · Dietro le quinte -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Dietro le quinte</p>
+  <h1>Il nome sull’app è Talyon. La palestra che vedono è la tua.</h1>
+  <div class="linea"></div>
+  <p class="testo">Non pubblichiamo un’app diversa per ogni coach: è una sola app che si veste con i colori della tua palestra. <b>Così ogni funzione nuova arriva a tutti, senza costi in più.</b></p>
+</section>
+
+<!-- 08 · Chiusura -->
+<section class="slide" data-tipo="chiusura">
+  <h1>Il tuo metodo merita i tuoi colori.</h1>
+  <p class="testo">Logo e colori della palestra sono inclusi in ogni piano.</p>
+  <p class="invito">Seguici per non perdere l’anteprima gratuita.</p>
+</section>
+</carosello>

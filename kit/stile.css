@@ -1,0 +1,158 @@
+/* Talyon · caroselli Instagram · stile comune
+   Ogni <section class="slide"> è una slide 1080×1350.
+   La cornice (grana, angolari, logotipo, contatore, piede) la aggiunge cornice.js. */
+
+:root {
+  --rame: #D98E4A;
+  --rame-bordo: rgba(217, 142, 74, 0.4);
+  --testo-2: rgba(255, 255, 255, 0.8);
+  --testo-3: rgba(255, 255, 255, 0.62);
+  --difficile: #F3A398;
+  --facile: #B5D69A;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: #111; font-family: Saira, 'Arial Narrow', sans-serif; color: #FFFFFF; }
+body[data-sfondo="verde"] { background: #242B1D; }
+body[data-sfondo="grafite"] { background: #1E2022; }
+
+.slide {
+  width: 1080px; height: 1350px; position: relative; overflow: hidden;
+  margin: 0 0 40px 0;
+  font-family: Saira, 'Arial Narrow', sans-serif; color: #FFFFFF;
+}
+body[data-sfondo="verde"] .slide {
+  background:
+    radial-gradient(ellipse 90% 48% at 50% -6%, rgba(65, 80, 47, 0.7) 0%, rgba(65, 80, 47, 0) 72%),
+    radial-gradient(ellipse 95% 80% at 50% 42%, #29311F 0%, #242B1D 52%, #161A11 100%);
+}
+body[data-sfondo="grafite"] .slide {
+  background:
+    radial-gradient(ellipse 90% 48% at 50% -6%, rgba(84, 88, 92, 0.6) 0%, rgba(84, 88, 92, 0) 72%),
+    radial-gradient(ellipse 95% 80% at 50% 42%, #26282A 0%, #1E2022 52%, #111213 100%);
+}
+
+/* ---------- cornice ---------- */
+.slide .grana { position: absolute; left: 0; top: 0; opacity: 0.06; pointer-events: none; }
+.slide .angolo { position: absolute; width: 40px; height: 40px; }
+.slide .angolo.tl { left: 48px; top: 48px; border-top: 1.5px solid rgba(217,142,74,.7); border-left: 1.5px solid rgba(217,142,74,.7); }
+.slide .angolo.tr { right: 48px; top: 48px; border-top: 1.5px solid rgba(217,142,74,.7); border-right: 1.5px solid rgba(217,142,74,.7); }
+.slide .angolo.bl { left: 48px; bottom: 48px; border-bottom: 1.5px solid rgba(217,142,74,.7); border-left: 1.5px solid rgba(217,142,74,.7); }
+.slide .angolo.br { right: 48px; bottom: 48px; border-bottom: 1.5px solid rgba(217,142,74,.7); border-right: 1.5px solid rgba(217,142,74,.7); }
+.slide .testata { position: absolute; left: 96px; right: 96px; top: 92px; display: flex; align-items: center; justify-content: space-between; }
+.slide .contatore { font-size: 24px; font-weight: 500; letter-spacing: 0.2em; color: rgba(255,255,255,.6); }
+.slide .piede {
+  position: absolute; left: 96px; right: 96px; bottom: 84px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 24px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,.6);
+}
+.slide .piede .scorri { display: flex; align-items: center; gap: 16px; }
+
+/* ---------- area dei contenuti, per tipo di slide ---------- */
+.slide .contenuto { position: absolute; left: 96px; right: 96px; display: flex; flex-direction: column; }
+
+/* copertina: visual in alto (facoltativo), poi etichetta, titolo grande, sottotitolo */
+.slide[data-tipo="copertina"] .contenuto { top: 176px; bottom: 176px; justify-content: center; gap: 56px; }
+.slide[data-tipo="copertina"] .blocco-titolo { display: flex; flex-direction: column; gap: 24px; }
+.slide[data-tipo="copertina"] h1 { margin: 0; font-size: 104px; font-weight: 700; font-stretch: 82%; line-height: 0.96; letter-spacing: -0.01em; text-wrap: balance; }
+.slide[data-tipo="copertina"] .sottotitolo { margin: 0; font-size: 38px; font-weight: 400; line-height: 1.35; color: var(--testo-2); text-wrap: balance; }
+
+/* contenuto: etichetta + titolo, visual al centro, testo sotto */
+.slide[data-tipo="contenuto"] .contenuto { top: 196px; bottom: 176px; gap: 44px; }
+.slide[data-tipo="contenuto"] .blocco-titolo { display: flex; flex-direction: column; gap: 24px; }
+.slide[data-tipo="contenuto"] h1 { margin: 0; font-size: 84px; font-weight: 700; font-stretch: 82%; line-height: 1.0; letter-spacing: -0.005em; text-wrap: balance; }
+.slide[data-tipo="contenuto"] .visual { flex-grow: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+
+/* testo: solo parole, centrate in verticale (slide "manifesto") */
+.slide[data-tipo="testo"] .contenuto { top: 176px; bottom: 176px; justify-content: center; gap: 48px; }
+.slide[data-tipo="testo"] .blocco-titolo { display: flex; flex-direction: column; gap: 28px; }
+.slide[data-tipo="testo"] h1 { margin: 0; font-size: 96px; font-weight: 700; font-stretch: 82%; line-height: 0.98; letter-spacing: -0.01em; text-wrap: balance; }
+.slide[data-tipo="testo"] .testo { font-size: 38px; line-height: 1.4; }
+.slide[data-tipo="testo"] .linea { width: 120px; height: 1.5px; background: var(--rame); }
+
+/* chiusura: simbolo, titolo, testo, linea in rame, invito */
+.slide[data-tipo="chiusura"] .contenuto { top: 168px; bottom: 176px; align-items: center; justify-content: center; gap: 36px; text-align: center; }
+.slide[data-tipo="chiusura"] h1 { margin: 0; font-size: 96px; font-weight: 700; font-stretch: 82%; line-height: 1.0; letter-spacing: -0.005em; text-wrap: balance; }
+.slide[data-tipo="chiusura"] .testo { max-width: 840px; text-wrap: balance; }
+.slide[data-tipo="chiusura"] .linea { width: 120px; height: 1.5px; background: var(--rame); }
+.slide[data-tipo="chiusura"] .invito { font-size: 36px; font-weight: 600; line-height: 1.3; text-wrap: balance; }
+
+/* ---------- testi comuni ---------- */
+.etichetta {
+  display: flex; align-items: center; gap: 20px; margin: 0;
+  font-size: 26px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,.74);
+}
+.etichetta::before { content: ""; width: 48px; height: 1.5px; background: var(--rame); flex-shrink: 0; }
+.testo { margin: 0; font-size: 35px; font-weight: 400; line-height: 1.42; color: var(--testo-2); text-wrap: pretty; }
+.testo b, .sottotitolo b { font-weight: 600; color: #FFFFFF; }
+
+/* ---------- componenti per i visual ---------- */
+.card {
+  padding: 22px 30px; border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,.035) 100%);
+  border: 1px solid var(--rame-bordo); box-shadow: 0 18px 40px rgba(6,8,4,.35);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.card .nome { font-size: 36px; font-weight: 700; font-stretch: 85%; }
+.card .dettaglio { font-size: 30px; font-weight: 400; color: var(--testo-2); }
+.pila { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+
+.pannello {
+  width: 100%; padding: 28px 34px; border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.03) 100%);
+  border: 1px solid var(--rame-bordo); box-shadow: 0 24px 50px rgba(0,0,0,.4);
+  display: flex; flex-direction: column;
+}
+.pannello .intestazione { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 18px; font-size: 38px; font-weight: 700; font-stretch: 85%; }
+.pannello .intestazione small { font-size: 24px; font-weight: 500; font-stretch: 100%; color: rgba(255,255,255,.62); }
+.riga { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0; border-top: 1px solid rgba(255,255,255,.1); font-size: 32px; font-weight: 600; }
+.riga .sx { display: flex; align-items: center; gap: 22px; }
+.riga .piccolo { font-size: 22px; font-weight: 500; letter-spacing: 0.08em; color: rgba(255,255,255,.55); }
+.riga .valore { font-size: 28px; font-weight: 500; color: var(--testo-2); }
+
+.pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 20px; border-radius: 999px; font-size: 26px; font-weight: 600; white-space: nowrap; }
+.pill.neutra { background: rgba(255,255,255,.07); border: 1.5px solid rgba(255,255,255,.18); color: rgba(255,255,255,.8); font-weight: 500; }
+.pill.difficile { background: rgba(224,86,74,.18); border: 1.5px solid rgba(224,86,74,.65); color: #FFD9D4; }
+.pill.facile { background: rgba(140,190,110,.14); border: 1.5px solid rgba(150,200,120,.55); color: #E2F0D6; }
+.chip { display: inline-flex; padding: 14px 30px; border-radius: 999px; border: 1.5px solid rgba(217,142,74,.6); background: rgba(255,255,255,.08); font-size: 34px; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+
+/* frecce per "più difficile" (su, rosso tenue) e "più facile" (giù, verde salvia): sempre con il testo, mai il solo colore */
+.su, .giu { display: inline-block; width: 22px; height: 22px; flex-shrink: 0; background-repeat: no-repeat; background-size: contain; }
+.su { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M11 18V4M5 10L11 4L17 10' fill='none' stroke='%23F3A398' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.giu { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M11 4V18M5 12L11 18L17 12' fill='none' stroke='%23B5D69A' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+
+.nota { display: flex; align-items: flex-start; gap: 16px; padding: 14px 22px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1px solid rgba(217,142,74,.45); font-size: 30px; font-weight: 500; line-height: 1.3; }
+.nota::before { content: ""; width: 28px; height: 22px; margin-top: 6px; flex-shrink: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 22'%3E%3Cpath d='M2 20V12C2 6 5 2 11 1M16 20V12C16 6 19 2 25 1' fill='none' stroke='%23D98E4A' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat; }
+
+.numero-grande { font-size: 160px; font-weight: 700; font-stretch: 82%; line-height: 1; }
+.didascalia { font-size: 24px; font-weight: 500; color: rgba(255,255,255,.62); letter-spacing: 0.04em; }
+.fila { display: flex; gap: 24px; align-items: center; justify-content: center; width: 100%; }
+.colonna { display: flex; flex-direction: column; gap: 16px; }
+
+/* ---------- telefono stilizzato con i temi delle palestre ----------
+   <div class="telefono" data-tema="talyon|nero-giallo|chiaro-blu"> <div class="schermo"> ... </div> </div>
+   Dentro lo schermo: .app-barra (con .app-logo e nome), .app-saluto, .app-card, .app-riga, .app-bottone */
+.telefono { --t-larghezza: 280px; width: var(--t-larghezza); aspect-ratio: 9 / 18.5; padding: 9px; border-radius: 46px; background: #0B0C0B; border: 1.5px solid rgba(255,255,255,.16); box-shadow: 0 30px 60px rgba(0,0,0,.5); position: relative; flex-shrink: 0; }
+.telefono::before { content: ""; position: absolute; top: 20px; left: 50%; width: 76px; height: 20px; margin-left: -38px; border-radius: 12px; background: #000; z-index: 2; }
+.telefono .schermo { width: 100%; height: 100%; border-radius: 37px; overflow: hidden; padding: 52px 18px 18px; display: flex; flex-direction: column; gap: 14px; font-size: 17px; }
+.telefono[data-tema="talyon"] .schermo { background: radial-gradient(ellipse 120% 60% at 50% -10%, #3A4630 0%, #242B1D 55%, #161A11 100%); color: #FFFFFF; --t-sup: rgba(255,255,255,.08); --t-bordo: rgba(217,142,74,.35); --t-2: rgba(255,255,255,.66); --t-bottone: #F4F4EF; --t-bottone-testo: #242B1D; --t-accento: #F4F4EF; --t-logo: #303A26; --t-logo-testo: #FFFFFF; }
+.telefono[data-tema="nero-giallo"] .schermo { background: #0E0E0E; color: #FFFFFF; --t-sup: #1B1B1B; --t-bordo: #2A2A2A; --t-2: rgba(255,255,255,.62); --t-bottone: #FFD21F; --t-bottone-testo: #111111; --t-accento: #FFD21F; --t-logo: #FFD21F; --t-logo-testo: #111111; }
+.telefono[data-tema="chiaro-blu"] .schermo { background: #F2F5F9; color: #0F1E36; --t-sup: #FFFFFF; --t-bordo: #DCE3EC; --t-2: #5B6B82; --t-bottone: #2563EB; --t-bottone-testo: #FFFFFF; --t-accento: #2563EB; --t-logo: #2563EB; --t-logo-testo: #FFFFFF; }
+.app-barra { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 700; font-stretch: 90%; }
+.app-logo { width: 38px; height: 38px; border-radius: 50%; background: var(--t-logo); color: var(--t-logo-testo); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; letter-spacing: 0.02em; flex-shrink: 0; overflow: hidden; }
+.app-logo svg { width: 30px; height: 30px; }
+.app-saluto { font-size: 26px; font-weight: 700; font-stretch: 88%; line-height: 1.05; }
+.app-sotto { font-size: 15px; font-weight: 500; color: var(--t-2); letter-spacing: 0.06em; text-transform: uppercase; }
+.app-card { background: var(--t-sup); border: 1px solid var(--t-bordo); border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.app-card .titolo { font-size: 20px; font-weight: 700; font-stretch: 88%; }
+.app-card .dettaglio { font-size: 15px; color: var(--t-2); }
+.app-riga { display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 600; padding: 8px 0; border-top: 1px solid var(--t-bordo); }
+.app-spunta { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--t-2); flex-shrink: 0; }
+.app-spunta.fatta { background: var(--t-accento); border-color: var(--t-accento); }
+.app-bottone { margin-top: auto; background: var(--t-bottone); color: var(--t-bottone-testo); border-radius: 14px; padding: 13px; text-align: center; font-size: 17px; font-weight: 700; }
+.app-tab { display: flex; justify-content: space-around; padding-top: 10px; border-top: 1px solid var(--t-bordo); }
+.app-tab i { width: 22px; height: 22px; border-radius: 6px; background: var(--t-2); opacity: .5; display: block; }
+.app-tab i.attiva { background: var(--t-accento); opacity: 1; }
+.nome-tema { margin-top: 18px; text-align: center; font-size: 24px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,.74); }
