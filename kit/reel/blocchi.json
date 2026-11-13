@@ -1,0 +1,13 @@
+{
+  "funzioni": ["builder", "sessione", "seguire", "celle", "record", "inviti", "note", "emom", "import", "palestra"],
+  "scene_gancio": ["fogli", "notifiche", "griglia", "cronometro"],
+  "nomi_demo": ["Luca", "Marco R", "Marco", "Anna", "Teo", "Matteo", "Ferro Street", "Barra Alta"],
+  "blocchi": {
+    "pannello-righe": {"camera": "pannelli", "durata": 5.5, "dati": ["intestazione", "righe"]},
+    "elenco-contatore": {"camera": "pannelli", "durata": 6.0, "dati": ["numero", "etichetta", "righe"], "nomi": ["righe[*][0]"]},
+    "scheda-conferma": {"camera": "pannelli", "durata": 5.0, "dati": ["intestazione", "righe", "pulsante", "fatto"]},
+    "numero": {"camera": "pannelli", "durata": 3.5, "dati": ["numero", "etichetta"]},
+    "telefono-schermata": {"camera": "telefono", "durata": 5.5, "dati": ["da", "a"]},
+    "tre-telefoni": {"camera": "telefoni", "durata": 5.5, "dati": ["atleti"], "nomi": ["atleti[*].nome"]}
+  }
+}
