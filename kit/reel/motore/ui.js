@@ -253,15 +253,16 @@ function libero(fn) {
 // riquadro di vetro centrato in (cx, cy): lo stesso degli sprite delle scene
 function riquadro(x, key, w, h, cx, cy, draw) { drawSprite(x, key, w, h, draw || glass, cx, cy, 1, 1, 0, 0); }
 // disegna i tempi indicati su un canvas a parte e restituisce i testi e i riquadri fuori dall'area sicura
-function controllaAree(tempi, disegna) {
-  disegna = disegna || ESPORTA.disegna;
+function controllaAree(tempi, disegna, o) {
+  disegna = disegna || ESPORTA.disegna; o = o || {};
   const cv = H.layer(W, HH), x = cv.getContext('2d'), fuori = [];
   for (const t of tempi) {
     const R = []; R.canvas = cv; R.pausa = false; window.__AREE = R;
     try { x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, W, HH); disegna(x, t); } finally { window.__AREE = null; }
     for (const v of R) {
       const [x0, y0, x1, y1] = v.box;
-      if (x0 < SAFE.l - 0.5 || x1 > SAFE.r + 0.5 || y0 < SAFE.t - 0.5 || y1 > SAFE.b + 0.5) fuori.push({ t, testo: v.testo, box: v.box.map(Math.round) });
+      const esce = x0 < SAFE.l - 0.5 || x1 > SAFE.r + 0.5 || y0 < SAFE.t - 0.5 || y1 > SAFE.b + 0.5;
+      if (esce || o.tutti) fuori.push({ t, testo: v.testo, box: v.box.map(Math.round), fuori: esce });
     }
   }
   return fuori;

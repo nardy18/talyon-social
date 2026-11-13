@@ -3,6 +3,7 @@
 
 Uso:
     python3 kit/reel/strumenti/reel.py valida <copione.json>
+    python3 kit/reel/strumenti/reel.py controlla <copione.json> [cartella]
 
 Il copione descrive un reel (gancio, promessa, momenti, culmine, didascalia).
 Il motore in kit/reel/motore disegna il reel in Chrome (Playwright), come kit/genera.py fa per i caroselli.
@@ -248,6 +249,59 @@ def apri(copione_path, clip="chiave", copione=None) -> Sessione:
     return Sessione(copione_path, clip, copione)
 
 
+# ---------------- controllo a vista ----------------
+def _jpg(page, espressione, t):
+    dati = page.evaluate(espressione, t)
+    return base64.b64decode(dati.split(",", 1)[1])
+
+
+def controlla(percorso, uscita=None) -> int:
+    """Valida il copione, controlla le aree e crea controllo.jpg (un fotogramma al secondo) e chiave/ (un fotogramma
+    per sezione a grandezza piena). Restituisce 0 se è tutto pulito, 2 se c'è qualcosa da correggere."""
+    from PIL import Image, ImageDraw
+    import io
+    import math
+    percorso = pathlib.Path(percorso)
+    c = json.loads(percorso.read_text())
+    errori = valida_copione(c)
+    for x in errori:
+        print("copione:", x)
+    if errori:
+        return 2
+    if uscita is None:
+        uscita = percorso.parent if percorso.name == "copione.json" else CACHE / "controllo" / c["slug"]
+    uscita = pathlib.Path(uscita)
+    (uscita / "chiave").mkdir(parents=True, exist_ok=True)
+    for vecchio in (uscita / "chiave").glob("*.jpg"):
+        vecchio.unlink()
+    with apri(percorso, clip="tutti", copione=c) as s:
+        P = s.page.evaluate("TALYON.piano()")
+        tempi = [t for t, sez in zip(P["fotogrammiChiave"], P["sezioni"]) if sez["tipo"] != "chiusura"]
+        fuori = s.page.evaluate("(tt) => TALYON.controllaAree(tt)", tempi)
+        for v in fuori:
+            print(f"fuori area a {v['t']} s: «{v['testo']}» {v['box']}")
+        for i, t in enumerate(P["fotogrammiChiave"], start=1):
+            (uscita / "chiave" / f"{i:02d}-{t:05.2f}s.jpg").write_bytes(
+                _jpg(s.page, "(t) => window.frameJPEG(t, 0.9)", t))
+        quadri = []
+        for t in range(0, math.ceil(P["durata"])):
+            quadri.append((t, Image.open(io.BytesIO(_jpg(s.page, "(t) => { window.renderFrame(t, 0.25); return document.getElementById('c').toDataURL('image/jpeg', 0.85); }", t)))))
+        console = list(s.errori)
+    W, H, col = 270, 480, 10
+    righe = math.ceil(len(quadri) / col)
+    foglio = Image.new("RGB", (col * W, righe * (H + 24)), (18, 18, 18))
+    d = ImageDraw.Draw(foglio)
+    for i, (t, im) in enumerate(quadri):
+        x, y = (i % col) * W, (i // col) * (H + 24)
+        foglio.paste(im.convert("RGB").resize((W, H)), (x, y + 24))
+        d.text((x + 6, y + 6), f"{t} s", fill=(255, 200, 150))
+    foglio.save(uscita / "controllo.jpg", quality=85)
+    for x in console:
+        print("console:", x)
+    print(f"durata {P['durata']} s, colpo {P['colpo']} s, {len(P['sezioni'])} sezioni → {uscita}")
+    return 2 if (fuori or console) else 0
+
+
 # ---------------- riga di comando ----------------
 def main(argv):
     if len(argv) < 3:
@@ -260,6 +314,8 @@ def main(argv):
         if errori:
             sys.exit(2)
         print("copione valido")
+    elif comando == "controlla":
+        sys.exit(controlla(percorso, argv[3] if len(argv) > 3 else None))
     else:
         sys.exit(f"comando sconosciuto: {comando}\n{__doc__}")
 
