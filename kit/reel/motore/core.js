@@ -21,11 +21,28 @@ function setF(x, w, px, fam, track) {
   const tr = track != null ? track : (fam === FT && px >= 56 ? -px * 0.012 : 0);
   try { x.letterSpacing = tr.toFixed(2) + 'px'; } catch (e) { /* vecchi browser */ }
 }
+// ---------- registro delle aree (controllo delle zone coperte da Instagram) ----------
+// Attivo solo quando window.__AREE è un array con .canvas: registra i testi e i riquadri disegnati su quel canvas.
+function _box(x, pts) {
+  const m = x.getTransform(), q = pts.map(([a, b]) => [m.a * a + m.c * b + m.e, m.b * a + m.d * b + m.f]);
+  return [Math.min(...q.map((p) => p[0])), Math.min(...q.map((p) => p[1])), Math.max(...q.map((p) => p[0])), Math.max(...q.map((p) => p[1]))];
+}
+function registraTesto(x, s, X, Y, px, align) {
+  const R = window.__AREE;
+  if (!R || R.pausa || x.canvas !== R.canvas || x.globalAlpha < 0.05) return;
+  const w = x.measureText(s).width, x0 = align === 'center' ? X - w / 2 : align === 'right' ? X - w : X;
+  R.push({ testo: s, box: _box(x, [[x0, Y - px * 0.78], [x0 + w, Y - px * 0.78], [x0, Y + px * 0.22], [x0 + w, Y + px * 0.22]]) });
+}
+function registraRiquadro(x, nome, cx, cy, w, h, a) {
+  const R = window.__AREE;
+  if (!R || R.pausa || x.canvas !== R.canvas || x.globalAlpha * (a == null ? 1 : a) < 0.05) return;
+  R.push({ testo: 'riquadro ' + nome, box: _box(x, [[cx - w / 2, cy - h / 2], [cx + w / 2, cy - h / 2], [cx - w / 2, cy + h / 2], [cx + w / 2, cy + h / 2]]) });
+}
 function textW(x, s, w, px, fam, track) { x.save(); setF(x, w, px, fam, track); const v = x.measureText(s).width; x.restore(); return v; }
 function label(x, s, X, Y, w, px, fill, align, a, fam, track) {
   if (a != null && a <= 0.002) return;
   x.save(); setF(x, w, px, fam || FB, track); x.globalAlpha *= a == null ? 1 : a;
-  x.fillStyle = fill; x.textAlign = align || 'left'; x.textBaseline = 'alphabetic'; x.fillText(s, X, Y); x.restore();
+  x.fillStyle = fill; x.textAlign = align || 'left'; x.textBaseline = 'alphabetic'; registraTesto(x, s, X, Y, px, align || 'left'); x.fillText(s, X, Y); x.restore();
 }
 // etichetta maiuscola spaziata (come .etichetta dei caroselli)
 function caps(x, s, X, Y, px, fill, align, a) { label(x, s.toUpperCase(), X, Y, 600, px, fill || INK3, align, a, FB, px * 0.18); }
@@ -55,7 +72,7 @@ function wordsBlock(x, lines, X, Y, w, px, t, o) {
       if (a > 0.003) {
         x.save(); x.globalAlpha *= a; x.filter = b > 0.4 ? `blur(${b.toFixed(1)}px)` : 'none';
         x.fillStyle = it.fill || o.fill || INK; x.textAlign = 'left'; x.textBaseline = 'alphabetic';
-        x.fillText(it.s, cx, y + dy); x.restore();
+        registraTesto(x, it.s, cx, y + dy, px, 'left'); x.fillText(it.s, cx, y + dy); x.restore();
       }
       if (!it.stay) cx += it._w + sp;
     });
