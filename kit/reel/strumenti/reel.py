@@ -107,6 +107,10 @@ def valida_copione(c: dict) -> list:
     else:
         for i, m in enumerate(momenti, start=1):
             _controlla_blocco(f"momento {i}", m, e)
+            if isinstance(m, dict) and "durata" in m:
+                d = m["durata"]
+                if not isinstance(d, (int, float)) or not 4.5 <= d <= 7.5:
+                    e.append(f"momento {i}: durata da 4,5 a 7,5 secondi")
     _controlla_blocco("culmine", c.get("culmine"), e)
     d = c.get("didascalia")
     if not isinstance(d, str) or not d.strip():

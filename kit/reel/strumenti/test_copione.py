@@ -47,6 +47,13 @@ class TestCopione(unittest.TestCase):
         c["momenti"][0]["dati"]["righe"][0][0] = "Giuseppe"
         self.assertTrue(errori_con(c, "Giuseppe"))
 
+    def test_durata_momento(self):
+        c = copy.deepcopy(MINIMO)
+        c["momenti"][1]["durata"] = 6.5
+        self.assertEqual(reel.valida_copione(c), [])
+        c["momenti"][1]["durata"] = 9
+        self.assertTrue(errori_con(c, "durata"))
+
 
 class TestPagina(unittest.TestCase):
     def test_pagina_senza_node(self):
