@@ -8,6 +8,8 @@ const CAMERA = {
   pannelli: { cx: -470, cy: 1580, s: 1.45, yaw: 0.10, pitch: 0.12 },   // telefono fuori campo, riquadri in primo piano
   telefono: { cx: 540, cy: 1515, s: 1.30, yaw: 0.0, pitch: 0.12 },     // un telefono grande al centro
   telefoni: { cx: 540, cy: 1355, s: 1.06, yaw: 0.0, pitch: 0.12 },     // tre telefoni in fila
+  'telefono-destra': { cx: 705, cy: 1505, s: 1.62, yaw: -0.24, pitch: 0.12 },   // telefono a destra, richiami a sinistra (Reel 1, momento 4)
+  'telefono-sinistra': { cx: 375, cy: 1505, s: 1.62, yaw: 0.24, pitch: 0.12 },  // telefono a sinistra, richiami a destra
 };
 const CAMERA_LOGO = [
   { t: 2.8, cx: 540, cy: 1590, s: 1.18, yaw: -0.62, pitch: 0.10 },
@@ -92,6 +94,8 @@ function piano(c) {
     const prima = camera[camera.length - 1];
     camera.push(Object.assign({}, prima, { t: s.t0 }));
     camera.push(Object.assign({ t: r2(s.t0 + 0.85) }, CAMERA[s.camera]));
+    // nel culmine la camera continua ad avvicinarsi piano fino alla chiusura
+    if (s.tipo === 'culmine') camera.push(Object.assign({}, CAMERA[s.camera], { t: s.t1, s: r2(CAMERA[s.camera].s * 1.06) }));
   });
   camera.push(Object.assign({}, camera[camera.length - 1], { t: durata + 1 }));
   // eventi delle sezioni (quelli dei blocchi si aggiungono quando i blocchi ci sono)

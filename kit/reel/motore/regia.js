@@ -15,18 +15,21 @@ function eroeTex(t, A) {
     if (t > 6.25) { const g = c.getContext('2d'); g.fillStyle = `rgba(22,26,17,${sm(6.25, 6.95, t)})`; g.fillRect(0, 0, TEX_W, TEX_H); }
     return c;
   }
-  for (const s of A) { const b = BLOCCHI_JS[s.blocco]; if (b && b.schermo) return b.schermo(t - s.t0, parteDi(s).dati, s); }
+  for (const s of A) { const b = BLOCCHI_JS[s.blocco]; if (b && b.schermo) return b.schermo(t - s.t0, parteDi(s).dati, s, PP()); }
   return texIdle();
 }
-function eroeS(t, A) {
+const telefonico = (s) => /^telefon/.test(s.camera || '');
+function eroeS(t, A, P) {
   let ring = t >= 3.6 ? (sm(3.6, 4.05, t) * 0.9 + 0.9 * Math.exp(-(t - 3.6) * 3)) * (1 - 0.4 * sm(6.0, 7.0, t)) : 0;
   let spec = H.map(t, 4.1, 5.4, -0.25, 1.25), z = 0;
-  const tel = A.find((s) => s.camera === 'telefono' || s.camera === 'telefoni');
+  const tel = A.find(telefonico);
   if (tel) {
     const tl = t - tel.t0;
     spec = H.map(tl, 1.2, 2.2, -0.25, 1.25);
     ring = Math.max(ring, 0.5 * sm(0, 0.8, tl));
     if (tel.camera === 'telefoni') z = 0.12 * io(sm(0, 1.0, tl));
+    // il colpo del culmine accende l'anello del telefono
+    if (P && tel.tipo === 'culmine') ring += 1.1 * pulse(t, P.colpo);
   }
   return { x: 0, y: 0.1 + 0.012 * Math.sin(t * 1.2), z, ry: 0, tex: eroeTex(t, A), scrA: t < 6.25 ? sm(3.25, 4.15, t) : 1, ring, ringRot: t * 0.3, spec };
 }
@@ -53,7 +56,7 @@ function principale(x, t) {
   stage(x, c, L, t);
   const F = { t, c, L, P, eroe: null, lati: null };
   A.forEach((s) => { const b = BLOCCHI_JS[s.blocco]; if (b && b.scena) b.scena(x, F, t - s.t0, parteDi(s).dati, s); });
-  const S = eroeS(t, A), p = c.P(S.x, 1, S.z);
+  const S = eroeS(t, A, P), p = c.P(S.x, 1, S.z);
   if (p[0] > -c.unit * 0.8 && p[0] < W + c.unit * 0.8) F.eroe = phoneFull(x, c, S, L);
   A.forEach((s) => { const b = BLOCCHI_JS[s.blocco]; if (b) b.disegna(x, F, t - s.t0, parteDi(s).dati, s); });
   titoli(x, P, t);

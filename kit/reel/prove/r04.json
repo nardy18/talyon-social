@@ -1,0 +1,22 @@
+{
+  "n": 4,
+  "slug": "palestra-senza-campo",
+  "titolo": "Palestra senza campo",
+  "funzione": "sessione",
+  "palco": "grafite",
+  "musica": 1,
+  "gancio": {"scena": "cronometro", "righe": ["In palestra", "non c’è campo?"]},
+  "promessa": ["La scheda", "è sul telefono,", "anche senza rete."],
+  "momenti": [
+    {"titolo": ["Apri la scheda", "del giorno."], "blocco": "telefono-schermata",
+     "dati": {"da": "settimana:luca", "a": "sessione"}},
+    {"titolo": ["Le serie", "sono già scritte."], "blocco": "sessione-serie",
+     "dati": {"richiami": [["Serie già\ncompilate", "+52,5 kg: la top −10"]]}},
+    {"titolo": ["Un tocco,", "parte il recupero."], "blocco": "recupero",
+     "dati": {"richiami": [["Un tocco\ne confermi"], ["Il recupero\nparte da solo"]]}}
+  ],
+  "culmine": {"titolo": ["Anche senza campo,", "tutto registrato."], "blocco": "senza-rete",
+              "dati": {"richiami": [["Funziona anche\nsenza rete"]]}},
+  "didascalia": "App per coach di streetlifting e calisthenics: l'atleta si allena dal telefono, anche dove non c'è campo.\n\nLa scheda del giorno è già lì, con le serie compilate. Un tocco per confermare, il recupero parte da solo e tutto funziona anche senza rete, in cantina come in garage.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: il telefono di Luca apre la scheda del giorno, le serie del back-off si compilano da sole a +52,5 kg, un tocco conferma la serie e parte il recupero di 2 minuti. In alto compare «Senza rete» e la serie successiva si conferma lo stesso."
+}

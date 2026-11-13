@@ -8,6 +8,15 @@
     "scheda-conferma": {"camera": "pannelli", "durata": 5.0, "dati": ["intestazione", "righe", "pulsante", "fatto"]},
     "numero": {"camera": "pannelli", "durata": 3.5, "dati": ["numero", "etichetta"]},
     "telefono-schermata": {"camera": "telefono", "durata": 5.5, "dati": ["da", "a"]},
-    "tre-telefoni": {"camera": "telefoni", "durata": 5.5, "dati": ["atleti"], "nomi": ["atleti[*].nome"]}
+    "tre-telefoni": {"camera": "telefoni", "durata": 5.5, "dati": ["atleti"], "nomi": ["atleti[*].nome"]},
+    "builder-griglia": {"camera": "pannelli", "durata": 6.0, "dati": ["intestazione", "righe"]},
+    "duplica-settimana": {"camera": "pannelli", "durata": 5.5, "dati": ["settimana", "righe", "pulsante"]},
+    "assegna-modello": {"camera": "pannelli", "durata": 5.5, "dati": ["modello", "atleti"], "nomi": ["atleti[*]"]},
+    "sessione-serie": {"camera": "telefono-destra", "durata": 5.5, "dati": ["richiami"]},
+    "recupero": {"camera": "telefono-sinistra", "durata": 5.5, "dati": ["richiami"]},
+    "senza-rete": {"camera": "telefono-destra", "durata": 5.0, "dati": ["richiami"]},
+    "seguire-lista": {"camera": "pannelli", "durata": 5.5, "dati": ["titolo", "righe"], "nomi": ["righe[*][0]"]},
+    "celle-coach": {"camera": "pannelli", "durata": 5.5, "dati": ["atleta", "righe"], "nomi": ["atleta"]},
+    "cella-prescritto": {"camera": "pannelli", "durata": 5.0, "dati": ["esercizio", "celle", "prescritto", "fatto"], "nomi": ["atleta"]}
   }
 }

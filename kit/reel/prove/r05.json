@@ -1,0 +1,26 @@
+{
+  "n": 5,
+  "slug": "lunedi-mattina-chi-seguire",
+  "titolo": "Lunedì mattina, chi seguire",
+  "funzione": "seguire",
+  "palco": "verde",
+  "musica": 2,
+  "gancio": {"scena": "notifiche", "righe": ["Lunedì mattina,", "venti atleti.", "Da chi parti?"]},
+  "promessa": ["Talyon ti mostra", "chi seguire,", "tu decidi."],
+  "momenti": [
+    {"titolo": ["Chi seguire,", "in un elenco."], "blocco": "seguire-lista",
+     "dati": {"titolo": "Atleti da seguire",
+              "righe": [["Teo", "Non si allena da 6 giorni", "neutra", "Ultimo allenamento: martedì"],
+                        ["Anna", "Fatica più del previsto", "difficile", "RPE sopra il previsto"],
+                        ["Marco R", "Scheda in scadenza", "neutra", "Ultima settimana del blocco"]]}},
+    {"titolo": ["Vedi dove", "fatica."], "blocco": "pannello-righe",
+     "dati": {"intestazione": "Anna · ultima seduta", "righe": [["Trazioni 4 × 2 @8", "RPE 9,5"], ["Dip 4 × 3 @7", "RPE 9"]]}},
+    {"titolo": ["Scheda in scadenza?", "Assegni la nuova."], "blocco": "assegna-modello",
+     "dati": {"modello": "Forza · 4 settimane", "dettaglio": "Dal prossimo lunedì", "atleti": ["Marco R"],
+              "pulsante": "Assegna", "fatto": "Assegnata"}}
+  ],
+  "culmine": {"titolo": ["Su venti,", "tre da seguire."], "blocco": "numero",
+              "dati": {"numero": "3", "etichetta": "atleti da seguire oggi"}},
+  "didascalia": "App per coach di streetlifting e calisthenics: il lunedì mattina sai da chi partire.\n\nIn «Atleti da seguire» Talyon mette in fila chi non si allena da giorni, chi fatica più del previsto e chi ha la scheda in scadenza. Apri, guardi il motivo e decidi tu cosa fare.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: l'elenco «Atleti da seguire» con Teo che non si allena da 6 giorni, Anna che fatica più del previsto e Marco R con la scheda in scadenza. Poi l'ultima seduta di Anna e il nuovo modello assegnato a Marco R. Alla fine il numero 3: atleti da seguire oggi, su venti."
+}

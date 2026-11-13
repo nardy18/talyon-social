@@ -206,7 +206,7 @@ const GANCI = {
     x.strokeStyle = '#FFFFFF'; x.lineWidth = 12; x.lineCap = 'round';
     x.beginPath(); x.arc(cx, cy, R - 46, -PI / 2, -PI / 2 + 2 * PI * (1 - p)); x.stroke();
     x.restore();
-    label(x, `0:${String(sec % 60).padStart(2, '0')}`, cx, cy + 46, 700, 130, '#FFFFFF', 'center', a, FT);
+    label(x, sec === 60 ? '1:00' : `0:${String(sec).padStart(2, '0')}`, cx, cy + 46, 700, 130, '#FFFFFF', 'center', a, FT);
   },
 };
 
@@ -366,11 +366,14 @@ const BLOCCHI_JS = {
   },
 };
 
+// blocchi dei temi (schermate.js), con la stessa forma dei blocchi generici
+if (typeof BLOCCHI_TEMI !== 'undefined') Object.assign(BLOCCHI_JS, BLOCCHI_TEMI);
+
 // ---------- schermate per nome: 'vuoto', 'logo', 'settimana:<atleta>', 'home:<palestra>' e quelle dei temi ----------
-const SCHERMI = {
+const SCHERMI = Object.assign({
   vuoto: () => texIdle(),
   logo: () => texBoot(1),
-};
+}, typeof SCHERMI_TEMI !== 'undefined' ? SCHERMI_TEMI : {});
 function schermoNome(nome, tl, d) {
   const [tipo, arg] = String(nome || 'vuoto').split(':');
   if (tipo === 'settimana' && ATH[arg]) return weekTex('wk-' + arg, ATH[arg]);
