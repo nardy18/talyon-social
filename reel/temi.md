@@ -8,8 +8,8 @@ L'attività del sabato prende sempre il **primo tema «da fare»** dall'alto. Pe
 | N | Palco | Tema | Cosa mostra | Funzione | Gancio | Stato | Data | Note |
 |---|---|---|---|---|---|---|---|---|
 | 1 | — | Reel di lancio | scrivi la scheda, l'atleta la segue, tu vedi tutto | tutte | notifiche | programmato | mer 18 nov 2026 | fatto a mano |
-| 2 | — | Dal foglio a Talyon | import da Google Fogli, Excel e Google Drive: Talyon le legge, tu approvi | import | fogli | da fare | | fatto a mano, già pronto in `reel/R02-dal-foglio/` |
-| 3 | verde | Domenica sera, venti schede | la settimana scritta dal computer, duplicata e assegnata da un modello | builder | griglia | da fare | | prova del modello |
+| 2 | — | Dal foglio a Talyon | import da Google Fogli, Excel e Google Drive: Talyon le legge, tu approvi | import | fogli | in bozza | mer 25 nov 2026 | fatto a mano, in `reel/R02-dal-foglio/` |
+| 3 | verde | Domenica sera, venti schede | la settimana scritta dal computer, duplicata e assegnata da un modello | builder | griglia | in bozza | mer 2 dic 2026 | prova del modello, in `reel/R03-domenica-sera/` |
 | 4 | grafite | Palestra senza campo | l'allenamento sul telefono dell'atleta: serie già compilate, un tocco, recupero che parte da solo, anche senza rete | sessione | cronometro | da fare | | |
 | 5 | verde | Lunedì mattina, chi seguire | Atleti da seguire: chi non si allena, chi fatica, la scheda in scadenza | seguire | notifiche | da fare | | |
 | 6 | grafite | Più difficile, più facile | ogni serie colorata rispetto a quella scritta; tocchi la cella e rivedi il prescritto | celle | fogli | da fare | | |
