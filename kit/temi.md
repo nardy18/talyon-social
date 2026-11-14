@@ -10,8 +10,8 @@ Il 14 novembre sono stati tolti il C09 «Dal foglio a Talyon» (lo stesso tema �
 | N | Sfondo | Tema | Di cosa parla | Stato | Data | Note |
 |---|---|---|---|---|---|---|
 | 5 | verde | La tua palestra, non la nostra | logo e colori della palestra; una sola app che si veste con i colori del coach | programmato | mar 17 nov 2026 | carosello di prova del sistema; ok di Emanuele il 12 nov |
-| 6 | grafite | Opener: come sceglierle senza bruciarti la gara | la prima prova va chiusa anche in una giornata storta, la seconda costruisce il totale, la terza dipende dall'obiettivo; come prepararle nelle ultime settimane | in bozza | gio 19 nov 2026 | regole di gara solo se verificate sul regolamento ufficiale FinalRep; nessuna regola di gara citata (regolamento non consultabile il 14 nov) |
-| 7 | verde | Back-off dalla top single | perché il back-off si calcola dalla top del giorno e non dal massimale; esempio a −15 kg; in Talyon il carico si calcola da solo | in bozza | mar 24 nov 2026 | |
+| 6 | grafite | Opener: come sceglierle senza bruciarti la gara | la prima prova va chiusa anche in una giornata storta, la seconda costruisce il totale, la terza dipende dall'obiettivo; come prepararle nelle ultime settimane | programmato | gio 19 nov 2026 | regole di gara solo se verificate sul regolamento ufficiale FinalRep; nessuna regola di gara citata (regolamento non consultabile il 14 nov) |
+| 7 | verde | Back-off dalla top single | perché il back-off si calcola dalla top del giorno e non dal massimale; esempio a −15 kg; in Talyon il carico si calcola da solo | programmato | mar 24 nov 2026 | |
 | 8 | grafite | RPE e RIR: quanto ne avevi ancora | cosa sono, quando usarli, come scriverli in scheda, gli errori più comuni | da fare | | |
 | 10 | grafite | L'off-season dell'inverno | cosa programmare quando non ci sono gare: tecnica, punti deboli, volume, complementari | da fare | | |
 | 11 | verde | Il RIS spiegato semplice | l'indice che confronta carico e peso corporeo; perché un'atleta leggera può superare tanti uomini | da fare | | formula ed esempi solo da fonte ufficiale FinalRep |
