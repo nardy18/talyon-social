@@ -273,8 +273,8 @@ def controlla(percorso, uscita=None) -> int:
         print("copione:", x)
     if errori:
         return 2
-    if uscita is None:
-        uscita = percorso.parent if percorso.name == "copione.json" else CACHE / "controllo" / c["slug"]
+    if uscita is None:   # nella cache: nella cartella del reel va solo il foglio, quando si crea il video
+        uscita = CACHE / "controllo" / c["slug"]
     uscita = pathlib.Path(uscita)
     (uscita / "chiave").mkdir(parents=True, exist_ok=True)
     for vecchio in (uscita / "chiave").glob("*.jpg"):

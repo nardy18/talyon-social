@@ -1,31 +1,45 @@
-# Caroselli Talyon: istruzioni per l'attività settimanale
+# Post Talyon: istruzioni per l'attività settimanale
 
-Questo file è per Claude. Ogni sabato un'attività programmata prepara **due caroselli** Instagram per @talyon.app (uno per il martedì alle 18:30 e uno per il giovedì alle 9:00), li mette in **bozza** su Metricool e chiede l'ok a Emanuele. **Non si pubblica mai niente senza il suo ok.**
+Questo file è per Claude. Ogni sabato un'attività programmata prepara i post Instagram della settimana per @talyon.app: **due caroselli** (martedì alle 18:30 e giovedì alle 9:00) e **un reel** (mercoledì alle 18:30). Li mette in **bozza** su Metricool e chiede l'ok a Emanuele con un solo messaggio. **Non si pubblica mai niente senza il suo ok.**
+
+Il reel entra nel giro **da sabato 21 novembre 2026**: prima di quel giorno salta i passi del reel (6) e prepara solo i caroselli.
 
 Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codice. Ai messaggi per lui niente gergo tecnico (niente «repo», «commit», «SHA», «API»).
 
 ## I passi, in ordine
 
 1. **Ambiente.** Il repository `nardy18/talyon-social` deve essere nella sessione con permesso di scrittura (strumento `add_repo`, access `push`) e clonato. Lavora dentro la sua cartella.
-2. **Bozze in sospeso.** Leggi `kit/temi.md`. Se un carosello è ancora `in bozza` e la sua data è passata o manca meno di 2 giorni, ricordalo a Emanuele nel messaggio finale (non ripubblicarlo, non cancellarlo).
-3. **Temi.** Prendi i primi due temi `da fare` in `kit/temi.md`. Se ne resta uno solo, fai quello; se non ce ne sono più, non creare nulla. Quando ne restano meno di 4, proponi a Emanuele 6 temi nuovi nel messaggio finale (stesso stile della tabella).
-4. **Date.** I primi due spazi liberi tra **martedì alle 18:30** e **giovedì alle 9:00** (Europe/Rome) che cadono almeno 3 giorni dopo oggi e non hanno già un carosello, né in `kit/temi.md` né in Metricool (`getScheduledPosts`, brand `8059629`, fuso `Europe/Rome`, comprese le bozze). Il primo tema va nella data più vicina.
-   I passi da 5 a 10 si fanno per ogni carosello, uno dopo l'altro.
-5. **Scrivi il carosello** in `caroselli/CNN-slug/carosello.html` (NN a due cifre, slug corto in minuscolo con trattini, es. `C06-opener`). Parti da una copia di `caroselli/C05-la-tua-palestra/carosello.html` e rispetta le regole qui sotto. 8 slide: copertina, 6 slide di contenuto o di solo testo, chiusura.
-6. **Genera:** `python3 kit/genera.py caroselli/CNN-slug/carosello.html`.
-   - Se stampa elementi fuori dall'area, correggi e rigenera finché esce pulito.
-   - Poi **guarda tutte le slide** (strumento Read sui JPG, una per una): testi tagliati, sovrapposizioni, parole sole a capo, visual troppo vuoti o troppo pieni, contrasto. Correggi e rigenera. Questo controllo è obbligatorio.
-7. **Didascalia e alt.** Scrivi `didascalia.txt` (regole sotto) e `alt.txt` (una riga per slide, descrizione semplice per chi non vede l'immagine).
-8. **Salva su GitHub.** `git add` della cartella del carosello (non `pagina.html`, è ignorata) e commit su `main`, poi push. Annota lo SHA del commit (`git rev-parse HEAD`).
-9. **Bozza in Metricool** con `createScheduledPost` (dettagli sotto). Gli URL delle immagini usano lo SHA del commit, così non cambiano mai:
-   `https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/caroselli/CNN-slug/slide-01.jpg` … `slide-08.jpg`.
-10. **Aggiorna `kit/temi.md`:** stato `in bozza`, data. Commit e push.
-11. **Se hai lo strumento Projects (progetto Talyon):** aggiungi il carosello in fondo a `claude/caroselli-instagram.md` (titolo, sfondo, una riga per slide), leggendo prima il documento e riscrivendolo intero.
-12. **Avvisa Emanuele una volta sola per tutti e due** (modello sotto): per ogni carosello invia `anteprima.jpg` e le 8 slide con `SendUserFile` (status `proactive`), poi un solo messaggio con `SendUserMessage`.
-13. **Se Emanuele risponde in questa chat:**
-    - «ok» (o simile) vale per tutti e due; «ok al primo» o «ok al secondo» solo per quello. Per ogni carosello approvato: `getScheduledPosts` per trovare `id` e `uuid` della bozza, poi `updateScheduledPost` con lo stesso contenuto (gli URL delle immagini come li restituisce `getScheduledPosts`) e `draft: false`. Stato `programmato` in `kit/temi.md`, commit e push. Conferma con una frase.
-    - correzioni: modifica, rigenera, controlla le slide, commit e push, poi `updateScheduledPost` con i nuovi URL (nuovo SHA) e il resto invariato. Rimanda l'anteprima.
-    - «no» o «salta»: lascia la bozza così, segna `saltato` in `kit/temi.md` e chiedi se cancellarla da Metricool (cancella solo se lo dice lui).
+   Per il reel serve anche ffmpeg (`ffmpeg -version`); il browser è lo stesso del generatore dei caroselli. Se mancano e non si installano, i caroselli escono lo stesso, il reel no, e il messaggio lo dice.
+2. **Bozze in sospeso.** Leggi `kit/temi.md` e `reel/temi.md`. Se un post è ancora `in bozza` e la sua data è passata o manca meno di 2 giorni, ricordalo a Emanuele nel messaggio finale (non ripubblicarlo, non cancellarlo).
+3. **Dati.** `getAnalyticsDataByMetrics` (brand `8059629`, fuso `Europe/Rome`, ultimi 30 giorni):
+   - caroselli, rete `instagram`, connettore `posts`: IGPO02 (data e ora), IGPO04 (id), IGPO14 (copertura), IGPO15 (salvataggi), IGPO27 (condivisioni), IGPO28 (visualizzazioni), IGPO29 (nuovi follower);
+   - reel, connettore `reels`: IGRE02 (data e ora), IGRE04 (id), IGRE11 (copertura), IGRE12 (salvataggi), IGRE21 (condivisioni), IGRE23 (visualizzazioni), IGRE24 (durata media guardata), IGRE30 (chi scorre via nei primi 3 secondi).
+   Per ogni post uscito da almeno 3 giorni e non ancora registrato aggiungi una riga in fondo a `kit/risultati.md` (titolo e numero da `kit/temi.md` o `reel/temi.md`, confrontando data e ora). Le impression non si usano più: al loro posto ci sono le visualizzazioni.
+4. **Giorni.** Si comincia quando `kit/risultati.md` ha almeno **12 post**. Confronta i tre spazi tra loro e con le ore di maggiore attività del pubblico (`getBestTimeToPostByNetwork`, rete `instagram`). Se un altro giorno o un'altra ora è chiaramente migliore, proponilo nel messaggio: **al massimo una proposta al mese**, e si applica solo dopo il sì di Emanuele (allora aggiorna gli spazi in `kit/spazi.py`, in questo file e in `kit/temi.md` o `reel/temi.md`).
+5. **Caroselli.** Prendi i primi due temi `da fare` in `kit/temi.md`. Se ne resta uno solo, fai quello; se non ce ne sono più, non creare caroselli. Quando ne restano meno di 4, proponi a Emanuele 6 temi nuovi nel messaggio finale (stesso stile della tabella).
+   - **Date:** salva la risposta di `getScheduledPosts` (brand `8059629`, fuso `Europe/Rome`, da oggi a 60 giorni, comprese le bozze) in `/tmp/post.json` e lancia `python3 kit/spazi.py prossimo carosello <oggi AAAA-MM-GG> /tmp/post.json kit/temi.md --quanti 2`: sono i due spazi (martedì 18:30 e giovedì 9:00, almeno 3 giorni dopo oggi, liberi). Il primo tema va nella data più vicina.
+   - Poi, per ogni carosello, uno dopo l'altro, i passi da 5a a 5f.
+   - **5a. Scrivi il carosello** in `caroselli/CNN-slug/carosello.html` (NN a due cifre, slug corto in minuscolo con trattini, es. `C06-opener`). Parti da una copia di `caroselli/C05-la-tua-palestra/carosello.html` e rispetta le regole qui sotto. 8 slide: copertina, 6 slide di contenuto o di solo testo, chiusura.
+   - **5b. Genera:** `python3 kit/genera.py caroselli/CNN-slug/carosello.html`. Se stampa elementi fuori dall'area, correggi e rigenera finché esce pulito. Poi **guarda tutte le slide** (strumento Read sui JPG, una per una): testi tagliati, sovrapposizioni, parole sole a capo, visual troppo vuoti o troppo pieni, contrasto. Correggi e rigenera. Questo controllo è obbligatorio.
+   - **5c. Didascalia e alt.** Scrivi `didascalia.txt` (regole sotto) e `alt.txt` (una riga per slide, descrizione semplice per chi non vede l'immagine).
+   - **5d. Salva su GitHub.** `git add` della cartella del carosello (non `pagina.html`, è ignorata) e commit su `main`, poi push. Annota lo SHA del commit (`git rev-parse HEAD`).
+   - **5e. Bozza in Metricool** con `createScheduledPost` (dettagli sotto). Gli URL delle immagini usano lo SHA del commit, così non cambiano mai: `https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/caroselli/CNN-slug/slide-01.jpg` … `slide-08.jpg`.
+   - **5f. Aggiorna `kit/temi.md`:** stato `in bozza`, data. Commit e push. Se hai lo strumento Projects (progetto Talyon), aggiungi il carosello in fondo a `claude/caroselli-instagram.md` (titolo, sfondo, una riga per slide), leggendo prima il documento e riscrivendolo intero.
+6. **Reel** (da sabato 21 novembre 2026). Se uno di questi passi fallisce, vedi «Se il reel non viene bene» più sotto: i caroselli escono lo stesso.
+   - **6a. Tema e data.** Il primo tema `da fare` in `reel/temi.md`. La data: `python3 kit/spazi.py prossimo reel <oggi> /tmp/post.json reel/temi.md` (il primo mercoledì alle 18:30 libero, almeno 3 giorni dopo oggi). Se non ci sono temi `da fare`, niente reel.
+   - **6b. Copione** in `reel/RNN-slug/copione.json` (NN a due cifre, es. `R04-palestra-senza-campo`). Se esiste `kit/reel/prove/rNN.json` parti da quello (è già scritto e controllato); altrimenti scrivilo con le «Regole dei reel» qui sotto, partendo da un copione già fatto.
+   - **6c. Valida:** `python3 kit/reel/strumenti/reel.py valida reel/RNN-slug/copione.json`. Correggi finché stampa «copione valido».
+   - **6d. Controlla:** `python3 kit/reel/strumenti/reel.py controlla reel/RNN-slug/copione.json`. Deve finire senza testi fuori area e senza errori. Poi **guarda** `controllo.jpg` (un fotogramma al secondo) e i fotogrammi chiave a grandezza piena, nella cartella che il comando stampa: testi tagliati o sovrapposti, zone coperte da Instagram, parole troppo piccole, schermate vuote. Correggi il copione e ripeti. Questo controllo è obbligatorio.
+   - **6e. Video:** `python3 kit/reel/strumenti/reel.py video reel/RNN-slug` (3–5 minuti). Crea `talyon-reelNN.mp4`, `copertina.jpg`, `controllo.jpg` e `didascalia.txt` ed esce con 0 solo se formato, fotogrammi, audio, volume (−14 LUFS), picco e peso vanno bene. Poi guarda `copertina.jpg` e almeno 5 fotogrammi del video finito (es. `ffmpeg -ss 12 -i talyon-reelNN.mp4 -frames:v 1 f12.jpg`), compreso il culmine e la chiusura.
+   - **6f. Salva su GitHub:** `git add reel/RNN-slug` e commit su `main`, push, SHA.
+   - **6g. Bozza REEL in Metricool** (dettagli sotto), con il video e la copertina allo SHA del commit e il testo di `didascalia.txt`. Controlla con `getScheduledPosts` che la bozza ci sia, con la data giusta.
+   - **6h. Aggiorna `reel/temi.md`:** stato `in bozza`, data. Commit e push.
+7. **Un solo messaggio per tutti e tre i post** (modello sotto): per ogni carosello invia `anteprima.jpg` e le 8 slide, per il reel il video e la copertina, tutto con `SendUserFile` (status `proactive`); poi un solo messaggio con `SendUserMessage`.
+8. **Se Emanuele risponde in questa chat:**
+   - «ok» (o simile) vale per tutti e tre. Si può approvare anche solo una parte: «ok ai caroselli», «ok al reel», «ok al primo», «ok al secondo». Per ogni post approvato: `getScheduledPosts` per trovare `id` e `uuid` della bozza, poi `updateScheduledPost` con lo stesso contenuto (gli URL dei file come li restituisce `getScheduledPosts`) e `draft: false`. Stato `programmato` in `kit/temi.md` o `reel/temi.md`, commit e push. Conferma con una frase.
+   - Correzioni: modifica, rigenera, ricontrolla (per il reel rifai `controlla` e `video`), commit e push, poi `updateScheduledPost` con i nuovi URL (nuovo SHA) e il resto invariato. Rimanda l'anteprima o il video.
+   - «no» o «salta»: lascia la bozza così, segna `saltato` e chiedi se cancellarla da Metricool (cancella solo se lo dice lui).
+9. **Temi nuovi dei reel.** Quando in `reel/temi.md` restano meno di 3 temi `da fare`, proponi a Emanuele 4 temi nuovi nel messaggio (stesso stile della tabella). Usa solo funzioni dell'elenco «Esistono» e blocchi già nel modello (`kit/reel/blocchi.json`); se un tema ha bisogno di una schermata nuova, scrivilo.
 
 ## Regole dei contenuti
 
@@ -59,6 +73,16 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 - «Più difficile» = rosso tenue con freccia su; «più facile» = verde salvia con freccia giù. Sempre colore **e** icona e parola, mai il solo colore.
 - In copertina tieni i testi importanti lontani dai bordi laterali: nella griglia del profilo Instagram la miniatura è 3:4 e taglia i lati.
 - Varia i visual tra un carosello e l'altro (schede, grafici SVG semplici, liste, numeri grandi, telefoni): mai lo stesso visual in due slide di fila.
+
+## Regole dei reel
+
+- **Contenuti:** le stesse regole dei caroselli (funzioni che esistono, niente prezzi né urgenza finta, sempre in positivo, nessun confronto con altre app, solo dati demo). In più: niente persone, voci o volti; niente video fatti con l'IA (la chiusura usa sempre il video del simbolo, che c'è già); il reel non ripete un carosello della stessa settimana o di quella prima.
+- **Struttura:** 30–36 secondi, la calcola il modello dal copione. Gancio (0–2,8 s, scena e domanda in 2–3 righe), logo e promessa (in 2–3 pezzi), 3 o 4 momenti con un titolo di 2 righe e un blocco, il culmine (il colpo della musica), la chiusura con l'invito e @talyon.app.
+- **Copione** (`copione.json`): `n`, `slug`, `titolo`, `funzione`, `palco` (`verde` se N è dispari, `grafite` se è pari), `musica` (variante `(N + 1) % 4`), `gancio` (`scena` tra `fogli`, `notifiche`, `griglia`, `cronometro`, diversa dal reel prima; `righe`), `promessa`, `momenti` (3 o 4, ognuno con `titolo`, `blocco`, `dati` ed eventuale `durata` da 4,5 a 7,5 s), `culmine`, `didascalia`, `alt`. I blocchi e i loro dati sono in `kit/reel/blocchi.json`; gli esempi sono in `kit/reel/prove/`.
+- **Testi:** gancio fino a circa 17 caratteri per riga, promessa circa 19, titoli dei momenti circa 21. `reel.py controlla` segnala i testi che escono dall'area sicura (14% in alto, 35% in basso, 6% ai lati).
+- **Carichi di Luca** sempre sotto i suoi massimali (trazione +65, dip +90, muscle-up +20, squat 170), salvo un record nuovo proposto nel reel.
+- **Didascalia:** come per i caroselli (prima riga «App per coach di streetlifting e calisthenics: …», 2–3 frasi, l'invito, al massimo 5 hashtag: `#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout`).
+- **Musica ed effetti** si creano dal copione (niente file con diritti): non vanno scritti a mano.
 
 ## Fatti aggiornati (13 novembre 2026)
 
@@ -104,26 +128,49 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 }
 ```
 
-- `isAiGenerated` resta `false`: sono grafiche e testi, non foto o video realistici, e ogni carosello passa dal controllo di Emanuele prima di uscire.
+- **Bozza del reel** con `createScheduledPost`: stessi campi, `date` con l'ora dello spazio (`"AAAA-MM-GGT18:30:00+01:00"`) e in `info`:
+
+```json
+{
+  "autoPublish": true,
+  "draft": true,
+  "descendants": [],
+  "firstCommentText": "",
+  "hasNotReadNotes": false,
+  "media": ["https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/reel/RNN-slug/talyon-reelNN.mp4"],
+  "mediaAltText": [],
+  "providers": [{"network": "instagram"}],
+  "publicationDate": {"dateTime": "AAAA-MM-GGT18:30:00", "timezone": "Europe/Rome"},
+  "shortener": false,
+  "smartLinkData": {"ids": []},
+  "text": "testo di didascalia.txt",
+  "videoThumbnailUrl": "https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/reel/RNN-slug/copertina.jpg",
+  "instagramData": {"type": "REEL", "collaborators": [], "showReelOnFeed": true, "isAiGenerated": false}
+}
+```
+
+- `isAiGenerated` resta `false`: sono grafiche, testi e animazioni stilizzate, non foto o video realistici, e ogni post passa dal controllo di Emanuele prima di uscire.
 - Non toccare mai altri post in Metricool. Non cancellare niente senza che Emanuele lo chieda.
 
 ## Messaggio per Emanuele (modello)
 
-> Ciao Emanuele! Sono pronti i due caroselli della settimana:
-> 1. **«Titolo»** (n. N, sfondo verde/grafite): esce martedì GG mese alle 18:30.
-> 2. **«Titolo»** (n. N, sfondo verde/grafite): esce giovedì GG mese alle 9:00.
+> Ciao Emanuele! Sono pronti i post della settimana:
+> 1. **«Titolo»** (carosello n. N, sfondo verde/grafite): esce martedì GG mese alle 18:30.
+> 2. **«Titolo»** (reel n. N): esce mercoledì GG mese alle 18:30.
+> 3. **«Titolo»** (carosello n. N, sfondo verde/grafite): esce giovedì GG mese alle 9:00.
 >
 > Escono solo dopo il tuo ok.
-> - Ti vanno bene? Rispondimi «ok» qui (oppure «ok al primo» / «ok al secondo»), o apri Metricool: trovi le bozze nel calendario, premi Programma.
+> - Ti vanno bene? Rispondimi «ok» qui (oppure «ok ai caroselli», «ok al reel», «ok al primo», «ok al secondo»), o apri Metricool: trovi le bozze nel calendario, premi Programma.
 > - Vuoi cambiare qualcosa? Scrivimi cosa e lo sistemo.
 >
-> Didascalie: (testo del primo) · (testo del secondo)
+> Didascalie: (carosello del martedì) · (reel) · (carosello del giovedì)
 
-Aggiungi una riga se ci sono bozze vecchie ancora da approvare, o se hai cambiato o saltato un tema e perché.
+Aggiungi una riga se ci sono bozze vecchie ancora da approvare, se hai cambiato o saltato un tema e perché, se proponi un cambio di giorno o temi nuovi. Prima del 21 novembre il messaggio parla solo dei due caroselli.
 
 ## Se qualcosa va storto
 
 - **Push rifiutato** (manca il permesso su GitHub): manda comunque anteprima, slide e didascalia a Emanuele. Spiegagli in parole semplici che su github.com/settings/installations, alla voce Claude, va aggiunto il repository talyon-social. Non creare la bozza.
 - **Metricool non risponde o dà errore:** manda slide e didascalia, scrivi che la bozza la crei appena funziona (o che può caricarla lui).
 - **Il font non si carica o la generazione fallisce:** non pubblicare immagini sbagliate; scrivi a Emanuele cosa è successo in una frase.
+- **Se il reel non viene bene** (copione che non passa i controlli, video che non esce o non passa la verifica finale, errore del browser o di ffmpeg): i caroselli escono lo stesso. Non creare bozze del reel a metà; se una bozza del reel è stata creata e poi qualcosa è andato storto, lasciala e dillo. Nel messaggio scrivi in una frase cosa è successo; il tema resta `da fare`.
 - **Dubbi su un fatto:** nel dubbio non scriverlo. Meglio un carosello più semplice che un errore davanti ai coach.
