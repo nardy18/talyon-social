@@ -59,6 +59,91 @@ def _valori(dati, percorso):
     return correnti
 
 
+def _testo(v) -> bool:
+    return isinstance(v, str) and v.strip() != ""
+
+
+def _intero(v):
+    """Il numero intero scritto in v (anche come testo di sole cifre), altrimenti None."""
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, int):
+        return v
+    if isinstance(v, str) and v.strip().isdigit():
+        return int(v)
+    return None
+
+
+def _quanti(lim, cosa):
+    a, b = lim
+    return f"da {a} a {b} {cosa}" if a != b else f"{a} {cosa}"
+
+
+def _controlla_forma(dove, campo, v, forma, dati, errori):
+    """Un errore per ogni dato che il blocco non sa disegnare (forme in blocchi.json, voce «forme»)."""
+    nome = f"{dove}: «{campo}»"
+    if forma in ("testo", "testo?"):
+        if not _testo(v):
+            errori.append(f"{nome} deve essere un testo non vuoto")
+    elif forma == "valore":
+        if not (_testo(v) or (isinstance(v, int) and not isinstance(v, bool))):
+            errori.append(f"{nome} deve essere un testo o un numero")
+    elif forma == "schermo":
+        if v not in BLOCCHI["schermi"]:
+            errori.append(f"{nome}: «{v}» non è una schermata del modello ({', '.join(BLOCCHI['schermi'])})")
+    elif forma == "palestra":
+        if v not in BLOCCHI["palestre"]:
+            errori.append(f"{nome}: la palestra deve essere {' o '.join(BLOCCHI['palestre'])}")
+    elif "intero" in forma:
+        a, b = forma["intero"]
+        n = _intero(v)
+        if n is None or not a <= n <= b:
+            errori.append(f"{nome} deve essere un numero intero da {a} a {b}")
+    elif "schema" in forma:
+        if not (_testo(v) and re.fullmatch(forma["schema"], v)):
+            errori.append(f"{nome} deve essere scritto come «{forma['esempio']}»")
+    elif "indice" in forma:
+        lista = dati.get(forma["indice"])
+        n = _intero(v)
+        if n is None or not isinstance(lista, list) or not 0 <= n < len(lista):
+            errori.append(f"{nome} deve indicare una delle «{forma['indice']}» (da 0)")
+    elif "lista" in forma:
+        a, b = forma["lista"]
+        if not (isinstance(v, list) and a <= len(v) <= b and all(_testo(x) for x in v)):
+            errori.append(f"{nome} deve essere un elenco di {_quanti(forma['lista'], 'testi')}")
+    elif "righe" in forma:
+        a, b = forma["righe"]
+        c0, c1 = forma["celle"]
+        if not (isinstance(v, list) and all(isinstance(r, list) for r in v)):
+            errori.append(f"{nome} deve essere un elenco di righe, ognuna un elenco di testi (es. [[\"Trazioni\", \"+40 kg\"]])")
+            return
+        if not a <= len(v) <= b:
+            errori.append(f"{nome}: {_quanti(forma['righe'], 'righe')}, non {len(v)}")
+        for i, r in enumerate(v, start=1):
+            if not (c0 <= len(r) <= c1 and all(_testo(x) for x in r)):
+                errori.append(f"{nome}, riga {i}: {_quanti(forma['celle'], 'testi')}, non vuoti")
+            k = forma.get("stato")
+            if k is not None and len(r) > k and r[k] not in BLOCCHI["stati"]:
+                errori.append(f"{nome}, riga {i}: «{r[k]}» non è uno stato ({', '.join(BLOCCHI['stati'])})")
+    elif "richiami" in forma:
+        a, b = forma["richiami"]
+        buoni = isinstance(v, list) and all(_testo(r) or (isinstance(r, list) and 1 <= len(r) <= 2 and all(_testo(x) for x in r)) for r in v)
+        if not buoni or not a <= len(v) <= b:
+            errori.append(f"{nome}: {_quanti(forma['richiami'], 'richiami')}, ognuno un testo o [testo, sotto]")
+    elif "telefoni" in forma:
+        n = forma["telefoni"]
+        if not (isinstance(v, list) and len(v) == n and all(isinstance(a, dict) for a in v)):
+            errori.append(f"{nome}: servono {n} atleti, ognuno con nome e schermo")
+            return
+        for i, a in enumerate(v, start=1):
+            if not _testo(a.get("nome")):
+                errori.append(f"{nome}, atleta {i}: manca il nome")
+            if a.get("schermo") not in BLOCCHI["schermi"]:
+                errori.append(f"{nome}, atleta {i}: «{a.get('schermo')}» non è una schermata del modello")
+            if "sotto" in a and not _testo(a["sotto"]):
+                errori.append(f"{nome}, atleta {i}: «sotto» deve essere un testo")
+
+
 def _controlla_blocco(dove, parte, errori):
     if not isinstance(parte, dict):
         errori.append(f"{dove}: manca")
@@ -77,6 +162,12 @@ def _controlla_blocco(dove, parte, errori):
     for campo in info.get("dati", []):
         if campo not in dati:
             errori.append(f"{dove}: nei dati manca «{campo}»")
+    forma = info.get("forma", {})
+    for campo, v in dati.items():
+        if campo not in forma:
+            errori.append(f"{dove}: il blocco «{nome}» non usa «{campo}» (usa {', '.join(forma)})")
+        else:
+            _controlla_forma(dove, campo, v, forma[campo], dati, errori)
     for percorso in info.get("nomi", []):
         for v in _valori(dati, percorso):
             if v not in BLOCCHI["nomi_demo"]:

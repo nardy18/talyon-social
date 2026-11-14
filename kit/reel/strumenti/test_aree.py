@@ -36,6 +36,12 @@ class TestAree(unittest.TestCase):
             TALYON.testo.label(ctx, 'Gara marzo – copia.xlsx', 900, 1700, 600, 30, '#fff')))""")
         self.assertEqual(fuori, [])
 
+    def test_schermate_del_catalogo(self):
+        """Ogni schermata del catalogo (blocchi.json) esiste nel motore, e ogni schermata del motore è nel catalogo."""
+        nomi = reel.BLOCCHI["schermi"]
+        self.assertEqual(self.s.page.evaluate("(nn) => nn.filter((n) => TALYON.schermate.vuota(n))", nomi), [])
+        self.assertEqual(sorted(set(self.s.page.evaluate("TALYON.schermate.motore()")) - set(nomi)), [])
+
     def test_riquadro_fuori_segnalato(self):
         fuori = self.s.page.evaluate("""() => TALYON.controllaAree([2], (ctx, t) =>
             TALYON.riquadro(ctx, 'prova', 950, 300, 540, 1300))""")

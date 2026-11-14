@@ -381,3 +381,10 @@ function schermoNome(nome, tl, d) {
   const f = SCHERMI[tipo];
   return f ? f(tl, d, arg) : texIdle();
 }
+// per il controllo del catalogo (blocchi.json, voce «schermi»): le schermate che il motore sa disegnare,
+// e se un nome darebbe il telefono vuoto
+ESPORTA.schermate = {
+  motore: () => Object.keys(SCHERMI).concat(Object.keys(ATH).map((k) => 'settimana:' + k),
+    Object.keys(THEME).filter((k) => THEME[k].name).map((k) => 'home:' + k)),
+  vuota: (nome) => nome !== 'vuoto' && schermoNome(nome, 1, {}) === texIdle(),
+};
