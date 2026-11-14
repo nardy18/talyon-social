@@ -232,6 +232,8 @@ function rigaRiquadro(x, X0, y, w, sx, dx, a) {
 const KIND = { rame: 'rame', difficile: 'difficile', facile: 'facile', neutra: 'neutra' };
 // pulsante chiaro → riquadro salvia con la spunta dopo il tocco
 function pulsante(x, X0, y, w, h, testo, fatto, ok) {
+  entra(x, testo, 700, 40, FB, w - 48, 'non entra nel pulsante');
+  entra(x, fatto, 700, 36, FB, w - 96, 'non entra nel pulsante');
   if (ok) {
     rrect(x, X0, y, w, h, 26, 'rgba(140,190,110,0.16)', 'rgba(150,200,120,0.60)', 2);
     const tw = textW(x, fatto, 700, 36, FB), x0 = X0 + w / 2 - (tw + 48) / 2;

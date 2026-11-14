@@ -375,7 +375,10 @@ def controlla(percorso, uscita=None) -> int:
         tempi = [t for t, sez in zip(P["fotogrammiChiave"], P["sezioni"]) if sez["tipo"] != "chiusura"]
         fuori = s.page.evaluate("(tt) => TALYON.controllaAree(tt)", tempi)
         for v in fuori:
-            print(f"fuori area a {v['t']} s: «{v['testo']}» {v['box']}")
+            if v.get("motivo"):     # testo che esce dal riquadro o dalla schermata, o che ne copre un altro
+                print(f"a {v['t']} s: «{v['testo']}» {v['motivo']}")
+            else:
+                print(f"fuori area a {v['t']} s: «{v['testo']}» {v['box']}")
         for i, t in enumerate(P["fotogrammiChiave"], start=1):
             (uscita / "chiave" / f"{i:02d}-{t:05.2f}s.jpg").write_bytes(
                 _jpg(s.page, "(t) => window.frameJPEG(t, 0.9)", t))

@@ -269,6 +269,8 @@ const BLOCCHI_TEMI = {
         label(x, iniziali(nome), X0 + 74, y + 66, 700, 26, '#FFFFFF', 'center', 1, FB);
         label(x, nome, X0 + 132, y + 70, 700, 46, '#FFFFFF', 'left', 1, FT);
         const bw = 250, bx = X0 + W0 - 40 - bw;
+        entra(x, d.pulsante || 'Assegna', 700, 30, FB, bw - 32, 'non entra nel pulsante');
+        entra(x, d.fatto || 'Assegnata', 700, 30, FB, bw - 82, 'non entra nel pulsante');
         if (ok) {
           rrect(x, bx, y + 20, bw, 68, 34, 'rgba(140,190,110,0.16)', 'rgba(150,200,120,0.60)', 2);
           icCheck(x, bx + 40, y + 54, 22, EASY, 4);
@@ -368,6 +370,8 @@ const BLOCCHI_TEMI = {
         x.save(); x.globalAlpha *= a;
         label(x, r[0], X0 + 36, T0 + 112 + i * RH + 34, 600, 32, INK2, 'left', 1, FB);
         if (r[1]) label(x, r[1], X0 + 36, T0 + 112 + i * RH + 66, 500, 26, INK3, 'left', 1, FB);
+        entra(x, r[0], 600, 32, FB, 236 - 36 - 16, 'non entra prima delle celle');
+        entra(x, r[1], 500, 26, FB, 236 - 36 - 16, 'non entra prima delle celle');
         r.slice(2, 6).forEach((v, k) => {
           const c = cel(i, k), q = leggiCella(v), tc = q.k === 'h' ? 1.9 : 2.4;
           disegnaCella(x, c.x, c.y, c.w, c.h, q.s, q.k, eo((tl - tc) / 0.35), 30, Math.exp(-Math.max(0, tl - tc) * 1.6) * sm(tc - 0.05, tc + 0.2, tl));
@@ -402,6 +406,8 @@ const BLOCCHI_TEMI = {
       if (d.atleta) caps(x, 'Seduta di ' + d.atleta, X0 + 40, T0 + 58, 24, INK3);
       label(x, d.esercizio, X0 + 40, T0 + 136, 700, 52, '#FFFFFF', 'left', 1, FT);
       if (d.carico) label(x, d.carico, X0 + 40, T0 + 184, 500, 32, INK3, 'left', 1, FB);
+      entra(x, d.esercizio, 700, 52, FT, cx0 - X0 - 56, 'non entra prima delle celle');
+      entra(x, d.carico, 500, 32, FB, cx0 - X0 - 56, 'non entra prima delle celle');
       celle.forEach((q, k) => {
         const c = cel(k);
         disegnaCella(x, c.x, c.y, c.w, c.h, q.s, q.k, eo((tl - 0.6 - k * 0.1) / 0.35), 38, 0);
@@ -454,6 +460,8 @@ function aCapo(g, s, w, px, peso, fam) {
 // pulsante piccolo: chiaro prima del tocco, salvia con la spunta dopo
 function pulsantino(x, X, Y, w, h, testo, fatto, ok, px) {
   px = px || 30;
+  entra(x, testo, 700, px, FB, w - 40, 'non entra nel pulsante');
+  entra(x, fatto, 700, px, FB, w - 80, 'non entra nel pulsante');
   if (ok) {
     rrect(x, X, Y, w, h, h / 2, 'rgba(140,190,110,0.16)', 'rgba(150,200,120,0.60)', 2);
     const tw = textW(x, fatto, 700, px, FB), x0 = X + w / 2 - (tw + 40) / 2;
@@ -514,10 +522,11 @@ function texRecordProposto(st, d) {
 
 // ---------- R08 · le schermate della palestra (link, richiesta, scheda pronta) ----------
 const PALC = {};
+CACHE_DISEGNI.push(PALC);
 function texPalestra(stato, chiave, atleta) {
   const k = `pal-${stato}-${chiave}-${atleta || ''}`;
   if (PALC[k]) return PALC[k];
-  const c = H.layer(TEX_W, TEX_H), g = c.getContext('2d'), th = THEME[chiave] || THEME.fs;
+  const c = superficie(H.layer(TEX_W, TEX_H), 'schermata', [0, 0, TEX_W, TEX_H], 8), g = c.getContext('2d'), th = THEME[chiave] || THEME.fs;
   scrBg(g, th);
   marchio(g, th, 92, 172, 48);
   label(g, th.name, 162, 186, 700, 46, th.text, 'left', 1, FT);
@@ -602,7 +611,8 @@ function texEsercizio(st) {
   label(g, N.esercizio, 44, 268, 700, 70, '#FFFFFF', 'left', 1, FT);
   label(g, N.dettaglio, 44, 318, 500, 34, th.t2, 'left', 1, FB);
   // la nota in evidenza, in cima all'esercizio
-  const righe = aCapo(g, N.nota, TEX_W - 176, 36, 600, FB).slice(0, 3), nh = 96 + righe.length * 46;
+  const tutte = aCapo(g, N.nota, TEX_W - 176, 36, 600, FB), righe = tutte.slice(0, 3), nh = 96 + righe.length * 46;
+  if (tutte.length > 3) segnala(N.nota, 'è troppo lunga: sul telefono si vedono solo 3 righe');
   rrect(g, 44, NOTA_Y, TEX_W - 88, nh, 30, 'rgba(217,142,74,0.12)', `rgba(${CUc},${0.6 + 0.35 * st.glow})`, 2.5);
   if (st.glow > 0.02) { g.save(); g.globalAlpha = st.glow; g.strokeStyle = `rgba(${CUc},0.95)`; g.lineWidth = 3; g.shadowColor = `rgba(${CUc},0.9)`; g.shadowBlur = 26; g.beginPath(); g.roundRect(44, NOTA_Y, TEX_W - 88, nh, 30); g.stroke(); g.restore(); }
   icPin(g, 92, NOTA_Y + 50, 34, `rgb(${CUc})`);
@@ -767,7 +777,8 @@ Object.assign(BLOCCHI_TEMI, {
   'nota-scrivi': {
     disegna(x, F, tl, d, s) {
       const m = moto(tl, s); if (m.a <= 0.003) return;
-      const W0 = 950, X0 = 65 + m.dx, righe = aCapo(SCR, d.nota, W0 - 160, 40, 600, FB).slice(0, 3);
+      const W0 = 950, X0 = 65 + m.dx, tutte = aCapo(SCR, d.nota, W0 - 160, 40, 600, FB), righe = tutte.slice(0, 3);
+      if (tutte.length > 3) segnala(d.nota, 'è troppo lunga: si vedono solo 3 righe');
       const nh = 60 + righe.length * 52, h = 300 + nh + 40, T0 = topRiq(h);
       drawSprite(x, 'ns' + s.t0, W0, h, (g, w, hh) => { glass(g, w, hh, { r: 34 }); g.fillStyle = 'rgba(255,255,255,0.09)'; g.fillRect(40, 214, w - 80, 1.5); }, 540 + m.dx, T0 + h / 2, 1, m.a, 0, m.blur);
       x.save(); x.globalAlpha *= m.a;

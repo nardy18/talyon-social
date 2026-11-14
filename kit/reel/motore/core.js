@@ -27,11 +27,42 @@ function _box(x, pts) {
   const m = x.getTransform(), q = pts.map(([a, b]) => [m.a * a + m.c * b + m.e, m.b * a + m.d * b + m.f]);
   return [Math.min(...q.map((p) => p[0])), Math.min(...q.map((p) => p[1])), Math.max(...q.map((p) => p[0])), Math.max(...q.map((p) => p[1]))];
 }
+// Testi sugli sprite e sulle schermate del telefono (canvas con .__superficie): devono restare dentro la superficie,
+// con un margine, e non coprirsi tra loro. I problemi vanno in R.problemi.
+// cache dei disegni fatti una volta sola (sprite, schermate): il controllo le svuota, così ogni testo si ridisegna e si registra
+const CACHE_DISEGNI = [];
+const SUPERFICI = {
+  riquadro: { esce: 'esce dal riquadro', dentro: 'nel riquadro' },
+  schermata: { esce: 'esce dalla schermata del telefono', dentro: 'nella schermata del telefono' },
+};
+function superficie(c, tipo, limite, margine) { c.__superficie = Object.assign({ limite, margine, testi: [] }, SUPERFICI[tipo]); return c; }
+// due testi si coprono se l'inchiostro si sovrappone per più di un quarto dell'altezza (righe vicine e discendenti non contano)
+function _sovrapposti(a, b) {
+  const ix = Math.min(a[2], b[2]) - Math.max(a[0], b[0]), iy = Math.min(a[3], b[3]) - Math.max(a[1], b[1]);
+  return ix > 2 && iy > 0.25 * Math.min(a[3] - a[1], b[3] - b[1]);
+}
+const _stessoPosto = (a, b) => Math.abs(a[0] - b[0]) < 2 && Math.abs(a[1] - b[1]) < 2;
 function registraTesto(x, s, X, Y, px, align) {
   const R = window.__AREE;
-  if (!R || R.pausa || x.canvas !== R.canvas || x.globalAlpha < 0.05) return;
-  const w = x.measureText(s).width, x0 = align === 'center' ? X - w / 2 : align === 'right' ? X - w : X;
-  R.push({ testo: s, box: _box(x, [[x0, Y - px * 0.78], [x0 + w, Y - px * 0.78], [x0, Y + px * 0.22], [x0 + w, Y + px * 0.22]]) });
+  if (!R || R.pausa || x.globalAlpha < 0.05) return;
+  s = String(s);
+  const m = x.measureText(s), w = m.width, x0 = align === 'center' ? X - w / 2 : align === 'right' ? X - w : X;
+  // l'inchiostro vero del testo (l'allineamento è già nei valori di measureText)
+  const L = X - m.actualBoundingBoxLeft, Rr = X + m.actualBoundingBoxRight, T = Y - m.actualBoundingBoxAscent, B = Y + m.actualBoundingBoxDescent;
+  const ink = _box(x, [[L, T], [Rr, T], [L, B], [Rr, B]]);
+  if (x.canvas === R.canvas) {
+    R.push({ testo: s, ink, box: _box(x, [[x0, Y - px * 0.78], [x0 + w, Y - px * 0.78], [x0, Y + px * 0.22], [x0 + w, Y + px * 0.22]]) });
+    return;
+  }
+  const S = x.canvas.__superficie;
+  if (!S || !R.problemi || w <= 0) return;
+  const [l, t, r, b] = S.limite, mg = S.margine;
+  if (ink[0] < l + mg || ink[2] > r - mg || ink[1] < t + mg || ink[3] > b - mg) R.problemi.push({ t: R.t, testo: s, motivo: S.esce });
+  for (const o of S.testi) {
+    if (o.testo === s && _stessoPosto(o.ink, ink)) continue;
+    if (_sovrapposti(o.ink, ink)) R.problemi.push({ t: R.t, testo: s, motivo: `si sovrappone a «${o.testo}» ${S.dentro}` });
+  }
+  S.testi.push({ testo: s, ink });
 }
 function registraRiquadro(x, nome, cx, cy, w, h, a) {
   const R = window.__AREE;
@@ -39,6 +70,12 @@ function registraRiquadro(x, nome, cx, cy, w, h, a) {
   R.push({ testo: 'riquadro ' + nome, box: _box(x, [[cx - w / 2, cy - h / 2], [cx + w / 2, cy - h / 2], [cx - w / 2, cy + h / 2], [cx + w / 2, cy + h / 2]]) });
 }
 function textW(x, s, w, px, fam, track) { x.save(); setF(x, w, px, fam, track); const v = x.measureText(s).width; x.restore(); return v; }
+// durante il controllo: un testo che il disegno deve tagliare o che non entra nel suo spazio
+function segnala(testo, motivo) {
+  const R = window.__AREE;
+  if (R && !R.pausa && R.problemi) R.problemi.push({ t: R.t, testo: String(testo), motivo });
+}
+function entra(x, s, w, px, fam, max, motivo) { if (s != null && textW(x, String(s), w, px, fam) > max) segnala(s, motivo); }
 function label(x, s, X, Y, w, px, fill, align, a, fam, track) {
   if (a != null && a <= 0.002) return;
   x.save(); setF(x, w, px, fam || FB, track); x.globalAlpha *= a == null ? 1 : a;

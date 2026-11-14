@@ -8,7 +8,12 @@ const THEME = {
   ba: { bg: '#F2F5F9', text: '#0F1E36', sup: '#FFFFFF', bordo: '#DCE3EC', t2: '#5B6B82', btn: '#2563EB', btnTx: '#FFFFFF', acc: '#2563EB', logo: '#2563EB', logoTx: '#FFFFFF', name: 'Barra Alta', mono: 'BA' },
 };
 const TEXC = {};
-const texCanvas = (name) => TEXC[name] || (TEXC[name] = H.layer(TEX_W, TEX_H));
+// ogni schermata si ridisegna tutta a ogni chiamata: i testi registrati ripartono da zero
+const texCanvas = (name) => {
+  const c = TEXC[name] || (TEXC[name] = superficie(H.layer(TEX_W, TEX_H), 'schermata', [0, 0, TEX_W, TEX_H], 8));
+  c.__superficie.testi = [];
+  return c;
+};
 function scrBg(g, th) {
   if (th.grad) {
     g.fillStyle = '#161A11'; g.fillRect(0, 0, TEX_W, TEX_H);
@@ -68,12 +73,13 @@ function texIdle() {
 
 // ===================== sprite delle schede di vetro (con livelli di sfocatura per la profondità di campo) =====================
 const SPR = {}, SPS = 1.5, SPP = 60;
+CACHE_DISEGNI.push(SPR);
 function sprite(key, w, h, draw, blur) {
   const k = key + '|' + blur;
   if (SPR[k]) return SPR[k];
   const c = H.layer(Math.ceil((w + SPP * 2) * SPS), Math.ceil((h + SPP * 2) * SPS)), g = c.getContext('2d');
   if (blur) { const b = sprite(key, w, h, draw, 0); g.filter = `blur(${(blur * SPS).toFixed(1)}px)`; g.drawImage(b, 0, 0); g.filter = 'none'; }
-  else { g.scale(SPS, SPS); g.translate(SPP, SPP); draw(g, w, h); }
+  else { superficie(c, 'riquadro', [SPP * SPS, SPP * SPS, (SPP + w) * SPS, (SPP + h) * SPS], 8 * SPS); g.scale(SPS, SPS); g.translate(SPP, SPP); draw(g, w, h); }
   c._w = w; c._h = h;
   return (SPR[k] = c);
 }
@@ -111,7 +117,7 @@ function pill(g, X, Y, s, kind, px, align) {   // pillole neutra / difficile / f
   rrect(g, x0, Y - h / 2, w, h, h / 2, st[0], st[1], 1.5);
   if (kind === 'difficile') icUpDown(g, x0 + 22 + ic * 0.4, Y, px * 0.8, true, HARD, 3);
   if (kind === 'facile') icUpDown(g, x0 + 22 + ic * 0.4, Y, px * 0.8, false, EASY, 3);
-  g.fillStyle = st[2]; g.textBaseline = 'middle'; g.fillText(s, x0 + 22 + ic, Y + 1); g.restore();
+  g.fillStyle = st[2]; g.textAlign = 'left'; g.textBaseline = 'middle'; registraTesto(g, s, x0 + 22 + ic, Y + 1, px, 'left'); g.fillText(s, x0 + 22 + ic, Y + 1); g.restore();
   return w;
 }
 
@@ -209,6 +215,7 @@ function dimTex(k, tex, a) {
   return c;
 }
 const WEEKC = {};
+CACHE_DISEGNI.push(WEEKC);
 const weekTex = (k, o) => WEEKC[k] || (WEEKC[k] = texWeek(k, o));
 
 // ---------- foglio in prospettiva ----------
@@ -252,18 +259,29 @@ function libero(fn) {
 }
 // riquadro di vetro centrato in (cx, cy): lo stesso degli sprite delle scene
 function riquadro(x, key, w, h, cx, cy, draw) { drawSprite(x, key, w, h, draw || glass, cx, cy, 1, 1, 0, 0); }
-// disegna i tempi indicati su un canvas a parte e restituisce i testi e i riquadri fuori dall'area sicura
+// disegna i tempi indicati su un canvas a parte e restituisce i testi e i riquadri fuori dall'area sicura,
+// poi i testi che si coprono e quelli che escono dal loro riquadro o dalla schermata del telefono (con il motivo)
 function controllaAree(tempi, disegna, o) {
   disegna = disegna || ESPORTA.disegna; o = o || {};
-  const cv = H.layer(W, HH), x = cv.getContext('2d'), fuori = [];
+  const cv = H.layer(W, HH), x = cv.getContext('2d'), fuori = [], problemi = [];
+  CACHE_DISEGNI.forEach((c) => { for (const k in c) delete c[k]; });
   for (const t of tempi) {
-    const R = []; R.canvas = cv; R.pausa = false; window.__AREE = R;
+    const R = []; R.canvas = cv; R.pausa = false; R.problemi = problemi; R.t = t; window.__AREE = R;
     try { x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, W, HH); disegna(x, t); } finally { window.__AREE = null; }
     for (const v of R) {
       const [x0, y0, x1, y1] = v.box;
       const esce = x0 < SAFE.l - 0.5 || x1 > SAFE.r + 0.5 || y0 < SAFE.t - 0.5 || y1 > SAFE.b + 0.5;
       if (esce || o.tutti) fuori.push({ t, testo: v.testo, box: v.box.map(Math.round), fuori: esce });
     }
+    const testi = R.filter((v) => v.ink);
+    testi.forEach((a, i) => testi.slice(0, i).forEach((b) => {
+      if (!(a.testo === b.testo && _stessoPosto(a.ink, b.ink)) && _sovrapposti(a.ink, b.ink)) problemi.push({ t, testo: a.testo, motivo: `si sovrappone a «${b.testo}»` });
+    }));
+  }
+  const visti = new Set();
+  for (const p of problemi) {
+    const k = p.testo + '|' + p.motivo;
+    if (!visti.has(k)) { visti.add(k); fuori.push({ t: p.t, testo: p.testo, motivo: p.motivo, box: [], fuori: true }); }
   }
   return fuori;
 }
