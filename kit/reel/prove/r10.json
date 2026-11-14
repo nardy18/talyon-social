@@ -1,0 +1,91 @@
+{
+  "n": 10,
+  "slug": "il-minuto-che-suona",
+  "titolo": "Il minuto che suona",
+  "funzione": "emom",
+  "palco": "grafite",
+  "musica": 3,
+  "gancio": {
+    "scena": "cronometro",
+    "righe": [
+      "Ogni minuto,",
+      "chi guarda",
+      "l’orologio?"
+    ]
+  },
+  "promessa": [
+    "Scrivi l’EMOM,",
+    "il telefono",
+    "conta i minuti."
+  ],
+  "momenti": [
+    {
+      "titolo": [
+        "Scrivi l’EMOM",
+        "come in palestra."
+      ],
+      "blocco": "builder-griglia",
+      "dati": {
+        "intestazione": "Tecnica · settimana 2 · giorno 3",
+        "colonne": [
+          "Esercizio",
+          "Formato",
+          "Rip",
+          "Carico"
+        ],
+        "righe": [
+          [
+            "Muscle-up",
+            "EMOM 10′",
+            "2",
+            "+5 kg"
+          ],
+          [
+            "Trazioni",
+            "EMOM 8′",
+            "3",
+            "+30 kg"
+          ]
+        ]
+      }
+    },
+    {
+      "titolo": [
+        "Sul telefono",
+        "parte l’EMOM."
+      ],
+      "blocco": "telefono-schermata",
+      "dati": {
+        "da": "settimana:luca-emom",
+        "a": "emom"
+      }
+    },
+    {
+      "titolo": [
+        "Il minuto",
+        "scorre da solo."
+      ],
+      "blocco": "emom-minuto",
+      "dati": {
+        "richiami": [
+          [
+            "Segnale\na ogni minuto"
+          ]
+        ]
+      }
+    }
+  ],
+  "culmine": {
+    "titolo": [
+      "Dieci minuti,",
+      "occhi sulla sbarra."
+    ],
+    "blocco": "numero",
+    "dati": {
+      "numero": "10",
+      "etichetta": "segnali, uno a ogni minuto"
+    }
+  },
+  "didascalia": "App per coach di streetlifting e calisthenics: l'EMOM con il segnale a ogni minuto.\n\nScrivi l'EMOM nella scheda come lo scriveresti in palestra. Sul telefono dell'atleta il minuto scorre da solo e a ogni minuto parte il segnale: lui pensa solo alle ripetizioni.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: il coach scrive un EMOM di 10 minuti di muscle-up a +5 kg; sul telefono di Luca parte l'EMOM, il minuto scorre e a ogni minuto arriva il segnale. Alla fine il numero 10: segnali, uno a ogni minuto."
+}

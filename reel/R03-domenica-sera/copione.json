@@ -1,0 +1,25 @@
+{
+  "n": 3,
+  "slug": "domenica-sera-venti-schede",
+  "titolo": "Domenica sera, venti schede",
+  "funzione": "builder",
+  "palco": "verde",
+  "musica": 0,
+  "gancio": {"scena": "griglia", "righe": ["Domenica sera,", "venti schede", "da scrivere."]},
+  "promessa": ["Scrivi una volta.", "Talyon la copia,", "tu la assegni."],
+  "momenti": [
+    {"titolo": ["Scrivi come", "in palestra."], "blocco": "builder-griglia",
+     "dati": {"intestazione": "Forza · settimana 1 · giorno 1",
+              "righe": [["Trazioni", "3 × 3", "@8", "+55 kg"], ["Dip", "4 × 5", "RIR 2", "+60 kg"], ["Squat", "5 × 3", "@7", "140 kg"]]}},
+    {"titolo": ["Duplichi", "la settimana."], "blocco": "duplica-settimana",
+     "dati": {"settimana": "Settimana 1", "righe": [["Trazioni", "3 × 3 @8"], ["Dip", "4 × 5 RIR 2"], ["Squat", "5 × 3 @7"]],
+              "pulsante": "Duplica settimana"}},
+    {"titolo": ["Assegni", "da un modello."], "blocco": "assegna-modello",
+     "dati": {"modello": "Forza · 4 settimane", "dettaglio": "3 giorni a settimana", "atleti": ["Luca", "Anna", "Teo"],
+              "pulsante": "Assegna", "fatto": "Assegnata"}}
+  ],
+  "culmine": {"titolo": ["Venti schede,", "una sera."], "blocco": "numero",
+              "dati": {"numero": "20", "etichetta": "schede pronte per lunedì"}},
+  "didascalia": "App per coach di streetlifting e calisthenics: la domenica sera scrivi la settimana una volta sola.\n\nDal computer scrivi la scheda come in palestra, nella griglia del builder: serie, RPE, RIR e carichi. Poi duplichi la settimana e la assegni da un modello ai tuoi atleti: le schede di lunedì sono pronte.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: la griglia del builder di Talyon con la scheda scritta dal computer, la settimana duplicata fino alla settimana 4 e il modello «Forza · 4 settimane» assegnato a Luca, Anna e Teo. Alla fine il numero 20: schede pronte per lunedì."
+}

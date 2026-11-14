@@ -1,0 +1,22 @@
+{
+  "n": 99,
+  "slug": "minimo",
+  "titolo": "Prova del modello",
+  "funzione": "seguire",
+  "palco": "grafite",
+  "musica": 1,
+  "gancio": {"scena": "fogli", "righe": ["Lunedì mattina,", "venti atleti.", "Chi segui prima?"]},
+  "promessa": ["Talyon li mette in fila,", "tu decidi."],
+  "momenti": [
+    {"titolo": ["Vedi chi", "si è fermato."], "blocco": "elenco-contatore",
+     "dati": {"numero": 3, "etichetta": "atleti da seguire", "righe": [["Luca", "Non si allena da 6 giorni", "rame"], ["Anna", "Fatica più del previsto", "difficile"], ["Marco R", "Scheda in scadenza", "neutra"]]}},
+    {"titolo": ["Leggi", "il motivo."], "blocco": "pannello-righe",
+     "dati": {"intestazione": "Anna · ultima seduta", "righe": [["Trazioni 4 × 2 @8", "RPE 9,5"], ["Dip 4 × 3 @7", "RPE 8,5"]]}},
+    {"titolo": ["Rispondi", "con un tocco."], "blocco": "scheda-conferma",
+     "dati": {"intestazione": "Record da confermare", "righe": [["Luca · trazione", "+67,5 kg"]], "pulsante": "Conferma", "fatto": "Confermato"}}
+  ],
+  "culmine": {"titolo": ["Nessuno resta", "indietro."], "blocco": "numero",
+              "dati": {"numero": "0", "etichetta": "atleti da seguire"}},
+  "didascalia": "App per coach di streetlifting e calisthenics: prova del modello.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Prova del modello dei reel."
+}

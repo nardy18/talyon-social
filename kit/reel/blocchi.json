@@ -1,0 +1,33 @@
+{
+  "funzioni": ["builder", "sessione", "seguire", "celle", "record", "inviti", "note", "emom", "import", "palestra"],
+  "scene_gancio": ["fogli", "notifiche", "griglia", "cronometro"],
+  "nomi_demo": ["Luca", "Marco R", "Marco", "Anna", "Teo", "Matteo", "Ferro Street", "Barra Alta"],
+  "palestre": ["Ferro Street", "Barra Alta"],
+  "stati": ["rame", "difficile", "facile", "neutra"],
+  "schermi": ["vuoto", "logo", "sessione", "esercizio", "emom", "record", "entra", "entra:fs", "entra:ba", "inviata", "inviata:fs", "inviata:ba", "pronta", "pronta:fs", "pronta:ba", "settimana:anna", "settimana:luca", "settimana:luca-emom", "settimana:matteo", "settimana:marco", "home:fs", "home:ba"],
+  "forme": "Forma dei dati: «testo» obbligatorio, «testo?» facoltativo, «valore» testo o numero, «schermo» una delle schermi, «palestra» una delle palestre; {intero: [min, max]}, {lista: [min, max]} di testi, {righe: [min, max], celle: [min, max], stato: i} con la cella i tra gli stati, {richiami: [min, max]} con testo o [testo, sotto], {telefoni: 3} con nome, schermo e sotto facoltativo, {indice: campo} posizione in quella lista, {schema, esempio} testo come l'esempio.",
+  "blocchi": {
+    "pannello-righe": {"camera": "pannelli", "durata": 5.5, "dati": ["intestazione", "righe"], "forma": {"intestazione": "testo", "righe": {"righe": [1, 5], "celle": [1, 2]}}},
+    "elenco-contatore": {"camera": "pannelli", "durata": 6.0, "dati": ["numero", "etichetta", "righe"], "nomi": ["righe[*][0]"], "forma": {"numero": {"intero": [1, 99]}, "etichetta": "testo", "righe": {"righe": [1, 4], "celle": [2, 4], "stato": 2}}},
+    "scheda-conferma": {"camera": "pannelli", "durata": 5.0, "dati": ["intestazione", "righe", "pulsante", "fatto"], "forma": {"intestazione": "testo", "righe": {"righe": [1, 4], "celle": [1, 2]}, "pulsante": "testo", "fatto": "testo"}},
+    "numero": {"camera": "pannelli", "durata": 3.5, "dati": ["numero", "etichetta"], "forma": {"numero": "valore", "etichetta": "testo", "intestazione": "testo?", "pulsante": "testo?", "fatto": "testo?"}},
+    "telefono-schermata": {"camera": "telefono", "durata": 5.5, "dati": ["da", "a"], "forma": {"da": "schermo", "a": "schermo"}},
+    "tre-telefoni": {"camera": "telefoni", "durata": 5.5, "dati": ["atleti"], "nomi": ["atleti[*].nome"], "forma": {"atleti": {"telefoni": 3}}},
+    "builder-griglia": {"camera": "pannelli", "durata": 6.0, "dati": ["intestazione", "righe"], "forma": {"intestazione": "testo", "colonne": {"lista": [4, 4], "facoltativo": true}, "righe": {"righe": [1, 4], "celle": [1, 4]}}},
+    "duplica-settimana": {"camera": "pannelli", "durata": 5.5, "dati": ["settimana", "righe", "pulsante"], "forma": {"settimana": "testo", "righe": {"righe": [1, 3], "celle": [1, 2]}, "pulsante": "testo", "copie": {"intero": [1, 3], "facoltativo": true}}},
+    "assegna-modello": {"camera": "pannelli", "durata": 5.5, "dati": ["modello", "atleti"], "nomi": ["atleti[*]"], "forma": {"modello": "testo", "dettaglio": "testo?", "atleti": {"lista": [1, 4]}, "pulsante": "testo?", "fatto": "testo?"}},
+    "sessione-serie": {"camera": "telefono-destra", "durata": 5.5, "dati": ["richiami"], "forma": {"richiami": {"richiami": [1, 1]}}},
+    "recupero": {"camera": "telefono-sinistra", "durata": 5.5, "dati": ["richiami"], "forma": {"richiami": {"richiami": [1, 2]}}},
+    "senza-rete": {"camera": "telefono-destra", "durata": 5.0, "dati": ["richiami"], "forma": {"richiami": {"richiami": [1, 1]}}},
+    "seguire-lista": {"camera": "pannelli", "durata": 5.5, "dati": ["titolo", "righe"], "nomi": ["righe[*][0]"], "forma": {"titolo": "testo", "righe": {"righe": [1, 4], "celle": [3, 4], "stato": 2}}},
+    "celle-coach": {"camera": "pannelli", "durata": 5.5, "dati": ["atleta", "righe"], "nomi": ["atleta"], "forma": {"atleta": "testo", "giorno": "testo?", "righe": {"righe": [1, 4], "celle": [3, 6]}}},
+    "cella-prescritto": {"camera": "pannelli", "durata": 5.0, "dati": ["esercizio", "celle", "prescritto", "fatto"], "nomi": ["atleta"], "forma": {"atleta": "testo?", "esercizio": "testo", "carico": "testo?", "celle": {"lista": [1, 3]}, "prescritto": "testo", "fatto": "testo", "tocco": {"indice": "celle", "facoltativo": true}}},
+    "record-proposto": {"camera": "telefono-destra", "durata": 5.5, "dati": ["esercizio", "record", "richiami"], "forma": {"esercizio": "testo", "record": {"schema": "^[+-]?\\d+(,\\d+)? kg$", "esempio": "+67,5 kg"}, "richiami": {"richiami": [1, 1]}}},
+    "record-confermato": {"camera": "pannelli", "durata": 4.5, "dati": ["esercizio", "record", "pulsante", "fatto"], "nomi": ["atleta"], "forma": {"atleta": "testo?", "esercizio": "testo", "record": {"schema": "^[+-]?\\d+(,\\d+)? kg$", "esempio": "+67,5 kg"}, "prima": "testo?", "stima": "testo?", "pulsante": "testo", "fatto": "testo"}},
+    "invito-qr": {"camera": "pannelli", "durata": 5.5, "dati": ["palestra"], "nomi": ["palestra"], "forma": {"palestra": "palestra"}},
+    "richiesta-accetta": {"camera": "telefono-destra", "durata": 5.5, "dati": ["atleta", "palestra", "modello"], "nomi": ["atleta", "palestra"], "forma": {"atleta": "testo", "palestra": "palestra", "modello": "testo", "accetta": "testo?", "accettata": "testo?", "assegna": "testo?", "assegnata": "testo?"}},
+    "nota-scrivi": {"camera": "pannelli", "durata": 5.5, "dati": ["esercizio", "nota"], "forma": {"esercizio": "testo", "dettaglio": "testo?", "nota": "testo"}},
+    "nota-coach": {"camera": "telefono-destra", "durata": 5.0, "dati": ["richiami"], "forma": {"richiami": {"richiami": [1, 1]}}},
+    "emom-minuto": {"camera": "telefono-destra", "durata": 5.5, "dati": ["richiami"], "forma": {"richiami": {"richiami": [1, 1]}, "minuto": {"intero": [1, 30], "facoltativo": true}}}
+  }
+}

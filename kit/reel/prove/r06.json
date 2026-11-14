@@ -1,0 +1,25 @@
+{
+  "n": 6,
+  "slug": "piu-difficile-piu-facile",
+  "titolo": "Più difficile, più facile",
+  "funzione": "celle",
+  "palco": "grafite",
+  "musica": 3,
+  "gancio": {"scena": "fogli", "righe": ["Ha fatto", "quello che", "avevi scritto?"]},
+  "promessa": ["Talyon colora", "ogni serie,", "tu vedi subito."],
+  "momenti": [
+    {"titolo": ["Più difficile:", "rosso e freccia su."], "blocco": "celle-coach",
+     "dati": {"atleta": "Luca", "giorno": "Martedì · sett. 3",
+              "righe": [["Top single", "+62,5 kg", "@8"], ["Back-off", "+52,5 kg", "@8", "@8,5", "@9,5 ↑"], ["Dip", "+40 kg", "RIR 2", "RIR 2", "RIR 2", "RIR 2"]]}},
+    {"titolo": ["Più facile:", "verde e freccia giù."], "blocco": "celle-coach",
+     "dati": {"atleta": "Anna", "giorno": "Martedì · sett. 2",
+              "righe": [["Trazioni", "+30 kg", "@7", "@7", "@7,5"], ["Dip", "+35 kg", "RIR 3 ↓", "RIR 3 ↓", "RIR 2", "RIR 2"]]}},
+    {"titolo": ["Se fatica,", "te lo segnala."], "blocco": "seguire-lista",
+     "dati": {"titolo": "Atleti da seguire", "righe": [["Luca", "Fatica più del previsto", "difficile", "Back-off a @9,5 invece di @8"]]}}
+  ],
+  "culmine": {"titolo": ["Tocchi la cella,", "rivedi il prescritto."], "blocco": "cella-prescritto",
+              "dati": {"atleta": "Luca", "esercizio": "Back-off", "carico": "+52,5 kg", "celle": ["@8", "@8,5", "@9,5 ↑"],
+                       "prescritto": "3 rip @8 · +52,5 kg", "fatto": "3 rip @9,5"}},
+  "didascalia": "App per coach di streetlifting e calisthenics: vedi a colpo d'occhio come sono andate le serie.\n\nNella vista del coach ogni serie si colora rispetto a quella che hai scritto: rosso con la freccia su se è stata più difficile, verde con la freccia giù se è stata più facile. Tocchi la cella e rivedi il prescritto.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: la seduta di Luca vista dal coach, con l'ultima serie di back-off a @9,5 in rosso con la freccia su (più difficile), e la seduta di Anna con il dip a RIR 3 in verde con la freccia giù (più facile). Luca compare in «Atleti da seguire» e, toccando la cella, si rivede il prescritto della serie: 3 ripetizioni a @8."
+}
