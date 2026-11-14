@@ -1,0 +1,80 @@
+{
+  "n": 8,
+  "slug": "dal-link-alla-prima-scheda",
+  "titolo": "Dal link alla prima scheda",
+  "funzione": "inviti",
+  "palco": "grafite",
+  "musica": 1,
+  "gancio": {
+    "scena": "fogli",
+    "righe": [
+      "Un atleta nuovo",
+      "in palestra?"
+    ]
+  },
+  "promessa": [
+    "Un link,",
+    "una richiesta,",
+    "un sì."
+  ],
+  "momenti": [
+    {
+      "titolo": [
+        "Un link e un QR",
+        "per la palestra."
+      ],
+      "blocco": "invito-qr",
+      "dati": {
+        "palestra": "Ferro Street"
+      }
+    },
+    {
+      "titolo": [
+        "Chi lo apre",
+        "chiede di entrare."
+      ],
+      "blocco": "telefono-schermata",
+      "dati": {
+        "da": "entra:fs",
+        "a": "inviata:fs"
+      }
+    },
+    {
+      "titolo": [
+        "La richiesta",
+        "arriva a te."
+      ],
+      "blocco": "elenco-contatore",
+      "dati": {
+        "numero": 2,
+        "etichetta": "richieste di iscrizione",
+        "righe": [
+          [
+            "Marco R",
+            "Ferro Street",
+            "rame"
+          ],
+          [
+            "Matteo",
+            "Ferro Street",
+            "rame"
+          ]
+        ]
+      }
+    }
+  ],
+  "culmine": {
+    "titolo": [
+      "Accetti, assegni:",
+      "la scheda è pronta."
+    ],
+    "blocco": "richiesta-accetta",
+    "dati": {
+      "atleta": "Marco R",
+      "palestra": "Ferro Street",
+      "modello": "Forza · 4 settimane"
+    }
+  },
+  "didascalia": "App per coach di streetlifting e calisthenics: dal link della palestra alla prima scheda dell'atleta.\n\nOgni palestra ha il suo link e il suo QR. Chi lo apre chiede di entrare, la richiesta arriva a te e la accetti con un tocco. Poi assegni la scheda e l'atleta la trova pronta, con il logo e i colori della tua palestra.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: il link e il QR della palestra demo Ferro Street; il telefono di un atleta apre il link e chiede di entrare; il coach vede due richieste di iscrizione, accetta Marco R e gli assegna il modello «Forza · 4 settimane»; sul telefono di Marco compare «La tua scheda è pronta» nei colori di Ferro Street."
+}

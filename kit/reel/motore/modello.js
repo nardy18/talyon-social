@@ -95,7 +95,8 @@ function piano(c) {
     camera.push(Object.assign({}, prima, { t: s.t0 }));
     camera.push(Object.assign({ t: r2(s.t0 + 0.85) }, CAMERA[s.camera]));
     // nel culmine la camera continua ad avvicinarsi piano fino alla chiusura
-    if (s.tipo === 'culmine') camera.push(Object.assign({}, CAMERA[s.camera], { t: s.t1, s: r2(CAMERA[s.camera].s * 1.06) }));
+    // (l'alto dell'inquadratura resta fermo, così il telefono non sale verso il titolo)
+    if (s.tipo === 'culmine') { const k0 = CAMERA[s.camera]; camera.push(Object.assign({}, k0, { t: s.t1, s: r2(k0.s * 1.06), cy: r2(470 + (k0.cy - 470) * 1.06) })); }
   });
   camera.push(Object.assign({}, camera[camera.length - 1], { t: durata + 1 }));
   // eventi delle sezioni (quelli dei blocchi si aggiungono quando i blocchi ci sono)

@@ -1,0 +1,97 @@
+{
+  "n": 7,
+  "slug": "il-record-lo-confermi-tu",
+  "titolo": "Il record lo confermi tu",
+  "funzione": "record",
+  "palco": "verde",
+  "musica": 0,
+  "gancio": {
+    "scena": "notifiche",
+    "righe": [
+      "Nuovo record.",
+      "Dove lo segni?"
+    ]
+  },
+  "promessa": [
+    "L’atleta lo propone,",
+    "tu lo confermi."
+  ],
+  "momenti": [
+    {
+      "titolo": [
+        "I massimali",
+        "in zavorra."
+      ],
+      "blocco": "pannello-righe",
+      "dati": {
+        "intestazione": "Luca · massimali",
+        "righe": [
+          [
+            "Trazione",
+            "+65 kg"
+          ],
+          [
+            "Dip",
+            "+90 kg"
+          ],
+          [
+            "Muscle-up",
+            "+20 kg"
+          ]
+        ]
+      }
+    },
+    {
+      "titolo": [
+        "Fa il record,",
+        "lo propone a te."
+      ],
+      "blocco": "record-proposto",
+      "dati": {
+        "esercizio": "Trazione",
+        "record": "+67,5 kg",
+        "richiami": [
+          [
+            "Proposto\nal coach"
+          ]
+        ]
+      }
+    },
+    {
+      "titolo": [
+        "Lo trovi",
+        "tra chi seguire."
+      ],
+      "blocco": "seguire-lista",
+      "dati": {
+        "titolo": "Atleti da seguire",
+        "righe": [
+          [
+            "Luca",
+            "Record da confermare",
+            "rame",
+            "Trazione +67,5 kg"
+          ]
+        ]
+      }
+    }
+  ],
+  "culmine": {
+    "titolo": [
+      "Il record",
+      "lo confermi tu."
+    ],
+    "blocco": "record-confermato",
+    "dati": {
+      "atleta": "Luca",
+      "esercizio": "Trazione",
+      "record": "+67,5 kg",
+      "prima": "+65 kg",
+      "stima": "+70 kg",
+      "pulsante": "Conferma",
+      "fatto": "Record confermato"
+    }
+  },
+  "didascalia": "App per coach di streetlifting e calisthenics: i record in zavorra li propone l'atleta e li confermi tu.\n\nQuando l'atleta fa un record nuovo lo propone dal telefono, e tu lo trovi in «Atleti da seguire». Un tocco e il record è confermato. La stima del massimale resta sempre segnata come stima, separata dai record.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: i massimali in zavorra di Luca (trazione +65 kg, dip +90 kg, muscle-up +20 kg); Luca fa +67,5 kg alla trazione e lo propone al coach dal telefono; il record compare in «Atleti da seguire»; il coach tocca Conferma e il record +67,5 kg è confermato, mentre il massimale stimato resta segnato come stima."
+}

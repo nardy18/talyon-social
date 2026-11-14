@@ -147,7 +147,14 @@ const evRichiami = (tempi, n) => tempi.slice(0, n).map((t) => ({ t: t + 0.3, tip
 
 // ===================== R03 · builder: griglia, duplica settimana, assegna da un modello =====================
 const COLONNE_BUILDER = ['Esercizio', 'Serie', 'Intensità', 'Carico'];
-const CX_BUILDER = [40, 380, 565, 765];
+// colonne della griglia: larghe quanto il testo più lungo, con lo spazio che resta diviso tra le colonne
+function colonneBuilder(col, righe) {
+  const larg = col.map((cn, j) => Math.max(textW(SCR, cn.toUpperCase(), 600, 24, FB, 24 * 0.18),
+    ...righe.map((r) => (r[j] ? (j === 0 ? textW(SCR, r[j], 700, 52, FT) : textW(SCR, r[j], 600, 42, FB)) : 0))));
+  const tot = larg.reduce((a, b) => a + b, 0), gap = col.length > 1 ? Math.max(28, Math.min(160, (870 - tot) / (col.length - 1))) : 0;
+  const xs = []; let xx = 40; larg.forEach((w) => { xs.push(xx); xx += w + gap; });
+  return xs;
+}
 // istante in cui si scrive la cella j della riga i
 const tCellaBuilder = (i, j) => 0.75 + i * 0.8 + j * 0.17;
 // settimana successiva: «Settimana 1» → «Settimana 2»
@@ -171,12 +178,12 @@ const BLOCCHI_TEMI = {
   'builder-griglia': {
     disegna(x, F, tl, d, s) {
       const m = moto(tl, s); if (m.a <= 0.003) return;
-      const col = d.colonne || COLONNE_BUILDER, righe = d.righe.slice(0, 4), RH = 112;
+      const col = d.colonne || COLONNE_BUILDER, righe = d.righe.slice(0, 4), RH = 112, CX = colonneBuilder(col, righe);
       const W0 = 950, h = 196 + righe.length * RH, X0 = 65 + m.dx, T0 = topRiq(h);
       drawSprite(x, 'bg' + s.t0, W0, h, (g, w, hh) => {
         glass(g, w, hh, { r: 34 });
         g.fillStyle = `rgba(${CUc},0.35)`; g.fillRect(40, 102, w - 80, 1.5);
-        col.forEach((cn, j) => caps(g, cn, CX_BUILDER[j], 150, 24, INK3));
+        col.forEach((cn, j) => caps(g, cn, CX[j], 150, 24, INK3));
         for (let i = 1; i < righe.length; i++) { g.fillStyle = 'rgba(255,255,255,0.08)'; g.fillRect(40, 170 + i * RH, w - 80, 1.5); }
       }, 540 + m.dx, T0 + h / 2, 1, m.a, 0, m.blur);
       x.save(); x.globalAlpha *= m.a;
@@ -186,14 +193,14 @@ const BLOCCHI_TEMI = {
       righe.forEach((r, i) => r.slice(0, 4).forEach((v, j) => {
         const t0 = tCellaBuilder(i, j); if (tl < t0) return;
         const n = Math.ceil(String(v).length * H.clamp((tl - t0) / 0.16)), parte = String(v).slice(0, n);
-        const y = T0 + 170 + i * RH + 70, cx = X0 + CX_BUILDER[j];
+        const y = T0 + 170 + i * RH + 70, cx = X0 + CX[j];
         if (j === 0) label(x, parte, cx, y, 700, 52, '#FFFFFF', 'left', 1, FT);
         else label(x, parte, cx, y, 600, 42, j === 3 ? '#FFFFFF' : INK2, 'left', 1, FB);
         attiva = { i, j, cx, y, w: j === 0 ? textW(x, parte, 700, 52, FT) : textW(x, parte, 600, 42, FB), t0 };
       }));
       const ultima = tCellaBuilder(righe.length - 1, Math.min(3, righe[righe.length - 1].length - 1)) + 0.5;
       if (attiva && tl < ultima) {
-        const cw = (CX_BUILDER[attiva.j + 1] || 910) - CX_BUILDER[attiva.j] - 12;
+        const cw = (CX[attiva.j + 1] || 926) - CX[attiva.j] - 12;
         aloneRame(x, attiva.cx - 16, attiva.y - 64, cw + 8, 90, 14, 0.9);
         if (Math.floor((tl - attiva.t0) / 0.25) % 2 === 0 || tl - attiva.t0 < 0.2) { x.fillStyle = `rgb(${CUc})`; x.fillRect(attiva.cx + attiva.w + 4, attiva.y - 42, 3, 48); }
       }
@@ -432,3 +439,391 @@ const BLOCCHI_TEMI = {
 const SCHERMI_TEMI = {
   sessione: () => texSession(SESSIONE_INIZIO),
 };
+
+// ===================== R07–R10: record, inviti, note, EMOM =====================
+// ---------- utilità ----------
+const temaDi = (palestra) => Object.keys(THEME).find((k) => THEME[k].name === palestra) || 'talyon';
+const nomeProprio = (nome) => String(nome).split(' ')[0];
+// righe di testo a capo dentro una larghezza (parole intere)
+function aCapo(g, s, w, px, peso, fam) {
+  const righe = []; let r = '';
+  String(s).split(' ').forEach((p) => { const prova = r ? r + ' ' + p : p; if (r && textW(g, prova, peso, px, fam) > w) { righe.push(r); r = p; } else r = prova; });
+  if (r) righe.push(r);
+  return righe;
+}
+// pulsante piccolo: chiaro prima del tocco, salvia con la spunta dopo
+function pulsantino(x, X, Y, w, h, testo, fatto, ok, px) {
+  px = px || 30;
+  if (ok) {
+    rrect(x, X, Y, w, h, h / 2, 'rgba(140,190,110,0.16)', 'rgba(150,200,120,0.60)', 2);
+    const tw = textW(x, fatto, 700, px, FB), x0 = X + w / 2 - (tw + 40) / 2;
+    icCheck(x, x0 + 14, Y + h / 2, px * 0.75, EASY, 4);
+    label(x, fatto, x0 + 40, Y + h / 2 + px * 0.36, 700, px, '#E2F0D6', 'left', 1, FB);
+  } else {
+    rrect(x, X, Y, w, h, h / 2, '#F4F4EF');
+    label(x, testo, X + w / 2, Y + h / 2 + px * 0.36, 700, px, '#242B1D', 'center', 1, FB);
+  }
+}
+function icPin(g, cx, cy, s, col) {                         // puntina della nota
+  g.save(); g.strokeStyle = col; g.fillStyle = col; g.lineWidth = s * 0.1; g.lineCap = 'round';
+  g.beginPath(); g.arc(cx, cy - s * 0.18, s * 0.26, 0, 7); g.fill();
+  g.beginPath(); g.moveTo(cx, cy + s * 0.06); g.lineTo(cx, cy + s * 0.5); g.stroke(); g.restore();
+}
+function icLink(g, cx, cy, s, col, lw) {                    // catena del link
+  g.save(); g.strokeStyle = col; g.lineWidth = lw || s * 0.1; g.translate(cx, cy); g.rotate(-PI / 4);
+  g.beginPath(); g.roundRect(-s * 0.55, -s * 0.18, s * 0.6, s * 0.36, s * 0.18); g.stroke();
+  g.beginPath(); g.roundRect(-s * 0.05, -s * 0.18, s * 0.6, s * 0.36, s * 0.18); g.stroke(); g.restore();
+}
+// marchio della palestra: cerchio con le iniziali nei suoi colori
+function marchio(g, th, cx, cy, r) {
+  rrect(g, cx - r, cy - r, 2 * r, 2 * r, r, th.logo);
+  label(g, th.mono || 'T', cx, cy + r * 0.3, 800, r * 0.84, th.logoTx, 'center', 1, FB, 1);
+}
+
+// ---------- R07 · il record proposto dall'atleta ----------
+function texRecordProposto(st, d) {
+  const c = texCanvas('record'), g = c.getContext('2d'), th = THEME.talyon;
+  g.setTransform(1, 0, 0, 1, 0, 0); scrBg(g, th);
+  caps(g, 'Martedì · Settimana 3', 44, 236, 26, th.t2);
+  label(g, 'Trazioni', 44, 306, 700, 72, '#FFFFFF', 'left', 1, FT);
+  rrect(g, 44, 336, TEX_W - 88, 100, 30, th.sup, th.bordo, 2);
+  label(g, 'Top single', 80, 398, 600, 31, th.t2, 'left', 1, FB);
+  label(g, String(d.record).replace(' kg', '') + ' kg @9', 488, 399, 700, 34, '#FFFFFF', 'right', 1, FB);
+  rrect(g, 506, 360, 52, 52, 26, th.acc); icCheck(g, 532, 386, 26, '#242B1D', 5);
+  // la scheda del record nuovo
+  rrect(g, 44, 470, TEX_W - 88, 470, 36, 'rgba(255,255,255,0.07)', `rgba(${CUc},${0.55 + 0.4 * st.glow})`, 2.5);
+  if (st.glow > 0.02) { g.save(); g.globalAlpha = st.glow; g.strokeStyle = `rgba(${CUc},0.95)`; g.lineWidth = 3; g.shadowColor = `rgba(${CUc},0.9)`; g.shadowBlur = 24; g.beginPath(); g.roundRect(44, 470, TEX_W - 88, 470, 36); g.stroke(); g.restore(); }
+  caps(g, 'Nuovo record', 84, 534, 26, th.t2);
+  pill(g, TEX_W - 84, 526, 'Nuovo', 'rame', 26, 'right');
+  label(g, d.record, 84, 668, 700, 108, '#FFFFFF', 'left', 1, FT);
+  label(g, `${d.esercizio} in zavorra`, 84, 724, 500, 34, th.t2, 'left', 1, FB);
+  g.fillStyle = th.bordo; g.fillRect(84, 762, TEX_W - 168, 2);
+  if (st.ok) {
+    rrect(g, 84, 792, TEX_W - 168, 100, 34, 'rgba(140,190,110,0.16)', 'rgba(150,200,120,0.60)', 2);
+    const tw = textW(g, 'Proposto al coach', 700, 36, FB), x0 = TEX_W / 2 - (tw + 46) / 2;
+    icCheck(g, x0 + 16, 842, 26, EASY, 5); label(g, 'Proposto al coach', x0 + 46, 855, 700, 36, '#E2F0D6', 'left', 1, FB);
+  } else {
+    rrect(g, 84, 792, TEX_W - 168, 100, 34, th.btn);
+    label(g, 'Proponi al coach', TEX_W / 2, 855, 700, 38, th.btnTx, 'center', 1, FB);
+  }
+  if (st.tap > 0 && st.tap < 1) { const rp = eo(st.tap); g.save(); g.globalAlpha = (1 - rp) * 0.55; g.strokeStyle = '#FFFFFF'; g.lineWidth = 4; g.beginPath(); g.arc(TEX_W / 2, 842, 30 + rp * 90, 0, 7); g.stroke(); g.restore(); }
+  label(g, 'Il coach lo conferma', TEX_W / 2, 1010, 500, 32, th.t2, 'center', 1, FB);
+  tabBar(g, th, 1);
+  return c;
+}
+
+// ---------- R08 · le schermate della palestra (link, richiesta, scheda pronta) ----------
+const PALC = {};
+function texPalestra(stato, chiave, atleta) {
+  const k = `pal-${stato}-${chiave}-${atleta || ''}`;
+  if (PALC[k]) return PALC[k];
+  const c = H.layer(TEX_W, TEX_H), g = c.getContext('2d'), th = THEME[chiave] || THEME.fs;
+  scrBg(g, th);
+  marchio(g, th, 92, 172, 48);
+  label(g, th.name, 162, 186, 700, 46, th.text, 'left', 1, FT);
+  if (stato === 'pronta') {
+    caps(g, 'Lunedì', 44, 300, 30, th.t2);
+    label(g, `Ciao ${nomeProprio(atleta || 'Marco')}`, 44, 382, 700, 78, th.text, 'left', 1, FT);
+    rrect(g, 44, 430, TEX_W - 88, 250, 40, th.sup, th.acc, 2.5);
+    caps(g, 'La tua scheda è pronta', 84, 490, 26, th.t2);
+    label(g, 'Settimana 1 di 4', 84, 578, 700, 70, th.text, 'left', 1, FT);
+    label(g, 'Oggi: giorno 1', 84, 640, 500, 40, th.t2, 'left', 1, FB);
+    const card = (y, t1, t2) => { rrect(g, 44, y, TEX_W - 88, 150, 34, th.sup, th.bordo, 2); label(g, t1, 84, y + 66, 700, 46, th.text, 'left', 1, FT); label(g, t2, 84, y + 116, 500, 32, th.t2, 'left', 1, FB); };
+    card(704, 'Trazioni', '5 × 3 @7 · +20 kg'); card(874, 'Dip', '4 × 5 · RIR 2');
+    rrect(g, 44, 1060, TEX_W - 88, 112, 34, th.btn);
+    label(g, 'Inizia l’allenamento', TEX_W / 2, 1130, 700, 42, th.btnTx, 'center', 1, FB);
+    tabBar(g, th, 0);
+  } else {
+    caps(g, 'Invito', 44, 300, 30, th.t2);
+    label(g, 'Entra in', 44, 386, 700, 76, th.text, 'left', 1, FT);
+    label(g, th.name, 44, 462, 700, 76, th.text, 'left', 1, FT);
+    label(g, 'Allenati con le schede', 44, 534, 500, 36, th.t2, 'left', 1, FB);
+    label(g, 'del tuo coach.', 44, 578, 500, 36, th.t2, 'left', 1, FB);
+    rrect(g, 44, 630, TEX_W - 88, 330, 36, th.sup, th.bordo, 2);
+    [['1', 'Chiedi di entrare'], ['2', 'Il coach accetta'], ['3', 'Trovi la tua scheda']].forEach(([n, s], i) => {
+      const y = 700 + i * 94;
+      rrect(g, 80, y - 34, 56, 56, 28, null, th.acc, 2.5); label(g, n, 108, y + 6, 700, 30, th.text, 'center', 1, FB);
+      label(g, s, 164, y + 8, 600, 36, th.text, 'left', 1, FB);
+    });
+    if (stato === 'inviata') {
+      rrect(g, 44, 1060, TEX_W - 88, 112, 34, null, th.acc, 2.5);
+      const tw = textW(g, 'Richiesta inviata', 700, 40, FB), x0 = TEX_W / 2 - (tw + 52) / 2;
+      icCheck(g, x0 + 18, 1116, 28, th.acc, 5); label(g, 'Richiesta inviata', x0 + 52, 1130, 700, 40, th.text, 'left', 1, FB);
+      label(g, 'In attesa del coach', TEX_W / 2, 1226, 500, 32, th.t2, 'center', 1, FB);
+    } else {
+      rrect(g, 44, 1060, TEX_W - 88, 112, 34, th.btn);
+      label(g, 'Chiedi di entrare', TEX_W / 2, 1130, 700, 42, th.btnTx, 'center', 1, FB);
+    }
+  }
+  return (PALC[k] = c);
+}
+// QR stilizzato: moduli a caso con i tre quadrati d'angolo; non è leggibile e non punta a nessun indirizzo
+const QR_N = 25;
+let QRM = null;
+function moduliQR() {
+  if (QRM) return QRM;
+  const r = H.rng(731), m = [];
+  for (let i = 0; i < QR_N; i++) { m.push([]); for (let j = 0; j < QR_N; j++) m[i].push(r() < 0.5 ? 1 : 0); }
+  const angolo = (a, b) => { for (let i = -1; i < 8; i++) for (let j = -1; j < 8; j++) { const y = a + i, xx = b + j; if (y < 0 || xx < 0 || y >= QR_N || xx >= QR_N) continue; m[y][xx] = (i < 0 || j < 0 || i > 6 || j > 6) ? 0 : (Math.max(Math.abs(i - 3), Math.abs(j - 3)) === 2 ? 0 : 1); } };
+  angolo(0, 0); angolo(0, QR_N - 7); angolo(QR_N - 7, 0);
+  for (let i = 10; i < 15; i++) for (let j = 10; j < 15; j++) m[i][j] = 0;   // posto per il marchio
+  return (QRM = m);
+}
+function disegnaQR(x, X, Y, lato, tl, th) {
+  const m = moduliQR(), q = lato / (QR_N + 2), ga = x.globalAlpha;
+  rrect(x, X, Y, lato, lato, 20, '#FFFFFF');
+  x.fillStyle = '#121212';
+  for (let i = 0; i < QR_N; i++) for (let j = 0; j < QR_N; j++) {
+    if (!m[i][j]) continue;
+    const a = H.clamp((tl - 0.6 - (i + j) / (2 * QR_N) * 0.8) / 0.15); if (a <= 0) continue;
+    x.globalAlpha = ga * a; x.fillRect(X + q * (j + 1), Y + q * (i + 1), q + 0.6, q + 0.6);
+  }
+  x.globalAlpha = ga * sm(1.2, 1.5, tl); marchio(x, th, X + lato / 2, Y + lato / 2, q * 2.2); x.globalAlpha = ga;
+  // linea rame che scorre sul QR
+  const p = ((tl - 1.6) % 2.2) / 1.1;
+  if (tl > 1.6 && p < 1) {
+    const y = Y + 14 + (lato - 28) * io(p);
+    x.save(); x.globalAlpha = ga * Math.sin(PI * p); x.strokeStyle = `rgba(${CUc},0.95)`; x.lineWidth = 3; x.shadowColor = `rgba(${CUc},0.9)`; x.shadowBlur = 16;
+    x.beginPath(); x.moveTo(X + 10, y); x.lineTo(X + lato - 10, y); x.stroke(); x.restore();
+  }
+}
+
+// ---------- R09 · la nota del coach sull'esercizio ----------
+const NOTA_BASE = { esercizio: 'Dip con fermo', dettaglio: '4 × 3 @7 · +30 kg', nota: 'Fermo di 1″ in basso, gomiti stretti.' };
+function notaDelCopione() {
+  const p = (COPIONE.momenti || []).concat([COPIONE.culmine]).find((m) => m && m.dati && m.dati.nota);
+  return p ? Object.assign({}, NOTA_BASE, p.dati) : NOTA_BASE;
+}
+const NOTA_Y = 360;                                          // scheda della nota nella texture
+function texEsercizio(st) {
+  const c = texCanvas('esercizio'), g = c.getContext('2d'), th = THEME.talyon, N = notaDelCopione();
+  g.setTransform(1, 0, 0, 1, 0, 0); scrBg(g, th);
+  caps(g, 'Martedì · Settimana 3', 44, 196, 26, th.t2);
+  label(g, N.esercizio, 44, 268, 700, 70, '#FFFFFF', 'left', 1, FT);
+  label(g, N.dettaglio, 44, 318, 500, 34, th.t2, 'left', 1, FB);
+  // la nota in evidenza, in cima all'esercizio
+  const righe = aCapo(g, N.nota, TEX_W - 176, 36, 600, FB).slice(0, 3), nh = 96 + righe.length * 46;
+  rrect(g, 44, NOTA_Y, TEX_W - 88, nh, 30, 'rgba(217,142,74,0.12)', `rgba(${CUc},${0.6 + 0.35 * st.glow})`, 2.5);
+  if (st.glow > 0.02) { g.save(); g.globalAlpha = st.glow; g.strokeStyle = `rgba(${CUc},0.95)`; g.lineWidth = 3; g.shadowColor = `rgba(${CUc},0.9)`; g.shadowBlur = 26; g.beginPath(); g.roundRect(44, NOTA_Y, TEX_W - 88, nh, 30); g.stroke(); g.restore(); }
+  icPin(g, 92, NOTA_Y + 50, 34, `rgb(${CUc})`);
+  caps(g, 'Nota del coach', 124, NOTA_Y + 58, 26, '#FFFFFF');
+  righe.forEach((r, i) => label(g, r, 84, NOTA_Y + 116 + i * 46, 600, 36, '#FFFFFF', 'left', 1, FB));
+  // le serie sotto la nota
+  const y0 = NOTA_Y + nh + 30;
+  rrect(g, 44, y0, TEX_W - 88, 4 * 86 + 30, 30, th.sup, th.bordo, 2);
+  for (let i = 0; i < 4; i++) {
+    const y = y0 + 15 + i * 86;
+    if (i) { g.fillStyle = th.bordo; g.fillRect(80, y, TEX_W - 160, 2); }
+    label(g, `Serie ${i + 1}`, 80, y + 56, 500, 32, th.t2, 'left', 1, FB);
+    label(g, '3 × +30 kg', 222, y + 56, 700, 36, '#FFFFFF', 'left', 1, FB);
+    label(g, '@7', 420, y + 56, 500, 32, th.t2, 'left', 1, FB);
+    rrect(g, 508, y + 20, 48, 48, 24, null, th.t2, 3);
+  }
+  tabBar(g, th, 1);
+  return c;
+}
+
+// ---------- R10 · l'EMOM con il segnale a ogni minuto ----------
+const EMOM = { esercizio: 'Muscle-up', dettaglio: '2 rip a minuto · +5 kg', minuti: 10, y: 640, r: 200 };
+// st: { sec: secondi che restano nel minuto, min: minuto in corso, flash: luce del segnale (0..1) }
+function texEmom(st) {
+  const c = texCanvas('emom'), g = c.getContext('2d'), th = THEME.talyon, E = EMOM;
+  g.setTransform(1, 0, 0, 1, 0, 0); scrBg(g, th);
+  caps(g, `EMOM · ${E.minuti} minuti`, 44, 196, 26, th.t2);
+  label(g, E.esercizio, 44, 268, 700, 72, '#FFFFFF', 'left', 1, FT);
+  label(g, E.dettaglio, 44, 318, 500, 34, th.t2, 'left', 1, FB);
+  const cx = TEX_W / 2, cy = E.y, f = st.flash;
+  if (f > 0.02) { // il segnale: anello rame che si allarga
+    g.save(); g.globalAlpha = f; g.strokeStyle = `rgba(${CUc},0.9)`; g.lineWidth = 6; g.shadowColor = `rgba(${CUc},0.9)`; g.shadowBlur = 30;
+    g.beginPath(); g.arc(cx, cy, E.r + 30 + (1 - f) * 60, 0, 7); g.stroke(); g.restore();
+  }
+  g.strokeStyle = 'rgba(255,255,255,0.12)'; g.lineWidth = 18; g.beginPath(); g.arc(cx, cy, E.r, 0, 7); g.stroke();
+  g.save(); g.strokeStyle = f > 0.02 ? `rgb(${Math.round(H.lerp(255, 217, f))},${Math.round(H.lerp(255, 142, f))},${Math.round(H.lerp(255, 74, f))})` : '#FFFFFF'; g.lineCap = 'round'; g.lineWidth = 18;
+  g.beginPath(); g.arc(cx, cy, E.r, -PI / 2, -PI / 2 + 2 * PI * H.clamp(st.sec / 60)); g.stroke(); g.restore();
+  const s = Math.ceil(st.sec - 1e-6), testo = s >= 60 ? '1:00' : `0:${String(Math.max(0, s)).padStart(2, '0')}`;
+  label(g, testo, cx, cy + 50, 700, 150, '#FFFFFF', 'center', 1, FT);
+  label(g, `Minuto ${st.min} di ${E.minuti}`, cx, cy + 112, 500, 34, th.t2, 'center', 1, FB);
+  rrect(g, 44, 920, TEX_W - 88, 110, 30, th.sup, th.bordo, 2);
+  label(g, 'A ogni minuto, il segnale', TEX_W / 2, 988, 600, 34, th.t2, 'center', 1, FB);
+  tabBar(g, th, 1);
+  return c;
+}
+// minuto dell'EMOM: il segnale cade a tSig (tempo locale); il tempo corre 12 volte più veloce del vero
+const EMOM_VEL = 12;
+function statoEmom(tl, tSig, min0) {
+  const e = (tl - tSig) * EMOM_VEL;                          // secondi dal segnale (negativi prima)
+  if (e < 0) return { sec: Math.min(60, -e), min: min0, flash: 0 };
+  return { sec: 60 - (e % 60), min: min0 + 1 + Math.floor(e / 60), flash: Math.exp(-(tl - tSig) * 2.2) };
+}
+// telefono di Luca alla settimana dell'EMOM
+ATH['luca-emom'] = { name: 'Luca', day: 'Martedì', week: 'Settimana 2 di 4', today: 'Oggi: giorno 3', ex: [['Muscle-up', 'EMOM 10′ · 2 rip · +5 kg'], ['Trazioni', 'EMOM 8′ · 3 rip · +30 kg']] };
+
+Object.assign(BLOCCHI_TEMI, {
+  // R07 · l'atleta fa il record e lo propone al coach
+  'record-proposto': {
+    schermo(tl, d, s, P) {
+      const tk = istanteTocco(s, P, 0.45);
+      return texRecordProposto({ tap: (tl - tk) / 0.55, ok: tl >= tk + 0.12, glow: 0.8 * pulse(tl, 0.9) + 0.6 * pulse(tl, tk + 0.12) }, d);
+    },
+    disegna(x, F, tl, d, s) { const tk = istanteTocco(s, F.P, 0.45); richiamiTelefono(x, F, tl, d, s, [842], [tk + 0.1], [1080]); },
+    eventi: (d, s, colpo) => {
+      const tk = s.tipo === 'culmine' ? colpo - s.t0 : (s.t1 - s.t0) * 0.45;
+      return [{ t: 0.9, tipo: 'schermo', pan: 0.3 }, { t: tk, tipo: 'tocco', pan: 0.3 }, { t: tk + 0.11, tipo: 'ok', pan: 0.3 }].concat(evRichiami([tk + 0.1], (d.richiami || []).length));
+    },
+  },
+  // R07 · il coach conferma il record; la stima resta segnata come stima
+  'record-confermato': {
+    disegna(x, F, tl, d, s) {
+      const m = moto(tl, s); if (m.a <= 0.003) return;
+      const W0 = 950, h = d.stima ? 660 : 580, X0 = 65 + m.dx, T0 = topRiq(h), tk = istanteTocco(s, F.P, 0.5), ok = tl >= tk + 0.12;
+      drawSprite(x, 'rc' + s.t0, W0, h, (g, w, hh) => { glass(g, w, hh, { r: 36 }); g.fillStyle = 'rgba(255,255,255,0.09)'; g.fillRect(40, 424, w - 80, 1.5); }, 540 + m.dx, T0 + h / 2, 1, m.a, 0, m.blur);
+      x.save(); x.globalAlpha *= m.a;
+      caps(x, `Record di ${d.atleta || 'Luca'}`, X0 + 40, T0 + 64, 26, INK3);
+      label(x, d.esercizio, X0 + 40, T0 + 146, 700, 64, '#FFFFFF', 'left', 1, FT);
+      pill(x, X0 + 60 + textW(x, d.esercizio, 700, 64, FT), T0 + 124, 'Nuovo', 'rame', 28);
+      // il numero grande si accende alla conferma
+      const [num, unita] = String(d.record).split(' '), lk = ok ? Math.exp(-(tl - tk - 0.12) * 2.2) : 0;
+      x.save(); x.shadowColor = `rgba(255,232,206,${0.35 + 0.5 * lk})`; x.shadowBlur = 30 + 60 * lk;
+      label(x, num, X0 + 40, T0 + 330, 700, 190, '#FFFFFF', 'left', 1, FT); x.restore();
+      if (unita) label(x, unita, X0 + 56 + textW(x, num, 700, 190, FT), T0 + 330, 700, 64, INK2, 'left', 1, FT);
+      if (d.prima) label(x, `Prima: ${d.prima}`, X0 + 40, T0 + 392, 500, 32, INK3, 'left', 1, FB);
+      gleam(x, (g) => { setF(g, 700, 190, FT); g.fillText(num, X0 + 40, T0 + 330); }, sm(tk + 0.2, tk + 0.8, tl), X0, X0 + 600, 80, 0.8);
+      let yb = T0 + 470;
+      if (d.stima) {
+        label(x, 'Massimale stimato', X0 + 40, T0 + 488, 500, 34, INK2, 'left', 1, FB);
+        label(x, d.stima, X0 + W0 - 200, T0 + 488, 700, 36, '#FFFFFF', 'right', 1, FB);
+        pill(x, X0 + W0 - 40, T0 + 476, 'Stima', 'neutra', 26, 'right');
+        yb = T0 + 540;
+      }
+      pulsante(x, X0 + 40, yb, W0 - 80, 90, d.pulsante, d.fatto, ok);
+      x.restore();
+      if (tl > tk && tl < tk + 0.7) ripple(x, 540 + m.dx, yb + 45, eo((tl - tk) / 0.6), 130);
+    },
+    eventi: (d, s, colpo) => {
+      const tk = s.tipo === 'culmine' ? colpo - s.t0 : (s.t1 - s.t0) * 0.5;
+      return [{ t: 0.25, tipo: 'fruscio', pan: 0.2 }, { t: tk, tipo: 'tocco', pan: 0 }, { t: tk + 0.12, tipo: 'ok', pan: 0 }];
+    },
+  },
+
+  // R08 · link e QR della palestra
+  'invito-qr': {
+    disegna(x, F, tl, d, s) {
+      const m = moto(tl, s); if (m.a <= 0.003) return;
+      const th = THEME[temaDi(d.palestra)] || THEME.fs, W0 = 950, h = 540, X0 = 65 + m.dx, T0 = topRiq(h), lato = 330;
+      drawSprite(x, 'iq' + s.t0, W0, h, (g, w, hh) => glass(g, w, hh, { r: 36 }), 540 + m.dx, T0 + h / 2, 1, m.a, 0, m.blur);
+      x.save(); x.globalAlpha *= m.a;
+      marchio(x, th, X0 + 82, T0 + 82, 42);
+      label(x, d.palestra, X0 + 142, T0 + 100, 700, 52, '#FFFFFF', 'left', 1, FT);
+      disegnaQR(x, X0 + 40, T0 + 166, lato, tl, th);
+      const RX = X0 + 410, RW = W0 - 450;
+      caps(x, 'Link d’invito', RX, T0 + 196, 26, INK3);
+      rrect(x, RX, T0 + 222, RW, 76, 24, 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.16)', 1.5);
+      icLink(x, RX + 44, T0 + 260, 40, '#FFFFFF', 3.5);
+      [150, 90, 120].forEach((bw, i) => rrect(x, RX + 82 + [0, 162, 264][i], T0 + 251, bw, 18, 9, 'rgba(255,255,255,0.22)'));
+      const tc = 2.9, ok = tl >= tc + 0.12;
+      pulsantino(x, RX, T0 + 322, RW, 80, 'Copia link', 'Link copiato', ok, 32);
+      label(x, 'Chi lo apre', RX, T0 + 452, 500, 32, INK2, 'left', 1, FB);
+      label(x, 'chiede di entrare.', RX, T0 + 492, 500, 32, INK2, 'left', 1, FB);
+      x.restore();
+      if (tl > tc && tl < tc + 0.7) ripple(x, RX + RW / 2, T0 + 362, eo((tl - tc) / 0.6), 110);
+    },
+    eventi: () => [{ t: 0.25, tipo: 'fruscio', pan: 0.3 }, { t: 0.6, tipo: 'conta', pan: -0.3 }, { t: 1.6, tipo: 'schermo', pan: -0.3 }, { t: 2.9, tipo: 'tocco', pan: 0.3 }, { t: 3.02, tipo: 'ok', pan: 0.3 }],
+  },
+  // R08 · il coach accetta la richiesta e assegna la scheda; sul telefono dell'atleta la scheda è pronta
+  'richiesta-accetta': {
+    schermo(tl, d, s, P) {
+      const k = temaDi(d.palestra), ta = istanteTocco(s, P, 0.6) + 0.1;
+      if (tl < ta) return texPalestra('inviata', k);
+      if (tl < ta + 0.55) return texWipeK('ra' + s.t0, texPalestra('inviata', k), texPalestra('pronta', k, d.atleta), sm(ta, ta + 0.55, tl));
+      return texPalestra('pronta', k, d.atleta);
+    },
+    disegna(x, F, tl, d, s) {
+      const tA = istanteTocco(s, F.P, 0.6), tC = Math.max(0.45, tA - 1.0), e = eo((tl - 0.25) / 0.6), a = e * restaFino(tl, s);
+      if (a <= 0.003) return;
+      const X0 = 65 - (1 - e) * 360, W0 = 382, T0 = 600, h = 560;
+      drawSprite(x, 'ra' + s.t0, W0, h, (g, w, hh) => { glass(g, w, hh, { r: 32 }); g.fillStyle = 'rgba(255,255,255,0.09)'; g.fillRect(32, 304, w - 64, 1.5); }, X0 + W0 / 2, T0 + h / 2, 1, a, 0, (1 - e) * 12);
+      x.save(); x.globalAlpha *= a;
+      caps(x, 'Nuova richiesta', X0 + 32, T0 + 58, 24, INK3);
+      label(x, d.atleta, X0 + 32, T0 + 126, 700, 54, '#FFFFFF', 'left', 1, FT);
+      label(x, d.palestra, X0 + 32, T0 + 170, 500, 30, INK3, 'left', 1, FB);
+      pulsantino(x, X0 + 32, T0 + 200, W0 - 64, 76, d.accetta || 'Accetta', d.accettata || 'Accettata', tl >= tC + 0.12, 30);
+      caps(x, 'Scheda', X0 + 32, T0 + 352, 24, INK3);
+      label(x, d.modello, X0 + 32, T0 + 406, 700, 38, '#FFFFFF', 'left', 1, FT);
+      pulsantino(x, X0 + 32, T0 + 446, W0 - 64, 76, d.assegna || 'Assegna', d.assegnata || 'Assegnata', tl >= tA + 0.12, 30);
+      x.restore();
+      if (tl > tC && tl < tC + 0.7) ripple(x, X0 + W0 / 2, T0 + 238, eo((tl - tC) / 0.6), 90);
+      if (tl > tA && tl < tA + 0.7) ripple(x, X0 + W0 / 2, T0 + 484, eo((tl - tA) / 0.6), 90);
+      // filo rame dalla scheda assegnata al telefono dell'atleta
+      const G = F.eroe, fp = sm(tA, tA + 0.5, tl);
+      if (G && fp > 0) { const B = G.uv(0.04, 0.42); arrow(x, bez([X0 + W0 - 20, T0 + 484], [X0 + W0 + 40, T0 + 484], [B[0] - 60, B[1]], B, 24), fp, `rgba(${CUc},${0.9 * a * (1 - sm(tA + 1.2, tA + 1.8, tl))})`, 2); }
+    },
+    eventi: (d, s, colpo) => {
+      const tA = s.tipo === 'culmine' ? colpo - s.t0 : (s.t1 - s.t0) * 0.6, tC = Math.max(0.45, tA - 1.0);
+      return [{ t: 0.25, tipo: 'fruscio', pan: -0.4 }, { t: tC, tipo: 'tocco', pan: -0.4 }, { t: tC + 0.12, tipo: 'ok', pan: -0.4 }, { t: tA, tipo: 'tocco', pan: -0.4 }, { t: tA + 0.12, tipo: 'ok', pan: -0.4 }, { t: tA + 0.1, tipo: 'schermo', pan: 0.3 }];
+    },
+  },
+
+  // R09 · il coach scrive la nota sull'esercizio
+  'nota-scrivi': {
+    disegna(x, F, tl, d, s) {
+      const m = moto(tl, s); if (m.a <= 0.003) return;
+      const W0 = 950, X0 = 65 + m.dx, righe = aCapo(SCR, d.nota, W0 - 160, 40, 600, FB).slice(0, 3);
+      const nh = 60 + righe.length * 52, h = 300 + nh + 40, T0 = topRiq(h);
+      drawSprite(x, 'ns' + s.t0, W0, h, (g, w, hh) => { glass(g, w, hh, { r: 34 }); g.fillStyle = 'rgba(255,255,255,0.09)'; g.fillRect(40, 214, w - 80, 1.5); }, 540 + m.dx, T0 + h / 2, 1, m.a, 0, m.blur);
+      x.save(); x.globalAlpha *= m.a;
+      caps(x, 'Esercizio', X0 + 40, T0 + 62, 26, INK3);
+      label(x, d.esercizio, X0 + 40, T0 + 136, 700, 62, '#FFFFFF', 'left', 1, FT);
+      if (d.dettaglio) label(x, d.dettaglio, X0 + 40, T0 + 184, 500, 34, INK3, 'left', 1, FB);
+      icPin(x, X0 + 56, T0 + 262, 30, `rgb(${CUc})`);
+      caps(x, 'Nota per l’atleta', X0 + 84, T0 + 270, 26, INK2);
+      const FY = T0 + 300, t0 = 0.9, vel = 0.045, tot = righe.join(' ').length, scritti = Math.floor(H.clamp((tl - t0) / (tot * vel)) * tot);
+      rrect(x, X0 + 40, FY, W0 - 80, nh, 22, 'rgba(255,255,255,0.06)', tl > t0 && scritti < tot ? `rgba(${CUc},0.8)` : 'rgba(255,255,255,0.16)', 1.5);
+      let resto = scritti, fine = null;
+      righe.forEach((r, i) => {
+        const n = Math.max(0, Math.min(r.length, resto)); resto -= r.length + 1;
+        const parte = r.slice(0, n), y = FY + 66 + i * 52;
+        if (parte) label(x, parte, X0 + 76, y, 600, 40, '#FFFFFF', 'left', 1, FB);
+        if (n > 0 || i === 0) fine = [X0 + 76 + textW(x, parte, 600, 40, FB), y];
+      });
+      if (fine && tl > t0 - 0.2 && (scritti < tot || Math.floor(tl / 0.3) % 2 === 0) && tl < t0 + tot * vel + 1.2) { x.fillStyle = `rgb(${CUc})`; x.fillRect(fine[0] + 4, fine[1] - 36, 3, 44); }
+      x.restore();
+      aloneRame(x, X0 + 40, FY, W0 - 80, nh, 22, m.a * 0.9 * pulse(tl, t0 + tot * vel));
+    },
+    eventi: (d) => {
+      const parole = String(d.nota).split(' '); let n = 0;
+      return [{ t: 0.25, tipo: 'fruscio', pan: 0.3 }].concat(parole.map((p) => { const t = 0.9 + n * 0.045; n += p.length + 1; return { t, tipo: 'parola', pan: -0.3 }; }));
+    },
+  },
+  // R09 · la nota in evidenza sul telefono dell'atleta
+  'nota-coach': {
+    schermo(tl, d, s, P) {
+      const tk = istanteTocco(s, P, 0.35);
+      const glow = s.tipo === 'culmine' ? Math.min(1, 1.2 * Math.exp(-Math.max(0, tl - tk) * 1.0)) * sm(tk - 0.1, tk + 0.1, tl) : 0.9 * pulse(tl, tk);
+      return texEsercizio({ glow });
+    },
+    disegna(x, F, tl, d, s) { const tk = istanteTocco(s, F.P, 0.35); richiamiTelefono(x, F, tl, d, s, [NOTA_Y + 60], [tk], [830]); },
+    eventi: (d, s, colpo) => {
+      const tk = s.tipo === 'culmine' ? colpo - s.t0 : (s.t1 - s.t0) * 0.35;
+      return [{ t: tk, tipo: 'schermo', pan: 0.3 }].concat(evRichiami([tk], (d.richiami || []).length));
+    },
+  },
+
+  // R10 · il minuto dell'EMOM che scorre e il segnale
+  'emom-minuto': {
+    schermo(tl, d, s, P) { return texEmom(statoEmom(tl, istanteTocco(s, P, 0.6), d.minuto || 3)); },
+    disegna(x, F, tl, d, s) { const tS = istanteTocco(s, F.P, 0.6); richiamiTelefono(x, F, tl, d, s, [EMOM.y], [tS], [950]); },
+    eventi: (d, s, colpo) => {
+      const tS = s.tipo === 'culmine' ? colpo - s.t0 : (s.t1 - s.t0) * 0.6;
+      return [{ t: tS, tipo: 'segnale', pan: 0.3 }].concat(evRichiami([tS], (d.richiami || []).length));
+    },
+  },
+});
+
+Object.assign(SCHERMI_TEMI, {
+  entra: (tl, d, arg) => texPalestra('entra', arg || 'fs'),
+  inviata: (tl, d, arg) => texPalestra('inviata', arg || 'fs'),
+  pronta: (tl, d, arg) => texPalestra('pronta', arg || 'fs', 'Marco'),
+  esercizio: () => texEsercizio({ glow: 0 }),
+  emom: () => texEmom({ sec: 60, min: 1, flash: 0 }),
+  record: () => texRecordProposto({ tap: -1, ok: false, glow: 0 }, { record: '+67,5 kg', esercizio: 'Trazione' }),
+});

@@ -1,0 +1,86 @@
+{
+  "n": 9,
+  "slug": "la-nota-che-si-vede",
+  "titolo": "La nota che si vede",
+  "funzione": "note",
+  "palco": "verde",
+  "musica": 2,
+  "gancio": {
+    "scena": "griglia",
+    "righe": [
+      "La nota",
+      "è in cella K12.",
+      "La leggerà?"
+    ]
+  },
+  "promessa": [
+    "Scrivi la nota,",
+    "lui la vede",
+    "in evidenza."
+  ],
+  "momenti": [
+    {
+      "titolo": [
+        "Scrivi la nota",
+        "sull’esercizio."
+      ],
+      "blocco": "nota-scrivi",
+      "dati": {
+        "esercizio": "Dip con fermo",
+        "dettaglio": "4 × 3 @7 · +30 kg",
+        "nota": "Fermo di 1″ in basso, gomiti stretti."
+      }
+    },
+    {
+      "titolo": [
+        "Una nota",
+        "per esercizio."
+      ],
+      "blocco": "pannello-righe",
+      "dati": {
+        "intestazione": "Note della settimana",
+        "righe": [
+          [
+            "Dip con fermo",
+            "fermo 1″"
+          ],
+          [
+            "Trazioni",
+            "scapole attive"
+          ],
+          [
+            "Squat",
+            "discesa in 3″"
+          ]
+        ]
+      }
+    },
+    {
+      "titolo": [
+        "Lui apre",
+        "l’esercizio…"
+      ],
+      "blocco": "telefono-schermata",
+      "dati": {
+        "da": "settimana:luca",
+        "a": "esercizio"
+      }
+    }
+  ],
+  "culmine": {
+    "titolo": [
+      "…e la nota",
+      "è in evidenza."
+    ],
+    "blocco": "nota-coach",
+    "dati": {
+      "richiami": [
+        [
+          "La nota\ndel coach"
+        ]
+      ]
+    }
+  },
+  "didascalia": "App per coach di streetlifting e calisthenics: la nota sull'esercizio arriva dove l'atleta la vede.\n\nScrivi la nota direttamente sull'esercizio, una per ogni esercizio. Nell'app dell'atleta compare in evidenza proprio lì, quando apre l'esercizio: fermo, tempo, tecnica, quello che serve.\n\nSeguici per non perdere l'anteprima gratuita.\n\n#streetlifting #calisthenics #weightedcalisthenics #coach #streetworkout",
+  "alt": "Reel animato: il coach scrive sul dip con fermo la nota «Fermo di 1″ in basso, gomiti stretti»; poi le note della settimana su dip, trazioni e squat; Luca apre l'esercizio sul telefono e la nota del coach compare in evidenza in cima."
+}

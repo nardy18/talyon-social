@@ -17,6 +17,13 @@
     "senza-rete": {"camera": "telefono-destra", "durata": 5.0, "dati": ["richiami"]},
     "seguire-lista": {"camera": "pannelli", "durata": 5.5, "dati": ["titolo", "righe"], "nomi": ["righe[*][0]"]},
     "celle-coach": {"camera": "pannelli", "durata": 5.5, "dati": ["atleta", "righe"], "nomi": ["atleta"]},
-    "cella-prescritto": {"camera": "pannelli", "durata": 5.0, "dati": ["esercizio", "celle", "prescritto", "fatto"], "nomi": ["atleta"]}
+    "cella-prescritto": {"camera": "pannelli", "durata": 5.0, "dati": ["esercizio", "celle", "prescritto", "fatto"], "nomi": ["atleta"]},
+    "record-proposto": {"camera": "telefono-destra", "durata": 5.5, "dati": ["esercizio", "record", "richiami"]},
+    "record-confermato": {"camera": "pannelli", "durata": 4.5, "dati": ["esercizio", "record", "pulsante", "fatto"], "nomi": ["atleta"]},
+    "invito-qr": {"camera": "pannelli", "durata": 5.5, "dati": ["palestra"], "nomi": ["palestra"]},
+    "richiesta-accetta": {"camera": "telefono-destra", "durata": 5.5, "dati": ["atleta", "palestra", "modello"], "nomi": ["atleta", "palestra"]},
+    "nota-scrivi": {"camera": "pannelli", "durata": 5.5, "dati": ["esercizio", "nota"]},
+    "nota-coach": {"camera": "telefono-destra", "durata": 5.0, "dati": ["richiami"]},
+    "emom-minuto": {"camera": "telefono-destra", "durata": 5.5, "dati": ["richiami"]}
   }
 }
