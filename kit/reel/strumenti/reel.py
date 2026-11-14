@@ -5,6 +5,8 @@ Uso:
     python3 kit/reel/strumenti/reel.py valida <copione.json>
     python3 kit/reel/strumenti/reel.py controlla <copione.json> [cartella]
     python3 kit/reel/strumenti/reel.py audio <copione.json> <audio.wav>
+    python3 kit/reel/strumenti/reel.py video <cartella del reel> [--fino SECONDI]
+    python3 kit/reel/strumenti/reel.py copertina <cartella del reel>
 
 Il copione descrive un reel (gancio, promessa, momenti, culmine, didascalia).
 Il motore in kit/reel/motore disegna il reel in Chrome (Playwright), come kit/genera.py fa per i caroselli.
@@ -14,6 +16,7 @@ import base64
 import json
 import pathlib
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -375,6 +378,114 @@ def audio(percorso, uscita) -> dict:
     return {"durata": durata, "lufs": forte, "picco": picco, "guadagno": round(guadagno, 2)}
 
 
+# ---------------- video ----------------
+FPS = 30
+# codifica come il Reel 2: H.264, BT.709 in gamma tv, aq-mode 3 contro le bande
+CODIFICA = ["-vf", "format=rgb24,scale=out_color_matrix=bt709:out_range=tv:flags=accurate_rnd+full_chroma_int,format=yuv420p",
+            "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-x264-params", "aq-mode=3:aq-strength=0.9",
+            "-profile:v", "high", "-level", "4.2", "-r", str(FPS),
+            "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-color_range", "tv"]
+LIMITE_MB = 30
+
+
+def _parte(page, f0: int, f1: int, uscita: pathlib.Path):
+    """Una parte del video: fotogrammi JPEG q92 dal canvas a ffmpeg; nome provvisorio finché ffmpeg non esce con 0."""
+    tmp = uscita.with_name(uscita.stem + ".tmp.mp4")
+    ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "image2pipe", "-framerate", str(FPS), "-c:v", "mjpeg", "-i", "-"]
+                          + CODIFICA + [str(tmp)], stdin=subprocess.PIPE)
+    try:
+        for f in range(f0, f1):
+            ff.stdin.write(_jpg(page, "(t) => window.frameJPEG(t, 0.92)", f / FPS))
+    finally:
+        ff.stdin.close()
+    if ff.wait() != 0:
+        raise RuntimeError(f"ffmpeg non ha chiuso la parte {uscita.name}")
+    tmp.replace(uscita)
+
+
+def copertina(cartella) -> pathlib.Path:
+    """Copertina: il fotogramma di fine promessa (6,0 s), JPG qualità 96."""
+    cartella = pathlib.Path(cartella)
+    percorso = cartella / "copione.json"
+    with apri(percorso, clip="tutti") as s:
+        (cartella / "copertina.jpg").write_bytes(_jpg(s.page, "(t) => window.frameJPEG(t, 0.96)", 6.0))
+    return cartella / "copertina.jpg"
+
+
+def verifica(mp4, fotogrammi: int, volume=None) -> int:
+    """Controllo del video finito con ffprobe: stampa una riga di riepilogo, 0 se va tutto bene, 2 se no.
+    volume = (lufs, picco) già misurati sul master intero (per i video tagliati con --fino)."""
+    r = subprocess.run(["ffprobe", "-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", str(mp4)],
+                       capture_output=True, text=True)
+    info = json.loads(r.stdout or "{}")
+    flussi = info.get("streams", [])
+    v = next((x for x in flussi if x.get("codec_type") == "video"), {})
+    a = [x for x in flussi if x.get("codec_type") == "audio"]
+    forte, picco = volume if volume else misura_volume(mp4)
+    mb = pathlib.Path(mp4).stat().st_size / 1e6
+    prove = {
+        "1080×1920": (v.get("width"), v.get("height")) == (1080, 1920),
+        "30/1": v.get("r_frame_rate") == "30/1",
+        "yuv420p": v.get("pix_fmt") == "yuv420p",
+        "bt709": v.get("color_space") == "bt709" and v.get("color_primaries") == "bt709",
+        f"{fotogrammi} fotogrammi": int(v.get("nb_read_frames") or 0) == fotogrammi,
+        "audio": len(a) == 1,
+        "−14 LUFS": abs(forte + 14.0) <= 0.5,
+        "picco ≤ −1 dB": picco <= -1.0,
+        f"sotto {LIMITE_MB} MB": mb < LIMITE_MB,
+    }
+    male = [k for k, ok in prove.items() if not ok]
+    print(f"{pathlib.Path(mp4).name}: {v.get('width')}×{v.get('height')}, {v.get('nb_read_frames')} fotogrammi, "
+          f"{forte} LUFS, picco {picco} dB, {mb:.1f} MB → " + ("tutto a posto" if not male else "da correggere: " + ", ".join(male)))
+    return 2 if male else 0
+
+
+def video(cartella, fino=None) -> int:
+    """Il reel finito nella sua cartella: talyon-reelNN.mp4, copertina.jpg, controllo.jpg e didascalia.txt.
+    Render a parti (una per sezione), audio dal piano, unione senza ricodifica e controllo finale.
+    Restituisce 0 se è tutto a posto, 2 se c'è qualcosa da correggere."""
+    cartella = pathlib.Path(cartella)
+    percorso = cartella / "copione.json"
+    c = json.loads(percorso.read_text())
+    lavoro = CACHE / "video" / c["slug"]
+    shutil.rmtree(lavoro, ignore_errors=True)
+    lavoro.mkdir(parents=True)
+    # controllo a vista nella cache (aree, console, fotogrammi chiave); nella cartella va solo il foglio
+    if controlla(percorso, lavoro / "controllo"):
+        return 2
+    shutil.copy(lavoro / "controllo" / "controllo.jpg", cartella / "controllo.jpg")
+    suono = audio(percorso, lavoro / "audio.wav")
+    fine = suono["durata"] if fino is None else min(suono["durata"], float(fino))
+    n = round(fine * FPS)
+    with apri(percorso, clip="tutti", copione=c) as s:
+        P = s.page.evaluate("TALYON.piano()")
+        tagli = sorted({0, n} | {round(x["t0"] * FPS) for x in P["sezioni"][1:] if 0 < round(x["t0"] * FPS) < n})
+        parti = []
+        for i, (f0, f1) in enumerate(zip(tagli, tagli[1:])):
+            parti.append(lavoro / f"parte-{i:02d}.mp4")
+            _parte(s.page, f0, f1, parti[-1])
+        (cartella / "copertina.jpg").write_bytes(_jpg(s.page, "(t) => window.frameJPEG(t, 0.96)", 6.0))
+        if s.errori:
+            print("console:", "; ".join(s.errori))
+            return 2
+    elenco = lavoro / "parti.txt"
+    elenco.write_text("".join(f"file '{p}'\n" for p in parti))
+    muto = lavoro / "video.mp4"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(elenco), "-c", "copy", str(muto)], check=True)
+    suono_wav = lavoro / "audio.wav"
+    if fino is not None:
+        suono_wav = lavoro / "audio-fino.wav"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(lavoro / "audio.wav"), "-af", f"atrim=end_sample={round(fine * SR)}",
+                        "-c:a", "pcm_s24le", str(suono_wav)], check=True)
+    finito = cartella / f"talyon-reel{c['n']:02d}.mp4"
+    tmp = finito.with_name(finito.stem + ".tmp.mp4")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(muto), "-i", str(suono_wav), "-map", "0:v", "-map", "1:a",
+                    "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(tmp)], check=True)
+    tmp.replace(finito)
+    (cartella / "didascalia.txt").write_text(c["didascalia"].rstrip() + "\n")
+    return verifica(finito, n, (suono["lufs"], suono["picco"]) if fino is not None else None)
+
+
 # ---------------- riga di comando ----------------
 def main(argv):
     if len(argv) < 3:
@@ -389,6 +500,11 @@ def main(argv):
         print("copione valido")
     elif comando == "controlla":
         sys.exit(controlla(percorso, argv[3] if len(argv) > 3 else None))
+    elif comando == "video":
+        fino = float(argv[argv.index("--fino") + 1]) if "--fino" in argv else None
+        sys.exit(video(percorso, fino))
+    elif comando == "copertina":
+        print(copertina(percorso))
     elif comando == "audio":
         if len(argv) < 4:
             sys.exit(__doc__)
