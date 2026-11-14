@@ -1,0 +1,165 @@
+<carosello sfondo="verde" serie="Back-off">
+<style>
+  /* Stili solo per questo carosello */
+  .formula { display: flex; align-items: center; justify-content: center; gap: 28px; width: 100%; }
+  .formula .card { align-items: center; text-align: center; padding: 30px 36px; min-width: 300px; }
+  .formula .card .cosa { font-size: 26px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,.66); }
+  .formula .card .kg { font-size: 92px; font-weight: 700; font-stretch: 82%; line-height: 1; }
+  .formula .card .sotto { font-size: 28px; color: var(--testo-2); }
+  .formula .meno { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .formula .meno .scarto { font-size: 40px; font-weight: 700; font-stretch: 85%; }
+  .formula .meno .freccia { width: 90px; height: 1.5px; background: var(--rame); position: relative; }
+  .formula .meno .freccia::after { content: ""; position: absolute; right: -2px; top: -6px; width: 12px; height: 12px; border-top: 1.5px solid var(--rame); border-right: 1.5px solid var(--rame); transform: rotate(45deg); }
+
+  .ramping .riga { font-size: 32px; }
+  .ramping .top { color: #FFFFFF; }
+  .ramping .top .valore { color: #FFFFFF; font-weight: 700; }
+
+  .grafico { width: 100%; }
+  .grafico text { font-family: Saira, sans-serif; fill: #FFFFFF; }
+
+  .confronto { display: flex; gap: 24px; width: 100%; }
+  .confronto .card { flex: 1; gap: 16px; padding: 30px 32px; }
+  .confronto .card .nome { font-size: 38px; }
+  .confronto .card .kg { font-size: 30px; font-weight: 600; }
+  .confronto .card .pill { align-self: flex-start; margin-top: auto; }
+
+  .ancora { position: relative; }
+  .ancora .telefono { --t-larghezza: 270px; }
+  .annotazione { position: absolute; width: 290px; transform: translateY(-50%); display: flex; align-items: center; font-size: 26px; font-weight: 600; line-height: 1.25; color: rgba(255,255,255,.86); }
+  .annotazione .filo { width: 40px; height: 1.5px; background: var(--rame); flex-shrink: 0; }
+  .annotazione .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--rame); flex-shrink: 0; }
+  .annotazione.sinistra { right: calc(100% - 4px); justify-content: flex-end; text-align: right; }
+  .annotazione.sinistra .filo { margin-left: 18px; }
+  .annotazione.destra { left: calc(100% - 4px); justify-content: flex-start; }
+  .annotazione.destra .filo { margin-right: 18px; }
+</style>
+
+<!-- 01 · Copertina -->
+<section class="slide" data-tipo="copertina">
+  <div class="formula">
+    <div class="card"><span class="cosa">Top di oggi</span><span class="kg">+60</span><span class="sotto">1 @8</span></div>
+    <div class="meno"><span class="scarto">−15 kg</span><span class="freccia"></span></div>
+    <div class="card"><span class="cosa">Back-off</span><span class="kg">+45</span><span class="sotto">3 × 3</span></div>
+  </div>
+  <p class="etichetta">Programmazione</p>
+  <h1>Il back-off parte dalla top del giorno.</h1>
+  <p class="sottotitolo">Perché la top di oggi conta più del massimale.</p>
+</section>
+
+<!-- 02 · Il punto di partenza -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Il punto di partenza</p>
+  <h1>Il massimale è una foto. La top è il giorno.</h1>
+  <div class="linea"></div>
+  <p class="testo">Sonno, lavoro, stress: la forza cambia da un allenamento all’altro. <b>La top single ti dice quanta ce n’è oggi.</b></p>
+</section>
+
+<!-- 03 · Come funziona -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Come funziona</p>
+  <h1>Prima trovi la top, poi scali.</h1>
+  <div class="visual">
+    <div class="pannello ramping">
+      <div class="intestazione"><span>Luca · Trazione</span><small>Esempio</small></div>
+      <div class="riga"><div class="sx"><span class="piccolo">RAMPING</span>3 ripetizioni</div><span class="valore">+30 kg</span></div>
+      <div class="riga"><div class="sx"><span class="piccolo">RAMPING</span>2 ripetizioni</div><span class="valore">+45 kg</span></div>
+      <div class="riga"><div class="sx"><span class="piccolo">RAMPING</span>1 ripetizione</div><span class="valore">+55 kg</span></div>
+      <div class="riga top"><div class="sx"><span class="piccolo">TOP</span>1 @8</div><span class="valore">+60 kg</span></div>
+      <div class="riga"><div class="sx"><span class="piccolo">BACK-OFF</span>3 × 3</div><span class="valore">+45 kg</span></div>
+    </div>
+  </div>
+  <p class="testo">Sali fino a una singola ad RPE 8. <b>Il back-off si calcola da quel carico, non dal massimale sulla carta.</b></p>
+</section>
+
+<!-- 04 · Due giornate -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Esempio a −15 kg</p>
+  <h1>Stesso scarto, due giornate diverse.</h1>
+  <div class="visual">
+    <svg class="grafico" viewBox="0 0 888 440" aria-hidden="true">
+      <line x1="0" y1="380" x2="888" y2="380" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+      <!-- giornata buona -->
+      <rect x="40" y="80" width="170" height="300" rx="14" fill="rgba(255,255,255,.2)" stroke="#D98E4A" stroke-width="2"/>
+      <rect x="230" y="155" width="170" height="225" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(217,142,74,.45)"/>
+      <text x="125" y="60" text-anchor="middle" font-size="40" font-weight="700">+62</text>
+      <text x="315" y="135" text-anchor="middle" font-size="40" font-weight="700">+47</text>
+      <text x="220" y="425" text-anchor="middle" font-size="28" font-weight="600">Giornata buona</text>
+      <!-- giornata storta -->
+      <rect x="488" y="130" width="170" height="250" rx="14" fill="rgba(255,255,255,.2)" stroke="#D98E4A" stroke-width="2"/>
+      <rect x="678" y="205" width="170" height="175" rx="14" fill="rgba(255,255,255,.08)" stroke="rgba(217,142,74,.45)"/>
+      <text x="573" y="110" text-anchor="middle" font-size="40" font-weight="700">+55</text>
+      <text x="763" y="185" text-anchor="middle" font-size="40" font-weight="700">+40</text>
+      <text x="668" y="425" text-anchor="middle" font-size="28" font-weight="600">Giornata storta</text>
+      <!-- legenda dentro le barre -->
+      <text x="125" y="360" text-anchor="middle" font-size="24" fill-opacity=".75">Top</text>
+      <text x="315" y="360" text-anchor="middle" font-size="24" fill-opacity=".75">Back-off</text>
+      <text x="573" y="360" text-anchor="middle" font-size="24" fill-opacity=".75">Top</text>
+      <text x="763" y="360" text-anchor="middle" font-size="24" fill-opacity=".75">Back-off</text>
+    </svg>
+  </div>
+  <p class="testo">Stesso −15 kg, carichi diversi. <b>Il volume segue la forza che l’atleta ha davvero quel giorno.</b></p>
+</section>
+
+<!-- 05 · Dal massimale o dalla top -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Nella giornata storta</p>
+  <h1>Dalla top resti nell’RPE giusto.</h1>
+  <div class="visual">
+    <div class="confronto">
+      <div class="card">
+        <span class="nome">Dal massimale</span>
+        <span class="kg">+65 − 15 = +50 kg</span>
+        <span class="dettaglio">Con una top da +55 è quasi al limite.</span>
+        <span class="pill difficile"><i class="su"></i>Più difficile</span>
+      </div>
+      <div class="card">
+        <span class="nome">Dalla top</span>
+        <span class="kg">+55 − 15 = +40 kg</span>
+        <span class="dettaglio">Resta lavoro di qualità.</span>
+        <span class="pill neutra">Come previsto</span>
+      </div>
+    </div>
+  </div>
+  <p class="testo">Nei giorni no, un carico fisso diventa troppo. <b>Scalando dalla top, le serie restano tecniche e allenanti.</b></p>
+</section>
+
+<!-- 06 · Quanto togliere -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Quanto togliere</p>
+  <h1>−10, −15, −20: lo scarto lo decide il blocco.</h1>
+  <div class="linea"></div>
+  <p class="testo">Meno togli, più il back-off è intenso. <b>Scegli lo scarto in base a serie, ripetizioni e fase della preparazione.</b></p>
+</section>
+
+<!-- 07 · In Talyon -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">In Talyon</p>
+  <h1>Il carico del <span style="white-space:nowrap">back-off</span> si calcola da solo.</h1>
+  <div class="visual">
+    <div class="ancora">
+      <div class="telefono" data-tema="talyon">
+        <div class="schermo">
+          <div class="app-barra"><span class="app-logo"><svg viewBox="0 0 120 120"><use href="#mark"></use></svg></span>Talyon</div>
+          <div class="app-card"><div class="titolo">Trazione</div><div class="dettaglio">Top 1 @8 · back-off −15 kg</div></div>
+          <div class="app-riga" id="c7-top"><span>Top · 1 · +60 kg</span><span class="app-spunta fatta"></span></div>
+          <div class="app-riga" id="c7-bo"><span>Back-off 1 · 3 · +45 kg</span><span class="app-spunta"></span></div>
+          <div class="app-riga"><span>Back-off 2 · 3 · +45 kg</span><span class="app-spunta"></span></div>
+          <div class="app-riga"><span>Back-off 3 · 3 · +45 kg</span><span class="app-spunta"></span></div>
+          <div class="app-bottone">Conferma serie</div>
+        </div>
+      </div>
+      <div class="annotazione sinistra" data-mira="c7-top">L’atleta trova<br>la top<span class="filo"></span><span class="punto"></span></div>
+      <div class="annotazione destra" data-mira="c7-bo"><span class="punto"></span><span class="filo"></span>Il back-off<br>è già pronto</div>
+    </div>
+  </div>
+  <p class="testo">Scrivi il back-off a −15 kg dalla top. <b>Quando l’atleta trova la top, il carico si calcola da solo.</b></p>
+</section>
+
+<!-- 08 · Chiusura -->
+<section class="slide" data-tipo="chiusura">
+  <h1>Allena la forza che hai oggi.</h1>
+  <p class="testo">La top decide, il back-off segue.</p>
+  <p class="invito">Seguici per non perdere l’anteprima gratuita.</p>
+</section>
+</carosello>

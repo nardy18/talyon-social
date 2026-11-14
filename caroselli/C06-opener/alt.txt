@@ -1,0 +1,8 @@
+Tre schede con le prove di gara di un atleta, +12,5, +17,5 e +22,5 kg, e il titolo "Opener: sceglile senza bruciarti la gara".
+Testo: "La gara si apre con la prova più noiosa."
+Pannello di esempio sul muscle-up di Luca: massimale +20 kg, opener +12,5 kg.
+Grafico a barre delle tre prove, con la seconda in evidenza.
+Due schede per la terza prova: +20 kg per la classifica, +22,5 kg per il record.
+Linea del tempo delle ultime tre settimane prima della gara.
+Scheda del coach in Talyon con opener, top single e back-off, segnati più facile o più difficile del previsto.
+Simbolo di Talyon e il titolo "Prima chiudi. Poi rischia.", con l'invito a seguire la pagina.

@@ -1,0 +1,149 @@
+<carosello sfondo="grafite" serie="Opener">
+<style>
+  /* Stili solo per questo carosello */
+  .tre-prove { display: flex; gap: 22px; width: 100%; align-items: flex-end; }
+  .tre-prove .card { flex: 1; align-items: flex-start; }
+  .tre-prove .card .numero { font-size: 26px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,.62); }
+  .tre-prove .card .kg { font-size: 64px; font-weight: 700; font-stretch: 82%; line-height: 1; }
+  .tre-prove .card .ruolo { font-size: 26px; font-weight: 500; color: var(--testo-2); }
+  .tre-prove .p1 { min-height: 230px; }
+  .tre-prove .p2 { min-height: 280px; }
+  .tre-prove .p3 { min-height: 330px; }
+
+  .grafico { width: 100%; }
+  .grafico text { font-family: Saira, sans-serif; fill: #FFFFFF; }
+
+  .bivio { display: flex; gap: 24px; width: 100%; }
+  .bivio .card { flex: 1; gap: 14px; padding: 30px 32px; }
+  .bivio .card .nome { font-size: 40px; }
+  .bivio .card .kg { font-size: 72px; font-weight: 700; font-stretch: 82%; line-height: 1; }
+
+  .tappe { width: 100%; display: flex; flex-direction: column; gap: 0; }
+  .tappa { display: flex; gap: 28px; align-items: stretch; }
+  .tappa .asse { display: flex; flex-direction: column; align-items: center; width: 24px; flex-shrink: 0; }
+  .tappa .asse .punto { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--rame); background: #1E2022; margin-top: 14px; flex-shrink: 0; }
+  .tappa .asse .filo { width: 1.5px; flex-grow: 1; background: rgba(217,142,74,.5); }
+  .tappa:last-child .asse .filo { display: none; }
+  .tappa .corpo { padding-bottom: 22px; display: flex; flex-direction: column; gap: 6px; }
+  .tappa .quando { font-size: 26px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,.62); }
+  .tappa .cosa { font-size: 36px; font-weight: 700; font-stretch: 85%; }
+  .tappa .dettaglio { font-size: 27px; color: var(--testo-2); }
+
+  .griglia-coach { font-size: 28px; }
+  .griglia-coach .riga { font-size: 30px; }
+  .griglia-coach .prescritto { font-size: 24px; font-weight: 500; color: rgba(255,255,255,.6); }
+</style>
+
+<!-- 01 · Copertina -->
+<section class="slide" data-tipo="copertina">
+  <div class="tre-prove">
+    <div class="card p1"><span class="numero">Prima</span><span class="kg">+12,5</span><span class="ruolo">Entri in gara</span></div>
+    <div class="card p2"><span class="numero">Seconda</span><span class="kg">+17,5</span><span class="ruolo">Costruisci il totale</span></div>
+    <div class="card p3"><span class="numero">Terza</span><span class="kg">+22,5</span><span class="ruolo">Punti all’obiettivo</span></div>
+  </div>
+  <p class="etichetta">Gara</p>
+  <h1>Opener: sceglile senza bruciarti la gara.</h1>
+  <p class="sottotitolo">Le tre prove, una per una. E come prepararle.</p>
+</section>
+
+<!-- 02 · Il punto di partenza -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Il punto di partenza</p>
+  <h1>La gara si apre con la prova più noiosa.</h1>
+  <div class="linea"></div>
+  <p class="testo">L’opener non serve a stupire nessuno. <b>Serve a mettere un carico valido sul tabellone e a far partire la gara con calma.</b></p>
+</section>
+
+<!-- 03 · La prima prova -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">La prima prova</p>
+  <h1>La chiudi anche in una giornata storta.</h1>
+  <div class="visual">
+    <div class="pannello">
+      <div class="intestazione"><span>Luca · Muscle-up</span><small>Esempio</small></div>
+      <div class="riga"><div class="sx">Massimale in palestra</div><span class="valore">+20 kg</span></div>
+      <div class="riga"><div class="sx">Il carico che chiude sempre</div><span class="valore">+12,5 kg × 2</span></div>
+      <div class="riga"><div class="sx">Opener</div><span class="pill neutra">+12,5 kg</span></div>
+    </div>
+  </div>
+  <p class="testo">Scegli un carico che l’atleta solleva anche stanco, nervoso, dopo un riscaldamento storto. <b>Se lo chiude per 2, lo chiude in gara.</b></p>
+</section>
+
+<!-- 04 · La seconda prova -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">La seconda prova</p>
+  <h1>La seconda costruisce il totale.</h1>
+  <div class="visual">
+    <svg class="grafico" viewBox="0 0 888 420" aria-hidden="true">
+      <line x1="0" y1="370" x2="888" y2="370" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+      <rect x="70" y="210" width="180" height="160" rx="14" fill="rgba(255,255,255,.10)" stroke="rgba(217,142,74,.4)"/>
+      <rect x="354" y="110" width="180" height="260" rx="14" fill="rgba(255,255,255,.22)" stroke="#D98E4A" stroke-width="2"/>
+      <rect x="638" y="70" width="180" height="300" rx="14" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.3)" stroke-dasharray="8 8"/>
+      <text x="160" y="188" text-anchor="middle" font-size="40" font-weight="700">+12,5</text>
+      <text x="444" y="88" text-anchor="middle" font-size="40" font-weight="700">+17,5</text>
+      <text x="728" y="48" text-anchor="middle" font-size="40" font-weight="700">+22,5</text>
+      <text x="160" y="410" text-anchor="middle" font-size="26" fill-opacity=".7">Prima</text>
+      <text x="444" y="410" text-anchor="middle" font-size="26" font-weight="600">Seconda</text>
+      <text x="728" y="410" text-anchor="middle" font-size="26" fill-opacity=".7">Terza</text>
+    </svg>
+  </div>
+  <p class="testo">Un carico vicino al massimale attuale, già chiuso in allenamento nelle ultime settimane. <b>Se entra, il totale è al sicuro.</b></p>
+</section>
+
+<!-- 05 · La terza prova -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">La terza prova</p>
+  <h1>La terza dipende dall’obiettivo.</h1>
+  <div class="visual">
+    <div class="bivio">
+      <div class="card">
+        <span class="nome">Classifica</span>
+        <span class="kg">+20</span>
+        <span class="dettaglio">Il massimale, se basta per il posto che cerchi.</span>
+      </div>
+      <div class="card">
+        <span class="nome">Record</span>
+        <span class="kg">+22,5</span>
+        <span class="dettaglio">Un carico nuovo, se il resto della gara è già al sicuro.</span>
+      </div>
+    </div>
+  </div>
+  <p class="testo">Prima di salire in pedana decidi con l’atleta cosa conta di più quel giorno. <b>La terza si sceglie con la testa, non con l’adrenalina.</b></p>
+</section>
+
+<!-- 06 · Le ultime settimane -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Le ultime settimane</p>
+  <h1>L’opener si prova prima della gara.</h1>
+  <div class="visual">
+    <div class="tappe">
+      <div class="tappa"><div class="asse"><span class="punto"></span><span class="filo"></span></div><div class="corpo"><span class="quando">3 settimane prima</span><span class="cosa">Top single fino alla seconda</span><span class="dettaglio">Capisci dove sei davvero.</span></div></div>
+      <div class="tappa"><div class="asse"><span class="punto"></span><span class="filo"></span></div><div class="corpo"><span class="quando">2 settimane prima</span><span class="cosa">Opener più back-off</span><span class="dettaglio">Il carico della prima diventa abitudine.</span></div></div>
+      <div class="tappa"><div class="asse"><span class="punto"></span><span class="filo"></span></div><div class="corpo"><span class="quando">La settimana della gara</span><span class="cosa">Opener leggero, poi riposo</span><span class="dettaglio">Arrivi fresco, non arrugginito.</span></div></div>
+    </div>
+  </div>
+  <p class="testo">Un esempio, da adattare al tuo atleta. <b>In gara l’opener deve sembrargli un riscaldamento.</b></p>
+</section>
+
+<!-- 07 · In Talyon -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">In Talyon</p>
+  <h1>Scrivi le prove in scheda, rivedile dopo.</h1>
+  <div class="visual">
+    <div class="pannello griglia-coach">
+      <div class="intestazione"><span>Luca · Settimana −2</span><small>Muscle-up</small></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Opener · 2 × 1</span><span class="prescritto">Prescritto +12,5 kg @6</span></div><span class="pill facile"><i class="giu"></i>Più facile</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Top single</span><span class="prescritto">Prescritto +17,5 kg @8</span></div><span class="pill difficile"><i class="su"></i>Più difficile</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Back-off · 3 × 2</span><span class="prescritto">−5 kg dalla top</span></div><span class="valore">+12,5 kg</span></div>
+    </div>
+  </div>
+  <p class="testo">Scrivi top single, RPE e back-off come in palestra. <b>Ogni serie si colora più facile o più difficile del previsto.</b></p>
+</section>
+
+<!-- 08 · Chiusura -->
+<section class="slide" data-tipo="chiusura">
+  <h1>Prima chiudi. Poi rischia.</h1>
+  <p class="testo">Un opener sicuro tiene in gara l’atleta e lascia spazio al record.</p>
+  <p class="invito">Seguici per non perdere l’anteprima gratuita.</p>
+</section>
+</carosello>

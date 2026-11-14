@@ -1,0 +1,7 @@
+App per coach di streetlifting e calisthenics: il back-off si calcola dalla top single del giorno, non dal massimale.
+
+Il massimale è una foto, la top è il giorno: sonno, lavoro e stress cambiano la forza da un allenamento all'altro. Con lo stesso −15 kg dalla top, il back-off segue la forza che l'atleta ha davvero. In Talyon scrivi il back-off a −15 kg dalla top e, quando l'atleta la trova, il carico si calcola da solo.
+
+Salvalo per la prossima scheda e seguici per non perdere l'anteprima gratuita.
+
+#streetlifting #calisthenics #weightedcalisthenics #coach #backoff
