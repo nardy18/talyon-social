@@ -3,6 +3,7 @@ import json
 import pathlib
 import subprocess
 import sys
+import tempfile
 import unittest
 
 QUI = pathlib.Path(__file__).resolve().parent
@@ -47,6 +48,28 @@ class TestSpazi(unittest.TestCase):
             self.assertEqual(r.stdout.strip(), "2026-11-19T09:00")
         finally:
             f.unlink(missing_ok=True)
+
+    def _riga(self, post_json):
+        cartella = pathlib.Path(__file__).resolve().parent
+        return subprocess.run([sys.executable, str(cartella / "spazi.py"), "prossimo", "reel", "2026-11-21", str(post_json)],
+                              capture_output=True, text=True)
+
+    def test_file_dei_post_mancante(self):
+        """Senza il file dei post: una riga che dice cosa manca, niente traceback."""
+        with tempfile.TemporaryDirectory() as d:
+            r = self._riga(pathlib.Path(d) / "post.json")
+        self.assertNotEqual(r.returncode, 0)
+        self.assertNotIn("Traceback", r.stderr)
+        self.assertIn("getScheduledPosts", r.stderr)
+
+    def test_file_dei_post_non_valido(self):
+        with tempfile.TemporaryDirectory() as d:
+            f = pathlib.Path(d) / "post.json"
+            f.write_text("non è JSON")
+            r = self._riga(f)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertNotIn("Traceback", r.stderr)
+        self.assertIn("getScheduledPosts", r.stderr)
 
 
 if __name__ == "__main__":

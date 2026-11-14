@@ -77,7 +77,12 @@ def main(argv):
         argv = argv[:i] + argv[i + 2:]
     tipo, oggi, post_json = argv[2], argv[3], pathlib.Path(argv[4])
     temi = pathlib.Path(argv[5]).read_text() if len(argv) > 5 else ""
-    print("\n".join(prossimi(tipo, oggi, json.loads(post_json.read_text()), temi, quanti)))
+    try:
+        programmati = json.loads(post_json.read_text())
+    except (OSError, ValueError):
+        sys.exit(f"{post_json}: manca o non è JSON valido. Salvaci la risposta di getScheduledPosts "
+                 "(passo 2 di kit/LEGGIMI.md) e rilancia.")
+    print("\n".join(prossimi(tipo, oggi, programmati, temi, quanti)))
 
 
 if __name__ == "__main__":
