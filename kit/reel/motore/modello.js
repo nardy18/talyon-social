@@ -61,7 +61,9 @@ function costruisci(c, scala) {
   const cb = BLOCCHI.blocchi[c.culmine.blocco] || {};
   const c0 = r2(t - PASSO);
   const { colpo, allunga } = calcolaColpo(c0 + 1.3);
-  const c1 = r2(Math.max(c0 + Math.max(3.5, cb.durata || 3.5), colpo + 2.2));
+  // la chiusura parte 1,5 s prima di un battito: lì cade l'accordo risolto (al più 0,5 s dopo il minimo)
+  const c1min = Math.max(c0 + Math.max(3.5, cb.durata || 3.5), colpo + 2.2);
+  const c1 = r2(colpo + Math.ceil((c1min + 1.5 - colpo) / BATTITO - 1e-9) * BATTITO - 1.5);
   sez.push({ tipo: 'culmine', blocco: c.culmine.blocco, camera: cb.camera || 'pannelli', t0: c0, t1: c1 });
   sez.push({ tipo: 'chiusura', t0: c1, t1: r2(c1 + 4.0) });
   return { sez, colpo, allunga, durata: r2(c1 + 4.0) };

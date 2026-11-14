@@ -4,6 +4,7 @@
 Uso:
     python3 kit/reel/strumenti/reel.py valida <copione.json>
     python3 kit/reel/strumenti/reel.py controlla <copione.json> [cartella]
+    python3 kit/reel/strumenti/reel.py audio <copione.json> <audio.wav>
 
 Il copione descrive un reel (gancio, promessa, momenti, culmine, didascalia).
 Il motore in kit/reel/motore disegna il reel in Chrome (Playwright), come kit/genera.py fa per i caroselli.
@@ -15,6 +16,7 @@ import pathlib
 import re
 import subprocess
 import sys
+import tempfile
 
 KIT = pathlib.Path(__file__).resolve().parent.parent          # kit/reel
 MOTORE = KIT / "motore"
@@ -302,6 +304,77 @@ def controlla(percorso, uscita=None) -> int:
     return 2 if (fuori or console) else 0
 
 
+# ---------------- audio ----------------
+SR = 48000
+# catena del master (come il Reel 2): pulizia dei bassi, guadagno e limitatore
+CATENA = "highpass=f=28,lowshelf=f=70:g=-2.5:t=s:w=0.7,volume={G:.2f}dB,alimiter=limit=0.78:attack=3:release=90:asc=1:level=0"
+RITARDO_LIMITATORE = 143   # campioni di ritardo del limitatore (attacco 3 ms a 48 kHz), tolti in testa
+OBIETTIVO_LUFS = -14.0
+
+REGISTRA = """async (d) => {
+  const r = await SOUND.renderOffline(TALYON.scoreSound, d, 48000, { voiceover: false });
+  const bytes = new Uint8Array(r.inter.buffer); let s = ''; const CH = 0x8000;
+  for (let i = 0; i < bytes.length; i += CH) s += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+  return { b64: btoa(s), frames: r.frames, sr: r.sr };
+}"""
+
+
+def _wav_float(dati: bytes, sr: int, uscita: pathlib.Path):
+    """WAV stereo a 32 bit in virgola mobile (i campioni interlacciati del rendering)."""
+    import struct
+    testa = b"RIFF" + struct.pack("<I", 36 + len(dati)) + b"WAVEfmt " + struct.pack("<IHHIIHH", 16, 3, 2, sr, sr * 8, 8, 32)
+    uscita.write_bytes(testa + b"data" + struct.pack("<I", len(dati)) + dati)
+
+
+def misura_volume(wav) -> tuple:
+    """Volume integrato (LUFS) e picco vero (dBTP) misurati da ffmpeg con ebur128."""
+    r = subprocess.run(["ffmpeg", "-nostats", "-hide_banner", "-i", str(wav), "-af", "ebur128=peak=true", "-f", "null", "-"],
+                       capture_output=True, text=True)
+    riassunto = r.stderr[r.stderr.rfind("Summary:"):]
+    forte = float(re.search(r"I:\s+(-?[\d.]+) LUFS", riassunto).group(1))
+    picco = re.search(r"Peak:\s+(-?[\d.]+|-inf) dBFS", riassunto.split("True peak:")[1]).group(1)
+    return forte, float("-inf") if picco == "-inf" else float(picco)
+
+
+def _master(grezzo, uscita, guadagno: float, durata: float):
+    n = round(durata * SR)
+    filtro = (CATENA.format(G=guadagno) + f",atrim=start_sample={RITARDO_LIMITATORE},asetpts=PTS-STARTPTS"
+              f",apad=whole_len={n},atrim=end_sample={n}")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(grezzo), "-af", filtro, "-ar", str(SR), "-c:a", "pcm_s24le", str(uscita)],
+                   check=True)
+
+
+def audio(percorso, uscita) -> dict:
+    """Musica ed effetti del copione: registrati a 48 kHz, portati a -14 LUFS con picco vero sotto -1 dB,
+    lunghi esattamente quanto il reel. Restituisce durata, volume, picco e guadagno usato."""
+    percorso, uscita = pathlib.Path(percorso), pathlib.Path(uscita)
+    c = json.loads(percorso.read_text())
+    with apri(percorso, clip="chiave", copione=c) as s:
+        durata = s.page.evaluate("TALYON.piano().durata")
+        res = s.page.evaluate(REGISTRA, durata + 0.5)
+        errori = list(s.errori)
+    if errori:
+        raise RuntimeError("audio: errori nella pagina: " + "; ".join(errori))
+    with tempfile.TemporaryDirectory() as d:
+        grezzo, prova = pathlib.Path(d) / "grezzo.wav", pathlib.Path(d) / "prova.wav"
+        _wav_float(base64.b64decode(res["b64"]), res["sr"], grezzo)
+        forte0, _ = misura_volume(grezzo)
+        g0 = OBIETTIVO_LUFS - forte0 + 0.3
+        _master(grezzo, prova, g0, durata)
+        forte1, _ = misura_volume(prova)
+        guadagno = g0 + OBIETTIVO_LUFS - forte1      # prima correzione
+        _master(grezzo, prova, guadagno, durata)
+        forte2, _ = misura_volume(prova)
+        # il limitatore fa salire il volume meno del guadagno (circa 0,6 dB per dB): seconda correzione con la pendenza misurata
+        if abs(forte2 - OBIETTIVO_LUFS) > 0.1 and abs(forte2 - forte1) > 0.05:
+            pendenza = (forte2 - forte1) / (guadagno - g0)
+            guadagno += max(-3.0, min(3.0, (OBIETTIVO_LUFS - forte2) / pendenza))
+        uscita.parent.mkdir(parents=True, exist_ok=True)
+        _master(grezzo, uscita, guadagno, durata)
+    forte, picco = misura_volume(uscita)
+    return {"durata": durata, "lufs": forte, "picco": picco, "guadagno": round(guadagno, 2)}
+
+
 # ---------------- riga di comando ----------------
 def main(argv):
     if len(argv) < 3:
@@ -316,6 +389,11 @@ def main(argv):
         print("copione valido")
     elif comando == "controlla":
         sys.exit(controlla(percorso, argv[3] if len(argv) > 3 else None))
+    elif comando == "audio":
+        if len(argv) < 4:
+            sys.exit(__doc__)
+        info = audio(percorso, argv[3])
+        print(f"audio: {info['durata']} s, {info['lufs']} LUFS, picco vero {info['picco']} dB → {argv[3]}")
     else:
         sys.exit(f"comando sconosciuto: {comando}\n{__doc__}")
 
