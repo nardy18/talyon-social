@@ -151,6 +151,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 ```
 
 - `isAiGenerated` resta `false`: sono grafiche, testi e animazioni stilizzate, non foto o video realistici, e ogni post passa dal controllo di Emanuele prima di uscire.
+- **Unica eccezione:** il reel fuori serie S01 «Scrivania del coach» (mercoledì 2 dicembre 2026, `reel/S01-scrivania/`) ha riprese generate con l'IA ed è programmato con `isAiGenerated: true`, per scelta di Emanuele del 18 novembre 2026. Non cambiarlo e non prenderlo a modello: per i reel del sabato resta «niente video fatti con l'IA».
 - Non toccare mai altri post in Metricool. Non cancellare niente senza che Emanuele lo chieda.
 
 ## Messaggio per Emanuele (modello)
