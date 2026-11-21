@@ -5,7 +5,8 @@ Uso:
     python3 kit/spazi.py prossimo <carosello|reel> <oggi AAAA-MM-GG> <post.json> [<temi.md>] [--quanti N]
 
 post.json è la risposta di getScheduledPosts di Metricool (bozze comprese).
-Spazi (ora italiana): caroselli il martedì alle 18:30 e il giovedì alle 9:00, reel il mercoledì alle 18:30.
+Spazi (ora italiana): caroselli il lunedì e il venerdì alle 18:30, reel il mercoledì alle 18:30
+(un giorno sì e uno no, scelta di Emanuele del 21 novembre 2026).
 Lo spazio deve cadere almeno 3 giorni dopo oggi ed essere libero: in Metricool nessun post dello stesso tipo
 in quella data, e nell'elenco dei temi nessuna riga con quella data.
 Stampa data e ora, es. 2026-12-09T18:30 (con --quanti N, i primi N spazi liberi, uno per riga).
@@ -16,7 +17,7 @@ import pathlib
 import re
 import sys
 
-SPAZI = {"carosello": [(1, "18:30"), (3, "09:00")], "reel": [(2, "18:30")]}   # giorno della settimana: lunedì = 0
+SPAZI = {"carosello": [(0, "18:30"), (4, "18:30")], "reel": [(2, "18:30")]}   # giorno della settimana: lunedì = 0
 TIPO = {"carosello": "POST", "reel": "REEL"}
 MESI = {"gen": 1, "feb": 2, "mar": 3, "apr": 4, "mag": 5, "giu": 6, "lug": 7, "ago": 8, "set": 9, "ott": 10, "nov": 11, "dic": 12}
 ANTICIPO = 3          # giorni minimi tra oggi e lo spazio
