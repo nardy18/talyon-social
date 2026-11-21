@@ -5,3 +5,4 @@ Il giro del sabato aggiunge una riga per ogni post uscito da almeno 3 giorni e n
 
 | Uscito | Tipo | N | Titolo | Copertura | Visualizzazioni | Salvataggi | Condivisioni | Nuovi follower | Durata media guardata (s) | Scorrono via nei primi 3 s (%) | Registrato |
 |---|---|---|---|---|---|---|---|---|---|---|---|
+| mar 17 nov 2026 18:32 | carosello | 5 | La tua palestra, non la nostra | 17 | 53 | 0 | — | 0 | — | — | 21 nov 2026 |

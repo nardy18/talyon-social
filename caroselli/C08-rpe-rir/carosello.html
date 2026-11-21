@@ -1,0 +1,149 @@
+<carosello sfondo="grafite" serie="RPE e RIR">
+<style>
+  /* Stili solo per questo carosello */
+  .coppia { display: flex; align-items: center; justify-content: center; gap: 30px; width: 100%; }
+  .coppia .card { align-items: center; text-align: center; padding: 30px 40px; min-width: 300px; }
+  .coppia .card .cosa { font-size: 26px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,.66); }
+  .coppia .card .num { font-size: 104px; font-weight: 700; font-stretch: 82%; line-height: 1; }
+  .coppia .card .sotto { font-size: 28px; color: var(--testo-2); }
+  .coppia .uguale { font-size: 72px; font-weight: 700; color: rgba(255,255,255,.5); }
+
+  .grafico { width: 100%; }
+  .grafico text { font-family: Saira, sans-serif; fill: #FFFFFF; }
+
+  .quale { display: flex; gap: 24px; width: 100%; }
+  .quale .card { flex: 1; gap: 14px; padding: 30px 32px; }
+  .quale .card .nome { font-size: 44px; }
+  .quale .card .uso { font-size: 30px; font-weight: 600; line-height: 1.25; }
+
+  .scheda .riga { font-size: 31px; }
+  .scheda .target { font-size: 24px; font-weight: 500; color: rgba(255,255,255,.6); }
+
+  .errori { width: 100%; gap: 26px; }
+  .errori .nota { font-size: 34px; padding: 26px 30px; }
+
+  .seguire .riga { font-size: 30px; }
+  .seguire .chi { font-size: 24px; font-weight: 500; color: rgba(255,255,255,.6); }
+</style>
+
+<!-- 01 · Copertina -->
+<section class="slide" data-tipo="copertina">
+  <div class="coppia">
+    <div class="card"><span class="cosa">RPE</span><span class="num">8</span><span class="sotto">quanto è dura</span></div>
+    <span class="uguale">=</span>
+    <div class="card"><span class="cosa">RIR</span><span class="num">2</span><span class="sotto">quante ne restano</span></div>
+  </div>
+  <p class="etichetta">Programmazione</p>
+  <h1>RPE e RIR: quanto ne avevi ancora.</h1>
+  <p class="sottotitolo">Cosa sono, come scriverli, gli errori da evitare.</p>
+</section>
+
+<!-- 02 · L'RPE -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Il punto di partenza</p>
+  <h1>L’RPE è un voto alla fatica.</h1>
+  <div class="linea"></div>
+  <p class="testo">Da 1 a 10, dice quanto è stata dura la serie. <b>RPE 10 vuol dire che non ne avevi più nemmeno una.</b></p>
+</section>
+
+<!-- 03 · La scala -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Il RIR</p>
+  <h1>Le ripetizioni rimaste nel serbatoio.</h1>
+  <div class="visual">
+    <svg class="grafico" viewBox="0 0 888 400" aria-hidden="true">
+      <text x="0" y="60" font-size="26" font-weight="600" fill-opacity=".66" letter-spacing="3">RPE</text>
+      <text x="0" y="300" font-size="26" font-weight="600" fill-opacity=".66" letter-spacing="3">RIR</text>
+      <!-- quattro gradini -->
+      <rect x="120" y="230" width="170" height="20" rx="8" fill="rgba(255,255,255,.12)"/>
+      <rect x="310" y="170" width="170" height="80" rx="12" fill="rgba(255,255,255,.16)"/>
+      <rect x="500" y="110" width="170" height="140" rx="12" fill="rgba(255,255,255,.2)" stroke="#D98E4A" stroke-width="2"/>
+      <rect x="690" y="50" width="170" height="200" rx="12" fill="rgba(255,255,255,.26)"/>
+      <text x="205" y="210" text-anchor="middle" font-size="44" font-weight="700">7</text>
+      <text x="395" y="150" text-anchor="middle" font-size="44" font-weight="700">8</text>
+      <text x="585" y="90" text-anchor="middle" font-size="44" font-weight="700">9</text>
+      <text x="775" y="40" text-anchor="middle" font-size="44" font-weight="700">10</text>
+      <line x1="120" y1="262" x2="860" y2="262" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+      <text x="205" y="310" text-anchor="middle" font-size="44" font-weight="700">3</text>
+      <text x="395" y="310" text-anchor="middle" font-size="44" font-weight="700">2</text>
+      <text x="585" y="310" text-anchor="middle" font-size="44" font-weight="700">1</text>
+      <text x="775" y="310" text-anchor="middle" font-size="44" font-weight="700">0</text>
+      <text x="205" y="360" text-anchor="middle" font-size="24" fill-opacity=".7">ne restano 3</text>
+      <text x="775" y="360" text-anchor="middle" font-size="24" fill-opacity=".7">a cedimento</text>
+    </svg>
+  </div>
+  <p class="testo">Il RIR è il rovescio: quante ripetizioni avresti fatto ancora. <b>RPE 8 e RIR 2 dicono la stessa cosa.</b></p>
+</section>
+
+<!-- 04 · Quale usare -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Quale usare</p>
+  <h1>Due numeri, due momenti della scheda.</h1>
+  <div class="visual">
+    <div class="quale">
+      <div class="card">
+        <span class="nome">RPE</span>
+        <span class="uso">Singole, top e lavoro pesante</span>
+        <span class="dettaglio">Es. top single @8</span>
+      </div>
+      <div class="card">
+        <span class="nome">RIR</span>
+        <span class="uso">Volume e serie da più ripetizioni</span>
+        <span class="dettaglio">Es. 3 × 8 con RIR 2</span>
+      </div>
+    </div>
+  </div>
+  <p class="testo">Su una singola è più facile dire quanto è stata dura. <b>Su una serie lunga è più facile contare quante ne restavano.</b></p>
+</section>
+
+<!-- 05 · In scheda -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Come scriverli</p>
+  <h1>In scheda, il numero accanto al carico.</h1>
+  <div class="visual">
+    <div class="pannello scheda">
+      <div class="intestazione"><span>Luca · Dip</span><small>Esempio</small></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Top single</span><span class="target">1 ripetizione @8</span></div><span class="valore">+80 kg</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Back-off · 3 × 5</span><span class="target">RIR 2</span></div><span class="valore">+65 kg</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Dip a corpo libero · 2 × 10</span><span class="target">RIR 3</span></div><span class="valore">—</span></div>
+    </div>
+  </div>
+  <p class="testo">Il carico dice cosa sollevare, il numero dice quanto spingere. <b>L’atleta sa dove arrivare, tu sai cosa leggere dopo.</b></p>
+</section>
+
+<!-- 06 · Errori -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Gli errori più comuni</p>
+  <h1>Tre errori da evitare.</h1>
+  <div class="visual">
+    <div class="pila errori">
+      <div class="nota">Scrivere RPE in scheda senza spiegarlo all’atleta.</div>
+      <div class="nota">Puntare a RPE 10 in ogni allenamento.</div>
+      <div class="nota">Non rileggere mai l’RPE che l’atleta ha dato.</div>
+    </div>
+  </div>
+  <p class="testo">All’inizio l’atleta sbaglia di uno o due punti, ed è normale. <b>Con il tempo il voto diventa preciso.</b></p>
+</section>
+
+<!-- 07 · In Talyon -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">In Talyon</p>
+  <h1>Chi fatica più del previsto, lo vedi subito.</h1>
+  <div class="visual">
+    <div class="pannello seguire">
+      <div class="intestazione"><span>Atleti da seguire</span><small>Oggi</small></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Marco R · Trazione</span><span class="chi">Top prescritta @8, data @9,5</span></div><span class="pill difficile"><i class="su"></i>Più difficile</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Anna · Dip</span><span class="chi">Back-off prescritto RIR 2, dato RIR 0</span></div><span class="pill difficile"><i class="su"></i>Più difficile</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Teo · Scheda</span><span class="chi">Finisce tra 3 giorni</span></div><span class="pill neutra">In scadenza</span></div>
+    </div>
+  </div>
+  <p class="testo">Scrivi RPE e RIR come in palestra. <b>Se un atleta fatica più del previsto, Talyon te lo segnala tra gli atleti da seguire.</b></p>
+</section>
+
+<!-- 08 · Chiusura -->
+<section class="slide" data-tipo="chiusura">
+  <h1>Il carico dice cosa.<br>Il numero dice quanto.</h1>
+  <p class="testo">Scrivilo in scheda, rileggilo dopo.</p>
+  <p class="invito">Seguici per non perdere l’anteprima gratuita.</p>
+</section>
+</carosello>
