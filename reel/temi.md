@@ -10,10 +10,10 @@ L'attività del sabato prende sempre il **primo tema «da fare»** dall'alto. Pe
 | N | Palco | Tema | Cosa mostra | Funzione | Gancio | Stato | Data | Note |
 |---|---|---|---|---|---|---|---|---|
 | 1 | — | Reel di lancio | scrivi la scheda, l'atleta la segue, tu vedi tutto | tutte | notifiche | programmato | mer 18 nov 2026 | fatto a mano |
-| 2 | — | Dal foglio a Talyon | import da Google Fogli, Excel e Google Drive: Talyon le legge, tu approvi | import | fogli | in bozza | mer 25 nov 2026 | fatto a mano, in `reel/R02-dal-foglio/` |
+| 2 | — | Dal foglio a Talyon | import da Google Fogli, Excel e Google Drive: Talyon le legge, tu approvi | import | fogli | programmato | mer 25 nov 2026 | fatto a mano, in `reel/R02-dal-foglio/`; risulta programmato in Metricool (visto il 21 nov) |
 | S1 | — | Scrivania del coach | la scrivania di un coach: il portatile si accende, builder e nota, revisione e Atleti da seguire, poi si chiude | builder, revisione, seguire | scrivania | programmato | mer 2 dic 2026 | fuori serie, fatto a mano, in `reel/S01-scrivania/`; riprese generate con l'IA (eccezione voluta da Emanuele), etichetta IA accesa in Metricool |
 | 3 | verde | Domenica sera, venti schede | la settimana scritta dal computer, duplicata e assegnata da un modello | builder | griglia | in bozza | mer 9 dic 2026 | prova del modello, in `reel/R03-domenica-sera/`; spostato di una settimana per fare posto alla scrivania (scelta di Emanuele) |
-| 4 | grafite | Palestra senza campo | l'allenamento sul telefono dell'atleta: serie già compilate, un tocco, recupero che parte da solo, anche senza rete | sessione | cronometro | da fare | | |
+| 4 | grafite | Palestra senza campo | l'allenamento sul telefono dell'atleta: serie già compilate, un tocco, recupero che parte da solo, anche senza rete | sessione | cronometro | in bozza | mer 16 dic 2026 | in `reel/R04-palestra-senza-campo/` |
 | 5 | verde | Lunedì mattina, chi seguire | Atleti da seguire: chi non si allena, chi fatica, la scheda in scadenza | seguire | notifiche | da fare | | |
 | 6 | grafite | Più difficile, più facile | ogni serie colorata rispetto a quella scritta; tocchi la cella e rivedi il prescritto | celle | fogli | da fare | | |
 | 7 | verde | Il record lo confermi tu | l'atleta propone, il coach conferma; record e stima restano separati | record | notifiche | da fare | | |
