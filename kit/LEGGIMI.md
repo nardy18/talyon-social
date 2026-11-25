@@ -1,6 +1,6 @@
 # Post Talyon: istruzioni per l'attività settimanale
 
-Questo file è per Claude. Ogni sabato un'attività programmata prepara i post Instagram della settimana per @talyon.app: **due caroselli** (lunedì e venerdì alle 18:30) e **un reel** (mercoledì alle 18:30): un giorno sì e uno no, scelta di Emanuele del 21 novembre 2026 (prima erano martedì, mercoledì e giovedì). Li mette in **bozza** su Metricool e chiede l'ok a Emanuele con un solo messaggio. **Non si pubblica mai niente senza il suo ok.**
+Questo file è per Claude. Ogni sabato un'attività programmata prepara i post Instagram della settimana per @talyon.app: **due caroselli** (lunedì e venerdì alle 14:00) e **un reel** (mercoledì alle 14:00): un giorno sì e uno no, scelta di Emanuele del 21 novembre 2026 (prima erano martedì, mercoledì e giovedì). Dal 25 novembre 2026 tutto alle **14:00**: alle 18:30 i coach sono in palestra e vedrebbero i post la sera tardi o il giorno dopo (scelta di Emanuele). Li mette in **bozza** su Metricool e chiede l'ok a Emanuele con un solo messaggio. **Non si pubblica mai niente senza il suo ok.**
 
 Il reel entra nel giro **da sabato 21 novembre 2026**: prima di quel giorno salta i passi del reel (6) e prepara solo i caroselli.
 
@@ -18,7 +18,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
    Per ogni post uscito da almeno 3 giorni e non ancora registrato aggiungi una riga in fondo a `kit/risultati.md` (titolo e numero da `kit/temi.md` o `reel/temi.md`, confrontando data e ora). Le impression non si usano più: al loro posto ci sono le visualizzazioni.
 4. **Giorni.** Si comincia quando `kit/risultati.md` ha almeno **12 post**. Confronta i tre spazi tra loro e con le ore di maggiore attività del pubblico (`getBestTimeToPostByNetwork`, rete `instagram`). Se un altro giorno o un'altra ora è chiaramente migliore, proponilo nel messaggio: **al massimo una proposta al mese**, e si applica solo dopo il sì di Emanuele (allora aggiorna gli spazi in `kit/spazi.py`, in questo file e in `kit/temi.md` o `reel/temi.md`).
 5. **Caroselli.** Prendi i primi due temi `da fare` in `kit/temi.md`. Se ne resta uno solo, fai quello; se non ce ne sono più, non creare caroselli. Quando ne restano meno di 4, proponi a Emanuele 6 temi nuovi nel messaggio finale (stesso stile della tabella).
-   - **Date:** con `/tmp/post.json` del passo 2 lancia `python3 kit/spazi.py prossimo carosello <oggi AAAA-MM-GG> /tmp/post.json kit/temi.md --quanti 2`: sono i due spazi (lunedì e venerdì alle 18:30, almeno 3 giorni dopo oggi, liberi). Il primo tema va nella data più vicina.
+   - **Date:** con `/tmp/post.json` del passo 2 lancia `python3 kit/spazi.py prossimo carosello <oggi AAAA-MM-GG> /tmp/post.json kit/temi.md --quanti 2`: sono i due spazi (lunedì e venerdì alle 14:00, almeno 3 giorni dopo oggi, liberi). Il primo tema va nella data più vicina.
    - Poi, per ogni carosello, uno dopo l'altro, i passi da 5a a 5f.
    - **5a. Scrivi il carosello** in `caroselli/CNN-slug/carosello.html` (NN a due cifre, slug corto in minuscolo con trattini, es. `C06-opener`). Parti da una copia di `caroselli/C05-la-tua-palestra/carosello.html` e rispetta le regole qui sotto. 8 slide: copertina, 6 slide di contenuto o di solo testo, chiusura.
    - **5b. Genera:** `python3 kit/genera.py caroselli/CNN-slug/carosello.html`. Se stampa elementi fuori dall'area, correggi e rigenera finché esce pulito. Poi **guarda tutte le slide** (strumento Read sui JPG, una per una): testi tagliati, sovrapposizioni, parole sole a capo, visual troppo vuoti o troppo pieni, contrasto. Correggi e rigenera. Questo controllo è obbligatorio.
@@ -27,7 +27,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
    - **5e. Bozza in Metricool** con `createScheduledPost` (dettagli sotto). Gli URL delle immagini usano lo SHA del commit, così non cambiano mai: `https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/caroselli/CNN-slug/slide-01.jpg` … `slide-08.jpg`.
    - **5f. Aggiorna `kit/temi.md`:** stato `in bozza`, data. Commit e push. Se hai lo strumento Projects (progetto Talyon), aggiungi il carosello in fondo a `claude/caroselli-instagram.md` (titolo, sfondo, una riga per slide), leggendo prima il documento e riscrivendolo intero.
 6. **Reel** (da sabato 21 novembre 2026). Se uno di questi passi fallisce, vedi «Se il reel non viene bene» più sotto: i caroselli escono lo stesso. Le correzioni hanno un limite: **al massimo 3 giri** in tutto tra 6c, 6d e 6e (ogni giro di `controlla` e `video` dura qualche minuto). Se dopo il terzo giro il reel non va ancora, fermati e applica «Se il reel non viene bene».
-   - **6a. Tema e data.** Il primo tema `da fare` in `reel/temi.md`. La data: `python3 kit/spazi.py prossimo reel <oggi> /tmp/post.json reel/temi.md`, con `/tmp/post.json` del passo 2 (il primo mercoledì alle 18:30 libero, almeno 3 giorni dopo oggi). Se non ci sono temi `da fare`, niente reel.
+   - **6a. Tema e data.** Il primo tema `da fare` in `reel/temi.md`. La data: `python3 kit/spazi.py prossimo reel <oggi> /tmp/post.json reel/temi.md`, con `/tmp/post.json` del passo 2 (il primo mercoledì alle 14:00 libero, almeno 3 giorni dopo oggi). Se non ci sono temi `da fare`, niente reel.
    - **6b. Copione** in `reel/RNN-slug/copione.json` (NN a due cifre, es. `R04-palestra-senza-campo`). Se esiste `kit/reel/prove/rNN.json` parti da quello (è già scritto e controllato); altrimenti scrivilo con le «Regole dei reel» qui sotto, partendo da un copione già fatto.
    - **6c. Valida:** `python3 kit/reel/strumenti/reel.py valida reel/RNN-slug/copione.json`. Correggi finché stampa «copione valido», dentro il limite dei 3 giri.
    - **6d. Controlla:** `python3 kit/reel/strumenti/reel.py controlla reel/RNN-slug/copione.json`. Deve finire pulito: nessun testo fuori area, nessun testo che esce dal suo riquadro o dalla schermata del telefono, che ne copre un altro o che non entra nel suo spazio, nessun errore. Poi **guarda** `controllo.jpg` (un fotogramma al secondo) e i fotogrammi chiave a grandezza piena, nella cartella che il comando stampa: testi tagliati o sovrapposti, zone coperte da Instagram, parole troppo piccole, schermate vuote. Correggi il copione e ripeti, dentro il limite dei 3 giri. Questo controllo è obbligatorio.
@@ -109,7 +109,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 
 - Brand `talyon.app`: `blogId` **8059629**, fuso `Europe/Rome`. Pubblica solo su `instagram` (la Pagina Facebook collegata non si usa).
 - Piano gratuito: al massimo 20 post programmati al mese.
-- Bozza con `createScheduledPost`: `blogId: "8059629"`, `date` con l'ora dello spazio (18:30, il lunedì e il venerdì), es. `"AAAA-MM-GGT18:30:00+01:00"` (+02:00 con l'ora legale), e `info` come stringa JSON (in `publicationDate` la stessa ora):
+- Bozza con `createScheduledPost`: `blogId: "8059629"`, `date` con l'ora dello spazio (14:00, il lunedì e il venerdì), es. `"AAAA-MM-GGT14:00:00+01:00"` (+02:00 con l'ora legale), e `info` come stringa JSON (in `publicationDate` la stessa ora):
 
 ```json
 {
@@ -121,7 +121,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
   "media": ["https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/caroselli/CNN-slug/slide-01.jpg", "… fino a slide-08.jpg"],
   "mediaAltText": ["riga 1 di alt.txt", "… una per slide"],
   "providers": [{"network": "instagram"}],
-  "publicationDate": {"dateTime": "AAAA-MM-GGT18:30:00", "timezone": "Europe/Rome"},
+  "publicationDate": {"dateTime": "AAAA-MM-GGT14:00:00", "timezone": "Europe/Rome"},
   "shortener": false,
   "smartLinkData": {"ids": []},
   "text": "testo di didascalia.txt",
@@ -129,7 +129,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 }
 ```
 
-- **Bozza del reel** con `createScheduledPost`: stessi campi, `date` con l'ora dello spazio (`"AAAA-MM-GGT18:30:00+01:00"`) e in `info`:
+- **Bozza del reel** con `createScheduledPost`: stessi campi, `date` con l'ora dello spazio (`"AAAA-MM-GGT14:00:00+01:00"`) e in `info`:
 
 ```json
 {
@@ -141,7 +141,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
   "media": ["https://raw.githubusercontent.com/nardy18/talyon-social/<SHA>/reel/RNN-slug/talyon-reelNN.mp4"],
   "mediaAltText": [],
   "providers": [{"network": "instagram"}],
-  "publicationDate": {"dateTime": "AAAA-MM-GGT18:30:00", "timezone": "Europe/Rome"},
+  "publicationDate": {"dateTime": "AAAA-MM-GGT14:00:00", "timezone": "Europe/Rome"},
   "shortener": false,
   "smartLinkData": {"ids": []},
   "text": "testo di didascalia.txt",
@@ -157,9 +157,9 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 ## Messaggio per Emanuele (modello)
 
 > Ciao Emanuele! Sono pronti i post della settimana:
-> 1. **«Titolo»** (carosello n. N, sfondo verde/grafite): esce lunedì GG mese alle 18:30.
-> 2. **«Titolo»** (reel n. N): esce mercoledì GG mese alle 18:30.
-> 3. **«Titolo»** (carosello n. N, sfondo verde/grafite): esce venerdì GG mese alle 18:30.
+> 1. **«Titolo»** (carosello n. N, sfondo verde/grafite): esce lunedì GG mese alle 14:00.
+> 2. **«Titolo»** (reel n. N): esce mercoledì GG mese alle 14:00.
+> 3. **«Titolo»** (carosello n. N, sfondo verde/grafite): esce venerdì GG mese alle 14:00.
 >
 > Escono solo dopo il tuo ok.
 > - Ti vanno bene? Rispondimi «ok» qui (oppure «ok ai caroselli», «ok al reel», «ok al primo», «ok al secondo»), o apri Metricool: trovi le bozze nel calendario, premi Programma.

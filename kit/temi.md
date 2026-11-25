@@ -1,6 +1,6 @@
 # Temi dei caroselli
 
-Due caroselli a settimana: **lunedì** e **venerdì alle 18:30** (ora italiana; dal 21 novembre 2026, prima martedì e giovedì). Numero dispari = sfondo **verde**, numero pari = **grafite**.
+Due caroselli a settimana: **lunedì** e **venerdì alle 14:00** (ora italiana; giorni dal 21 novembre 2026, prima martedì e giovedì; ora dal 25 novembre, prima 18:30). Numero dispari = sfondo **verde**, numero pari = **grafite**.
 
 Stati: `da fare` → `in bozza` (in Metricool, aspetta l'ok di Emanuele) → `programmato` (ok ricevuto) → `pubblicato`.
 L'attività del sabato prende sempre i **primi due temi «da fare»** dall'alto. Emanuele può cambiare l'ordine, aggiungere o togliere righe quando vuole (anche chiedendolo a Claude).

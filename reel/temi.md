@@ -1,6 +1,6 @@
 # Temi dei reel
 
-Un reel a settimana: **mercoledì alle 18:30** (ora italiana), tra i due caroselli del lunedì e del venerdì. Numero dispari = palco **verde**, numero pari = **grafite**. Musica: variante `(N + 1) % 4`. La scena del gancio cambia da un reel a quello dopo.
+Un reel a settimana: **mercoledì alle 14:00** (ora italiana; dal 25 novembre 2026, prima 18:30), tra i due caroselli del lunedì e del venerdì. Numero dispari = palco **verde**, numero pari = **grafite**. Musica: variante `(N + 1) % 4`. La scena del gancio cambia da un reel a quello dopo.
 
 Stati, come per i caroselli: `da fare` → `in bozza` (in Metricool, aspetta l'ok di Emanuele) → `programmato` (ok ricevuto) → `pubblicato`; oppure `saltato`.
 L'attività del sabato prende sempre il **primo tema «da fare»** dall'alto. Per R04–R10 il copione è già pronto e controllato in `kit/reel/prove/rNN.json`: si parte da lì. I reel mostrano Talyon al lavoro (un momento della settimana di un coach o di un atleta, una funzione per reel); i caroselli insegnano.
