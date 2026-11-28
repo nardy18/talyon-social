@@ -1,0 +1,166 @@
+<carosello sfondo="grafite" serie="Le tenute">
+<style>
+  /* Stili solo per questo carosello */
+  .anello { width: 380px; height: 380px; margin: 0 auto; }
+  .anello text { font-family: Saira, sans-serif; fill: #FFFFFF; }
+
+  .scala { width: 100%; gap: 12px; }
+  .scala .gradino { display: flex; align-items: center; justify-content: space-between; padding: 18px 30px; border-radius: 16px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); font-size: 34px; font-weight: 600; }
+  .scala .gradino small { font-size: 22px; font-weight: 600; letter-spacing: 0.14em; color: rgba(255,255,255,.55); }
+  .scala .gradino.qui { border-color: rgba(217,142,74,.8); background: rgba(255,255,255,.1); }
+  .scala .gradino:nth-child(1) { margin-right: 160px; }
+  .scala .gradino:nth-child(2) { margin-right: 120px; margin-left: 40px; }
+  .scala .gradino:nth-child(3) { margin-right: 80px; margin-left: 80px; }
+  .scala .gradino:nth-child(4) { margin-right: 40px; margin-left: 120px; }
+  .scala .gradino:nth-child(5) { margin-left: 160px; }
+
+  .scheda .riga { font-size: 31px; }
+  .scheda .come { font-size: 24px; font-weight: 500; color: rgba(255,255,255,.6); }
+
+  .grafico { width: 100%; }
+  .grafico text { font-family: Saira, sans-serif; fill: #FFFFFF; }
+
+  .seduta { position: relative; display: flex; justify-content: space-between; width: 100%; padding-top: 10px; }
+  .seduta::before { content: ""; position: absolute; left: 60px; right: 60px; top: 40px; height: 1.5px; background: rgba(255,255,255,.25); }
+  .seduta .passo { position: relative; display: flex; flex-direction: column; align-items: center; gap: 22px; width: 215px; text-align: center; }
+  .seduta .passo i { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-style: normal; font-size: 26px; font-weight: 700; background: #2A2D30; border: 1.5px solid rgba(255,255,255,.3); }
+  .seduta .passo.qui i { border-color: #D98E4A; border-width: 2.5px; }
+  .seduta .passo span { font-size: 29px; font-weight: 600; line-height: 1.2; }
+  .seduta .passo.qui span { color: #FFFFFF; }
+  .seduta .passo small { font-size: 22px; font-weight: 500; color: rgba(255,255,255,.6); }
+
+  .ancora { position: relative; }
+  .ancora .telefono { --t-larghezza: 270px; }
+  .app-timer { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px 12px; border-radius: 16px; background: rgba(217,142,74,.14); border: 1px solid rgba(217,142,74,.6); }
+  .app-timer small { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--t-2); }
+  .app-timer strong { font-size: 46px; font-weight: 700; font-stretch: 85%; line-height: 1; }
+  .annotazione { position: absolute; width: 290px; transform: translateY(-50%); display: flex; align-items: center; font-size: 26px; font-weight: 600; line-height: 1.25; color: rgba(255,255,255,.86); }
+  .annotazione .filo { width: 40px; height: 1.5px; background: var(--rame); flex-shrink: 0; }
+  .annotazione .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--rame); flex-shrink: 0; }
+  .annotazione.sinistra { right: calc(100% - 4px); justify-content: flex-end; text-align: right; }
+  .annotazione.sinistra .filo { margin-left: 18px; }
+  .annotazione.destra { left: calc(100% - 4px); justify-content: flex-start; }
+  .annotazione.destra .filo { margin-right: 18px; }
+</style>
+
+<!-- 01 · Copertina -->
+<section class="slide" data-tipo="copertina">
+  <svg class="anello" viewBox="0 0 380 380" aria-hidden="true">
+    <circle cx="190" cy="190" r="160" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="14"/>
+    <circle cx="190" cy="190" r="160" fill="none" stroke="#D98E4A" stroke-width="14" stroke-linecap="round" stroke-dasharray="1005" stroke-dashoffset="402" transform="rotate(-90 190 190)"/>
+    <text x="190" y="205" text-anchor="middle" font-size="120" font-weight="700" font-stretch="82%">0:06</text>
+    <text x="190" y="262" text-anchor="middle" font-size="26" font-weight="600" letter-spacing="4" fill-opacity=".66">FRONT LEVER</text>
+  </svg>
+  <p class="etichetta">Calisthenics</p>
+  <h1>Le tenute si programmano in secondi.</h1>
+  <p class="sottotitolo"><span style="white-space:nowrap">Front lever</span>, planche, <span style="white-space:nowrap">back lever</span>: come scriverle in scheda.</p>
+</section>
+
+<!-- 02 · Il punto di partenza -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Il punto di partenza</p>
+  <h1>Il tempo è la ripetizione.</h1>
+  <div class="linea"></div>
+  <p class="testo">In una tenuta non conti le ripetizioni, conti i secondi. <b>Secondi, serie e recupero: tre numeri e l’atleta sa cosa fare.</b></p>
+</section>
+
+<!-- 03 · Le varianti -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Le progressioni</p>
+  <h1>Ogni variante è un esercizio a sé.</h1>
+  <div class="visual">
+    <div class="pila scala">
+      <div class="gradino"><span>Tuck</span><small>01</small></div>
+      <div class="gradino qui"><span>Advanced tuck</span><small>02</small></div>
+      <div class="gradino"><span>Una gamba</span><small>03</small></div>
+      <div class="gradino"><span>Straddle</span><small>04</small></div>
+      <div class="gradino"><span>Completo</span><small>05</small></div>
+    </div>
+  </div>
+  <p class="testo">La scala del front lever, dalla più facile. <b>Scrivi in scheda la variante giusta per oggi, non quella che sogna l’atleta.</b></p>
+</section>
+
+<!-- 04 · Come scriverle -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Come scriverle</p>
+  <h1>Serie per secondi, più il recupero.</h1>
+  <div class="visual">
+    <div class="pannello scheda">
+      <div class="intestazione"><span>Anna · Tenute</span><small>Esempio</small></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Front lever advanced tuck</span><span class="come">recupero 2 min</span></div><span class="valore">5 × 8 s</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Back lever una gamba</span><span class="come">recupero 2 min</span></div><span class="valore">4 × 10 s</span></div>
+      <div class="riga"><div class="colonna" style="gap:4px"><span>Planche tuck</span><span class="come">recupero 90 s</span></div><span class="valore">6 × 6 s</span></div>
+    </div>
+  </div>
+  <p class="testo">Più serie brevi e pulite valgono più di una lunga e storta. <b>Il tempo conta finché la posizione regge.</b></p>
+</section>
+
+<!-- 05 · La progressione -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">La progressione</p>
+  <h1>Prima i secondi, poi la variante.</h1>
+  <div class="visual">
+    <svg class="grafico" viewBox="0 0 888 420" aria-hidden="true">
+      <line x1="0" y1="340" x2="888" y2="340" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+      <rect x="40" y="220" width="170" height="120" rx="14" fill="rgba(255,255,255,.12)"/>
+      <rect x="250" y="180" width="170" height="160" rx="14" fill="rgba(255,255,255,.16)"/>
+      <rect x="460" y="140" width="170" height="200" rx="14" fill="rgba(255,255,255,.22)"/>
+      <rect x="670" y="260" width="170" height="80" rx="14" fill="rgba(255,255,255,.08)" stroke="#D98E4A" stroke-width="2"/>
+      <text x="125" y="200" text-anchor="middle" font-size="40" font-weight="700">6 s</text>
+      <text x="335" y="160" text-anchor="middle" font-size="40" font-weight="700">8 s</text>
+      <text x="545" y="120" text-anchor="middle" font-size="40" font-weight="700">10 s</text>
+      <text x="755" y="240" text-anchor="middle" font-size="40" font-weight="700">5 s</text>
+      <text x="125" y="385" text-anchor="middle" font-size="26" fill-opacity=".7">Sett. 1</text>
+      <text x="335" y="385" text-anchor="middle" font-size="26" fill-opacity=".7">Sett. 2</text>
+      <text x="545" y="385" text-anchor="middle" font-size="26" fill-opacity=".7">Sett. 3</text>
+      <text x="755" y="385" text-anchor="middle" font-size="26" font-weight="600">Una gamba</text>
+    </svg>
+  </div>
+  <p class="testo">Advanced tuck da 6 a 10 secondi, poi una gamba: un esempio. <b>Con la variante nuova i secondi ripartono dal basso.</b></p>
+</section>
+
+<!-- 06 · Dove metterle -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">Nella seduta</p>
+  <h1>Le tenute, da freschi.</h1>
+  <div class="visual">
+    <div class="seduta">
+      <div class="passo"><i>1</i><span>Riscaldamento</span><small>articolazioni</small></div>
+      <div class="passo qui"><i>2</i><span>Tenute</span><small>da freschi</small></div>
+      <div class="passo"><i>3</i><span>Zavorra</span><small>alzate pesanti</small></div>
+      <div class="passo"><i>4</i><span>Complementari</span><small>in chiusura</small></div>
+    </div>
+  </div>
+  <p class="testo">Una tenuta chiede forza e posizione insieme. <b>Mettila all’inizio, quando l’atleta ha ancora tutta la tensione che serve.</b></p>
+</section>
+
+<!-- 07 · In Talyon -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">In Talyon</p>
+  <h1>Il conto alla rovescia, già in scheda.</h1>
+  <div class="visual">
+    <div class="ancora">
+      <div class="telefono" data-tema="talyon">
+        <div class="schermo">
+          <div class="app-barra"><span class="app-logo"><svg viewBox="0 0 120 120"><use href="#mark"></use></svg></span>Talyon</div>
+          <div class="app-card"><div class="titolo">Front lever</div><div class="dettaglio">Advanced tuck · 5 × 8 s</div></div>
+          <div class="app-timer" id="c14-timer"><small>Tieni</small><strong>0:06</strong></div>
+          <div class="app-riga" id="c14-serie"><span>Serie 1 · 8 s</span><span class="app-spunta fatta"></span></div>
+          <div class="app-riga"><span>Serie 2 · 8 s</span><span class="app-spunta"></span></div>
+          <div class="app-bottone">Conferma serie</div>
+        </div>
+      </div>
+      <div class="annotazione sinistra" data-mira="c14-timer">Conto alla<br>rovescia<span class="filo"></span><span class="punto"></span></div>
+      <div class="annotazione destra" data-mira="c14-serie"><span class="punto"></span><span class="filo"></span>Secondi già<br>compilati</div>
+    </div>
+  </div>
+  <p class="testo">Scrivi i secondi come in palestra. <b>L’atleta vede il conto alla rovescia sul telefono e pensa solo a tenere.</b></p>
+</section>
+
+<!-- 08 · Chiusura -->
+<section class="slide" data-tipo="chiusura">
+  <h1>Una tenuta si costruisce un secondo alla volta.</h1>
+  <p class="testo">Secondi in scheda, la variante giusta, la posizione pulita.</p>
+  <p class="invito">Seguici per non perdere l’anteprima gratuita.</p>
+</section>
+</carosello>

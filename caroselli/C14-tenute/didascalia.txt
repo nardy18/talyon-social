@@ -1,0 +1,7 @@
+App per coach di streetlifting e calisthenics: come programmare le tenute, front lever, planche e back lever.
+
+In una tenuta il numero da scrivere è il tempo: secondi, serie e recupero. Ogni variante è un esercizio a sé, prima si sale di secondi e poi di variante, e le tenute vanno all'inizio della seduta. In Talyon scrivi i secondi in scheda e l'atleta vede il conto alla rovescia sul telefono.
+
+Salvalo per la prossima scheda e seguici per non perdere l'anteprima gratuita.
+
+#streetlifting #calisthenics #weightedcalisthenics #coach #frontlever
