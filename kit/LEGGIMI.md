@@ -45,6 +45,7 @@ Emanuele scrive in italiano e vuole frasi brevi e semplici: capisce poco di codi
 ## Regole dei contenuti
 
 - **Per chi:** coach di streetlifting e calisthenics zavorrato in Italia. Italiano, del tu, da coach a coach.
+- **Nomi delle varianti in inglese** (scelta di Emanuele del 28 novembre 2026): tuck, advanced tuck, one leg, straddle, full, half lay e simili, mai tradotti («una gamba», «completo» no). Vale per slide, reel, didascalie e testi alternativi.
 - **Tono:** racconto evocativo ma concreto. Niente gergo da software (SaaS, dashboard, workflow, algoritmo, funzionalità). Sì al lessico di palestra (RPE, RIR, top single, back-off, opener, zavorra, ramping).
 - **Filtro:** un coach lo manderebbe a un altro coach o a un suo atleta? Prima il valore pratico, poi il prodotto. Nei temi di programmazione Talyon compare al massimo in 1–2 slide e nella chiusura.
 - **Struttura:** slide 1 = promessa chiara del tema in parole semplici; slide 2–7 = un'idea per slide; slide 8 = chiusura con l'invito «Seguici per non perdere l'anteprima gratuita.» (finché Emanuele non dice che l'anteprima è aperta a tutti).
