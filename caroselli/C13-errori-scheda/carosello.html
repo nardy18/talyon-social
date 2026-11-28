@@ -1,0 +1,180 @@
+<carosello sfondo="verde" serie="Errori nella scheda">
+<style>
+  /* Stili solo per questo carosello */
+  .elenco { display: flex; align-items: center; gap: 48px; width: 100%; justify-content: center; }
+  .elenco .numero-grande { font-size: 230px; color: #FFFFFF; }
+  .elenco .righe { display: flex; flex-direction: column; gap: 14px; }
+  .elenco .righe span { display: flex; align-items: center; gap: 16px; font-size: 32px; font-weight: 600; }
+  .elenco .righe span i { width: 12px; height: 12px; border-radius: 50%; background: var(--rame); flex-shrink: 0; }
+
+  .confronto { display: flex; flex-direction: column; gap: 24px; width: 100%; }
+  .confronto .card { gap: 14px; padding: 34px 40px; }
+  .confronto .card .cosa { font-size: 24px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+  .confronto .card .nome { font-size: 48px; line-height: 1.15; }
+  .confronto .card .dettaglio { font-size: 38px; line-height: 1.3; }
+  .confronto .card.chiara .dettaglio { color: #FFFFFF; font-weight: 600; }
+  .confronto .card.chiara { border-color: rgba(217,142,74,.75); }
+
+  .totale .riga { font-size: 32px; }
+  .totale .riga.forte { color: #FFFFFF; }
+  .totale .riga.forte .valore { color: #FFFFFF; font-weight: 700; }
+  .totale .riga.somma { font-size: 36px; font-weight: 700; }
+  .totale .riga.somma .valore { font-size: 36px; font-weight: 700; color: #FFFFFF; }
+
+  .grafico { width: 100%; }
+  .grafico text { font-family: Saira, sans-serif; fill: #FFFFFF; }
+
+  .settimana { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+  .settimana .card { padding: 26px 24px; gap: 16px; align-items: flex-start; }
+  .settimana .card .giorno { font-size: 24px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+  .settimana .card .alzata { font-size: 32px; font-weight: 700; font-stretch: 85%; line-height: 1.15; }
+  .settimana .card .peso { font-size: 24px; font-weight: 600; padding: 6px 16px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.25); color: rgba(255,255,255,.85); }
+  .settimana .card .peso.alto { border-color: rgba(217,142,74,.8); }
+
+  .ancora { position: relative; }
+  .ancora .telefono { --t-larghezza: 270px; }
+  .app-recupero { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 12px; border-radius: 16px; background: rgba(217,142,74,.14); border: 1px solid rgba(217,142,74,.6); }
+  .app-recupero small { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--t-2); }
+  .app-recupero strong { font-size: 40px; font-weight: 700; font-stretch: 85%; line-height: 1; }
+  .annotazione { position: absolute; width: 290px; transform: translateY(-50%); display: flex; align-items: center; font-size: 26px; font-weight: 600; line-height: 1.25; color: rgba(255,255,255,.86); }
+  .annotazione .filo { width: 40px; height: 1.5px; background: var(--rame); flex-shrink: 0; }
+  .annotazione .punto { width: 10px; height: 10px; border-radius: 50%; background: var(--rame); flex-shrink: 0; }
+  .annotazione.sinistra { right: calc(100% - 4px); justify-content: flex-end; text-align: right; }
+  .annotazione.sinistra .filo { margin-left: 18px; }
+  .annotazione.destra { left: calc(100% - 4px); justify-content: flex-start; }
+  .annotazione.destra .filo { margin-right: 18px; }
+</style>
+
+<!-- 01 · Copertina -->
+<section class="slide" data-tipo="copertina">
+  <div class="elenco">
+    <span class="numero-grande">5</span>
+    <div class="righe">
+      <span><i></i>Carichi scritti a parole</span>
+      <span><i></i>Squat in fondo</span>
+      <span><i></i>Settimane tutte uguali</span>
+      <span><i></i>Giorni troppo pieni</span>
+      <span><i></i>Recuperi a caso</span>
+    </div>
+  </div>
+  <p class="etichetta">Programmazione</p>
+  <h1>Cinque errori nella scheda di uno streetlifter.</h1>
+  <p class="sottotitolo">E come sistemarli già dalla prossima.</p>
+</section>
+
+<!-- 02 · Il punto di partenza -->
+<section class="slide" data-tipo="testo">
+  <p class="etichetta">Il punto di partenza</p>
+  <h1>Capita anche ai coach più esperti.</h1>
+  <div class="linea"></div>
+  <p class="testo">Non servono errori grandi: bastano piccoli dettagli ripetuti per settimane. <b>Una scheda chiara aiuta l’atleta più di un esercizio in più.</b></p>
+</section>
+
+<!-- 03 · Carichi a parole -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">01 · Carichi scritti a parole</p>
+  <h1>«Pesante» non è un carico.</h1>
+  <div class="visual">
+    <div class="confronto">
+      <div class="card">
+        <span class="cosa">Così</span>
+        <span class="nome">Trazione</span>
+        <span class="dettaglio">Pesante, qualche serie</span>
+      </div>
+      <div class="card chiara">
+        <span class="cosa">Meglio così</span>
+        <span class="nome">Trazione</span>
+        <span class="dettaglio">4 × 3 · +50 kg · RPE 8</span>
+      </div>
+    </div>
+  </div>
+  <p class="testo">Serie, ripetizioni, carico e un riferimento di fatica. <b>Così l’atleta sa cosa fare e tu sai cosa confrontare.</b></p>
+</section>
+
+<!-- 04 · Squat -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">02 · Lo squat in fondo</p>
+  <h1>Lo squat conta nel totale.</h1>
+  <div class="visual">
+    <div class="pannello totale">
+      <div class="intestazione"><span>Luca · Massimali</span><small>Esempio</small></div>
+      <div class="riga"><span>Muscle-up</span><span class="valore">+20 kg</span></div>
+      <div class="riga"><span>Trazione</span><span class="valore">+65 kg</span></div>
+      <div class="riga"><span>Dip</span><span class="valore">+90 kg</span></div>
+      <div class="riga forte"><span>Squat</span><span class="valore">170 kg</span></div>
+      <div class="riga somma"><span>Totale</span><span class="valore">345 kg</span></div>
+    </div>
+  </div>
+  <p class="testo">Per Luca lo squat vale quasi metà del totale. <b>Dagli un posto fisso nella settimana, non i minuti che avanzano.</b></p>
+</section>
+
+<!-- 05 · Settimane uguali -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">03 · Settimane tutte uguali</p>
+  <h1>Decidi prima come si sale.</h1>
+  <div class="visual">
+    <svg class="grafico" viewBox="0 0 888 400" aria-hidden="true">
+      <line x1="0" y1="330" x2="888" y2="330" stroke="rgba(255,255,255,.25)" stroke-width="1.5"/>
+      <polyline points="110,250 330,200 550,150 770,100" fill="none" stroke="#D98E4A" stroke-width="3"/>
+      <circle cx="110" cy="250" r="12" fill="#FFFFFF"/>
+      <circle cx="330" cy="200" r="12" fill="#FFFFFF"/>
+      <circle cx="550" cy="150" r="12" fill="#FFFFFF"/>
+      <circle cx="770" cy="100" r="12" fill="#FFFFFF"/>
+      <text x="110" y="220" text-anchor="middle" font-size="36" font-weight="700">+45</text>
+      <text x="330" y="170" text-anchor="middle" font-size="36" font-weight="700">+47,5</text>
+      <text x="550" y="120" text-anchor="middle" font-size="36" font-weight="700">+50</text>
+      <text x="770" y="70" text-anchor="middle" font-size="36" font-weight="700">+52,5</text>
+      <text x="110" y="380" text-anchor="middle" font-size="26" fill-opacity=".7">Sett. 1</text>
+      <text x="330" y="380" text-anchor="middle" font-size="26" fill-opacity=".7">Sett. 2</text>
+      <text x="550" y="380" text-anchor="middle" font-size="26" fill-opacity=".7">Sett. 3</text>
+      <text x="770" y="380" text-anchor="middle" font-size="26" fill-opacity=".7">Sett. 4</text>
+    </svg>
+  </div>
+  <p class="testo">Trazione 4 × 3, in kg di zavorra, un esempio. <b>Scrivi in anticipo cosa cambia ogni settimana: carico, serie o ripetizioni.</b></p>
+</section>
+
+<!-- 06 · Giorni troppo pieni -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">04 · Giorni troppo pieni</p>
+  <h1>Il pesante, distribuito nella settimana.</h1>
+  <div class="visual">
+    <div class="settimana">
+      <div class="card"><span class="giorno">Lunedì</span><span class="alzata">Trazione</span><span class="peso alto">Pesante</span><span class="alzata">Dip</span><span class="peso">Leggero</span></div>
+      <div class="card"><span class="giorno">Mercoledì</span><span class="alzata">Squat</span><span class="peso alto">Pesante</span><span class="alzata">Muscle-up</span><span class="peso">Tecnica</span></div>
+      <div class="card"><span class="giorno">Venerdì</span><span class="alzata">Dip</span><span class="peso alto">Pesante</span><span class="alzata">Trazione</span><span class="peso">Leggero</span></div>
+    </div>
+  </div>
+  <p class="testo">Tutte le alzate pesanti nello stesso giorno: le ultime arrivano già stanche. <b>Alterna pesante e leggero, e ogni alzata trova il suo giorno.</b></p>
+</section>
+
+<!-- 07 · Recuperi -->
+<section class="slide" data-tipo="contenuto">
+  <p class="etichetta">05 · Recuperi a caso</p>
+  <h1>Il recupero fa parte della serie.</h1>
+  <div class="visual">
+    <div class="ancora">
+      <div class="telefono" data-tema="talyon">
+        <div class="schermo">
+          <div class="app-barra"><span class="app-logo"><svg viewBox="0 0 120 120"><use href="#mark"></use></svg></span>Talyon</div>
+          <div class="app-card"><div class="titolo">Squat</div><div class="dettaglio">3 × 3 · recupero 3 min</div></div>
+          <div class="app-riga" id="c13-serie"><span>Serie 1 · 3 · 140 kg</span><span class="app-spunta fatta"></span></div>
+          <div class="app-recupero" id="c13-recupero"><small>Recupero</small><strong>2:45</strong></div>
+          <div class="app-riga"><span>Serie 2 · 3 · 140 kg</span><span class="app-spunta"></span></div>
+          <div class="app-riga"><span>Serie 3 · 3 · 140 kg</span><span class="app-spunta"></span></div>
+          <div class="app-bottone">Conferma serie</div>
+        </div>
+      </div>
+      <div class="annotazione sinistra" data-mira="c13-serie">Un tocco<br>per confermare<span class="filo"></span><span class="punto"></span></div>
+      <div class="annotazione destra" data-mira="c13-recupero"><span class="punto"></span><span class="filo"></span>Il recupero<br>parte da solo</div>
+    </div>
+  </div>
+  <p class="testo">Scrivilo accanto all’esercizio. <b>In Talyon, quando l’atleta conferma la serie, il recupero parte da solo.</b></p>
+</section>
+
+<!-- 08 · Chiusura -->
+<section class="slide" data-tipo="chiusura">
+  <h1>Una scheda chiara è metà del lavoro.</h1>
+  <p class="testo">Numeri precisi, squat al suo posto, una progressione, giorni bilanciati, recuperi scritti.</p>
+  <p class="invito">Seguici per non perdere l’anteprima gratuita.</p>
+</section>
+</carosello>
